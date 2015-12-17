@@ -1,0 +1,7 @@
+cesgm.prunus.ca
+
+admin
+@admin!
+
+user
+@user!
