@@ -46,15 +46,13 @@ $(document).ready(function () {
 <?php } ?>
 
 
-
-
 <!--  new login  -->
 
 <!-- add login style sheet-->
 	<script>
 		var head = document.getElementsByTagName('head')[0];
 		var link=document.createElement("link");
-        link.href="core/tpl/login_style.css";
+        link.href="<?php print DOL_URL_ROOT; ?>/core/tpl/login_style.css";
         link.rel="stylesheet";
         head.appendChild(link);
 	</script>
@@ -104,6 +102,8 @@ $(document).ready(function () {
     </div>
 
 <!--  end new login  -->
+
+<!--  old login  -->
 
 <center style="visibility:hidden;">
 
@@ -249,6 +249,7 @@ if (isset($conf->file->main_authentication) && preg_match('/openid/',$conf->file
 
 
 
+<!--  end old login  -->
 
 <?php if (! empty($_SESSION['dol_loginmesg']))
 {

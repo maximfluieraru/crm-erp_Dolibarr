@@ -1,1 +1,5 @@
-Url not available
+<?php 
+	
+	header('Location: ../index.php');
+
+?>

@@ -1269,7 +1269,7 @@ function top_htmlhead($head, $title='', $disablejs=0, $disablehead=0, $arrayofjs
         
         //------------- add bootstrap --------------
 
-        print '<script type="text/javascript" src="bootstrap.js"></script>';
+        print '<script type="text/javascript" src="'.DOL_URL_ROOT.'/bootstrap.js"></script>';
 
          //-------------------------
         
@@ -1695,27 +1695,27 @@ function left_menu($menu_array_before, $helppagename='', $moresearchform='', $me
 	    }
 
     	// Link to bugtrack
-		if (! empty($conf->global->MAIN_BUGTRACK_ENABLELINK))
-		{
-			require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
+		// if (! empty($conf->global->MAIN_BUGTRACK_ENABLELINK))
+		// {
+		// 	require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
 
-			$bugbaseurl = 'https://github.com/Dolibarr/dolibarr/issues/new';
-			$bugbaseurl.= '?title=';
-			$bugbaseurl.= urlencode("Bug: ");
-			$bugbaseurl.= '&body=';
-			$bugbaseurl.= urlencode("# Environment\n");
-			$bugbaseurl.= urlencode("- **Version**: " . DOL_VERSION . "\n");
-			$bugbaseurl.= urlencode("- **OS**: " . php_uname('s') . "\n");
-			$bugbaseurl.= urlencode("- **Web server**: " . $_SERVER["SERVER_SOFTWARE"] . "\n");
-			$bugbaseurl.= urlencode("- **PHP**: " . php_sapi_name() . ' ' . phpversion() . "\n");
-			$bugbaseurl.= urlencode("- **Database**: " . $db::LABEL . ' ' . $db->getVersion() . "\n");
-			$bugbaseurl.= urlencode("- **URL**: " . $_SERVER["REQUEST_URI"] . "\n");
-			$bugbaseurl.= urlencode("\n");
-			$bugbaseurl.= urlencode("# Report\n");
-			print '<p id="blockvmenuhelpbugreport" class="blockvmenuhelp">';
-			print '<a class="help" target="_blank" href="'.$bugbaseurl.'">'.$langs->trans("FindBug").'</a>';
-			print '</p>';
-		}
+		// 	$bugbaseurl = 'https://github.com/Dolibarr/dolibarr/issues/new';
+		// 	$bugbaseurl.= '?title=';
+		// 	$bugbaseurl.= urlencode("Bug: ");
+		// 	$bugbaseurl.= '&body=';
+		// 	$bugbaseurl.= urlencode("# Environment\n");
+		// 	$bugbaseurl.= urlencode("- **Version**: " . DOL_VERSION . "\n");
+		// 	$bugbaseurl.= urlencode("- **OS**: " . php_uname('s') . "\n");
+		// 	$bugbaseurl.= urlencode("- **Web server**: " . $_SERVER["SERVER_SOFTWARE"] . "\n");
+		// 	$bugbaseurl.= urlencode("- **PHP**: " . php_sapi_name() . ' ' . phpversion() . "\n");
+		// 	$bugbaseurl.= urlencode("- **Database**: " . $db::LABEL . ' ' . $db->getVersion() . "\n");
+		// 	$bugbaseurl.= urlencode("- **URL**: " . $_SERVER["REQUEST_URI"] . "\n");
+		// 	$bugbaseurl.= urlencode("\n");
+		// 	$bugbaseurl.= urlencode("# Report\n");
+		// 	print '<p id="blockvmenuhelpbugreport" class="blockvmenuhelp">';
+		// 	print '<a class="help" target="_blank" href="'.$bugbaseurl.'">'.$langs->trans("FindBug").'</a>';
+		// 	print '</p>';
+		// }
 
 	    print "</div>\n";
 	    print "<!-- End left menu -->\n";
