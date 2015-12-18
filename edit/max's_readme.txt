@@ -23,23 +23,25 @@
 <!-- begin left menu..	 			main.inc.php  ~1599
 
 DB table CONST
-
+<!-- Begin right area ..            main.inc.php ~ 1735
 
 admin/system/about
+
+
+j script error when try to add a group for user
 
 
 PDF  - TCPDF (/Applications/XAMPP/xamppfiles/htdocs/cesgm/htdocs/includes/tcpdf/) + FPDI (/Applications/XAMPP/xamppfiles/htdocs/cesgm/htdocs/includes/fpdfi/)
 
 ----------------------=========================----------------------------------
 
-Max's chages:
+Max's chages: 
+	(check unused folders)
 	
 	# documents/
 			* added install.lock 
 
-	# htdocs/install/
-			*index.php added (redirection to htdocs/index.php)
-
+	
 	# htdocs/
 			* added bootstrap.js (script js to import boostrap from web server)
 			* modified main.inc.php 
@@ -47,6 +49,9 @@ Max's chages:
 						- (line 1658 - 1662) info about Dolibarr (put in comments)
 						- (line 1682 - 1693) Dolibarr wiki (put in comments)
 						- (line 1697 - 1718) Link to bugtrack (put in comments)
+
+	# htdocs/install/ (moved to unused folders)
+			*index.php added (redirection to htdocs/index.php)
 
 	
 	# htdocs/core/tpl/

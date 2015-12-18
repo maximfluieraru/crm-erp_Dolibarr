@@ -4000,19 +4000,25 @@ function get_htmloutput_mesg($mesgstring='',$mesgarray='', $style='ok', $keepemb
 	{
 		if (! empty($conf->use_javascript_ajax) && empty($conf->global->MAIN_DISABLE_JQUERY_JNOTIFY) && empty($keepembedded))
 		{
-			$return = '<script type="text/javascript">
-					$(document).ready(function() {
-						var block = '.(! empty($conf->global->MAIN_USE_JQUERY_BLOCKUI)?"true":"false").'
-						if (block) {
-							$.dolEventValid("","'.dol_escape_js($out).'");
-						} else {
-							$.jnotify("'.dol_escape_js($out).'",
-							"'.($style=="ok" ? 3000 : $style).'",
-							'.($style=="ok" ? "false" : "true").',
-							{ remove: function (){} } );
-						}
-					});
-				</script>';
+
+			// this scrip show fk database error message when we try to add user to a group but user are not selected
+			// $return = '<script type="text/javascript">
+			// 		$(document).ready(function() {
+			// 			var block = '.(! empty($conf->global->MAIN_USE_JQUERY_BLOCKUI)?"true":"false").'
+			// 			if (block) {
+			// 				$.dolEventValid("","'.dol_escape_js($out).'");
+			// 			} else {
+			// 				$.jnotify("'.dol_escape_js($out).'",
+			// 				"'.($style=="ok" ? 3000 : $style).'",
+			// 				'.($style=="ok" ? "false" : "true").',
+			// 				{ remove: function (){} } );
+			// 			}
+			// 		});
+			// 	</script>';
+
+			//added 
+			$return = !$out;
+
 		}
 		else
 		{
