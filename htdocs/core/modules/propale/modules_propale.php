@@ -173,7 +173,7 @@ function propale_pdf_create($db, $object, $modele, $outputlangs, $hidedetails=0,
 	    }
 	    else
 	    {
-	        $modele = 'azur';
+	        $modele = 'cesgm';
 	    }
 	}
 

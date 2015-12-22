@@ -19,6 +19,18 @@
 	*******************************************************
 ---------------------------------------===============----------------------------
 
+[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+cesgm - will be owner  of application. all user should be added to groups (if cesgm want to see all clients (DB unique numbers)
+		* core/societe/doc/mod_codeclient 
+
+null label for all model in document_model(DB)
+
+[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+
+function pdf_build_address
+
 <head> 								main.inc.php  ~952
 <!-- begin left menu..	 			main.inc.php  ~1599
 
@@ -28,15 +40,34 @@ DB table CONST
 admin/system/about
 
 
-j script error when try to add a group for user
+j script error when try to add a group for user - script was commented 
+
+core/class/html_form.class.php 
 
 
 PDF  - TCPDF (/Applications/XAMPP/xamppfiles/htdocs/cesgm/htdocs/includes/tcpdf/) + FPDI (/Applications/XAMPP/xamppfiles/htdocs/cesgm/htdocs/includes/fpdfi/)
+
+# create user ..... (language from browser) !!!
+
+
+code_client (Customer code) - DB 'societe'
+
+
+
+Class to manage numbering of thirdparties code - core/societe/doc/mod_codeclient_leopard.php
 
 ----------------------=========================----------------------------------
 
 Max's chages: 
 	(check unused folders)
+
+	# theme/bureau2crea/img - application images + .ico
+
+	# to change application title from default(Dolybarr) to "your company name" you must add to database a constant
+		"MAIN_APPLICATION_TITLE" ( rowid = 1; name="MAIN_APPLICATION_TITLE"; value = "your company name") in "const" table
+		or (use Configuration/Other)
+
+
 	
 	# documents/
 			* added install.lock 
@@ -72,6 +103,10 @@ Max's chages:
 
 	# htdocs/includes/
 			* index.php added script for redirect users to main page (before that file was empty) 
+
+	
+
+
 
 
 

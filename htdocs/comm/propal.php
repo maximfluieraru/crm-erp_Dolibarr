@@ -1232,7 +1232,8 @@ if ($action == 'create') {
 	print '<tr>';
 	print '<td>' . $langs->trans("DefaultModel") . '</td>';
 	print '<td colspan="2">';
-	$liste = ModelePDFPropales::liste_modeles($db);
+	
+	$liste = ModelePDFPropales::liste_modeles($db,7);
 	print $form->selectarray('model', $liste, ($conf->global->PROPALE_ADDON_PDF_ODT_DEFAULT ? $conf->global->PROPALE_ADDON_PDF_ODT_DEFAULT : $conf->global->PROPALE_ADDON_PDF));
 	print "</td></tr>";
 
