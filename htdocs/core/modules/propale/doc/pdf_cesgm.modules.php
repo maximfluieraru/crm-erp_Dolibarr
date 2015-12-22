@@ -4,6 +4,7 @@
  * Copyright (C) 2008      Raphael Bertrand     <raphael.bertrand@resultic.fr>
  * Copyright (C) 2010-2013 Juanjo Menent	    <jmenent@2byte.es>
  * Copyright (C) 2012      Christophe Battarel   <christophe.battarel@altairis.fr>
+ * Copyright (C) 2015	   Maxim FLUIERARU		<maxim@prunus.ca>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +31,7 @@ require_once DOL_DOCUMENT_ROOT.'/product/class/product.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/pdf.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/cesgm.pdf.lib.php';
+require_once DOL_DOCUMENT_ROOT.'/core/lib/pdf.cesgm.lib.php';
 
 
 /**
@@ -214,7 +215,7 @@ class pdf_cesgm extends ModelePDFPropales
 			if (file_exists($dir))
 			{
 				// Create pdf instance
-                $pdf=pdf_getInstance($this->format);
+                $pdf=pdf_cesgm_getInstance($this->format);
                 $default_font_size = pdf_getPDFFontSize($outputlangs);	// Must be after pdf_getInstance
                 $heightforinfotot = 50;	// Height reserved to output the info and total part
 		        $heightforfreetext= (isset($conf->global->MAIN_PDF_FREETEXT_HEIGHT)?$conf->global->MAIN_PDF_FREETEXT_HEIGHT:5);	// Height reserved to output the free text on last page
@@ -240,7 +241,7 @@ class pdf_cesgm extends ModelePDFPropales
 
 				$pdf->SetTitle($outputlangs->convToOutputCharset($object->ref));
 				$pdf->SetSubject($outputlangs->transnoentities("CommercialProposal"));
-				$pdf->SetCreator("CESGM Inc");
+				$pdf->SetCreator($conf->mycompany->name);
 				$pdf->SetAuthor($outputlangs->convToOutputCharset($user->getFullName($outputlangs)));
 				$pdf->SetKeyWords($outputlangs->convToOutputCharset($object->ref)." ".$outputlangs->transnoentities("CommercialProposal"));
 				if (! empty($conf->global->MAIN_DISABLE_PDF_COMPRESSION)) $pdf->SetCompression(false);
@@ -312,6 +313,11 @@ class pdf_cesgm extends ModelePDFPropales
 				{
 					$height_note=0;
 				}
+////////////////////////// begin position of main table //////////////
+//----------------------------------------------
+				$tab_top = 150;
+//----------------------------------------------
+
 
 				$iniY = $tab_top + 7;
 				$curY = $tab_top + 7;
@@ -360,7 +366,7 @@ class pdf_cesgm extends ModelePDFPropales
 					$curX = $this->posxdesc-1;
 
 					$pdf->startTransaction();
-					pdf_writelinedesc($pdf,$object,$i,$outputlangs,$this->posxpicture-$curX,3,$curX,$curY,$hideref,$hidedesc);
+					pdf_cesgm_writelinedesc($pdf,$object,$i,$outputlangs,$this->posxpicture-$curX,3,$curX,$curY,$hideref,$hidedesc);
 
 					$pageposafter=$pdf->getPage();
 					if ($pageposafter > $pageposbefore)	// There is a pagebreak
@@ -369,7 +375,7 @@ class pdf_cesgm extends ModelePDFPropales
 						$pageposafter=$pageposbefore;
 						//print $pageposafter.'-'.$pageposbefore;exit;
 						$pdf->setPageOrientation('', 1, $heightforfooter);	// The only function to edit the bottom margin of current page to set it.
-						pdf_writelinedesc($pdf,$object,$i,$outputlangs,$this->posxpicture-$curX,3,$curX,$curY,$hideref,$hidedesc);
+						pdf_cesgm_writelinedesc($pdf,$object,$i,$outputlangs,$this->posxpicture-$curX,3,$curX,$curY,$hideref,$hidedesc);
 
 						$pageposafter=$pdf->getPage();
 						$posyafter=$pdf->GetY();
@@ -422,10 +428,10 @@ class pdf_cesgm extends ModelePDFPropales
 					$pdf->SetXY($this->posxup, $curY);
 					$pdf->MultiCell($this->posxqty-$this->posxup-0.8, 3, $up_excl_tax, 0, 'R', 0);
 
-					// Quantity
-					$qty = pdf_getlineqty($object, $i, $outputlangs, $hidedetails);
-					$pdf->SetXY($this->posxqty, $curY);
-					$pdf->MultiCell($this->posxdiscount-$this->posxqty-0.8, 3, $qty, 0, 'R');	// Enough for 6 chars
+					// // Quantity
+					// $qty = pdf_getlineqty($object, $i, $outputlangs, $hidedetails);
+					// $pdf->SetXY($this->posxqty, $curY);
+					// $pdf->MultiCell($this->posxdiscount-$this->posxqty-0.8, 3, $qty, 0, 'R');	// Enough for 6 chars
 
 					// Discount on line
 					if ($object->lines[$i]->remise_percent)
@@ -789,6 +795,28 @@ class pdf_cesgm extends ModelePDFPropales
 	 */
 	function _tableau_tot(&$pdf, $object, $deja_regle, $posy, $outputlangs)
 	{
+
+
+
+///================================= begin
+
+		$posy = $tab2_top+20 + $tab2_hl * $index;
+			$posx = 10;
+
+			$pdf->SetTextColor(0,0,0);
+			$pdf->SetFont('','', $default_font_size-1);
+			$pdf->SetXY($posx,$posy-5);
+
+			// when we use CONST
+			//$text_conv='PROPALE_FREE_TEXT';
+			//$pdf->MultiCell(200,5, $conf->global->$text_conv, 0, 'L');
+
+			$text_conv = "Toutefois ce prix est soumis aux réserves suivantes: \n\t4.1\tLe client paiera à l'entrepreneur un intérêt mensuel de deux pour cent (2%) sur toute somme due, soit 24% par année, le tout sous réserve à tout autre recours de l'entrepreneur contre le client.";	
+			$text_conv .="\n\t4.2\tEn cas de recours judiciaire de l'entrepreneur contre le client pour le recouvrement de sommes dues, les frais judiciaires et extrajuiciares en cours en pareil cas par l'entrepreneur sont à la charge du client mais ne seront en aucun cas supérieur à 30% du prix du contrat.";
+			$pdf->MultiCell(200,5,$text_conv, 0, 'L');
+
+///================================= end
+
 		global $conf,$mysoc;
 		$default_font_size = pdf_getPDFFontSize($outputlangs);
 
@@ -810,7 +838,7 @@ class pdf_cesgm extends ModelePDFPropales
 		// Total HT
 		$pdf->SetFillColor(255,255,255);
 		$pdf->SetXY($col1x, $tab2_top + 0);
-		$pdf->MultiCell($col2x-$col1x, $tab2_hl, $outputlangs->transnoentities("TotalHT"), 0, 'L', 1);
+		$pdf->MultiCell($col2x-$col1x, $tab2_hl,$outputlangs->transnoentities("TotalHT"), 0, 'R', 1);
 
 		$pdf->SetXY($col2x, $tab2_top + 0);
 		$pdf->MultiCell($largcol2, $tab2_hl, price($object->total_ht + (! empty($object->remise)?$object->remise:0), 0, $outputlangs), 0, 'R', 1);
@@ -1045,6 +1073,37 @@ class pdf_cesgm extends ModelePDFPropales
 		}
 
 		$index++;
+
+			$posy = $tab2_top+20 + $tab2_hl * $index;
+			$posx = 10;
+
+			$pdf->SetTextColor(0,0,0);
+			$pdf->SetFont('','', $default_font_size-1);
+			$pdf->SetXY($posx,$posy-5);
+
+			// when we use CONST
+			//$text_conv='PROPALE_FREE_TEXT';
+			//$pdf->MultiCell(200,5, $conf->global->$text_conv, 0, 'L');
+
+			$text_conv = "Toutefois ce prix est soumis aux réserves suivantes: \n\t4.1\tLe client paiera à l'entrepreneur un intérêt mensuel de deux pour cent (2%) sur toute somme due, soit 24% par année, le tout sous réserve à tout autre recours de l'entrepreneur contre le client.";	
+			$text_conv .="\n\t4.2\tEn cas de recours judiciaire de l'entrepreneur contre le client pour le recouvrement de sommes dues, les frais judiciaires et extrajuiciares en cours en pareil cas par l'entrepreneur sont à la charge du client mais ne seront en aucun cas supérieur à 30% du prix du contrat.";
+			$pdf->MultiCell(200,5,$text_conv, 0, 'L');
+
+			// $pdf->SetTextColor(0,0,0);
+			// $pdf->SetFont('','B', $default_font_size - 1);
+			// $pdf->SetXY($posx,$posy);
+			// $text_1="1. Ouvrage à réaliser";
+			// $pdf->MultiCell(200,3, $text_1, 0, 'L');
+
+			// $pdf->SetTextColor(0,0,0);
+			// $pdf->SetFont('','', $default_font_size - 1);
+			// $pdf->SetXY($posx,$posy+5);
+			// $under_text_1="Le client retient, en date de ce jour, les services de l'Entrepreneur pour exécuter l'ouvrage ci-après décrit :";
+			// $pdf->MultiCell(200,5, $under_text_1, 0, 'L');
+
+
+
+		
 		return ($tab2_top + ($tab2_hl * $index));
 	}
 
@@ -1064,8 +1123,10 @@ class pdf_cesgm extends ModelePDFPropales
 	{
 		global $conf;
 
-		// Force to disable hidetop and hidebottom
-		$hidebottom=0;
+
+		// Force to disable hidetop and hidebottom data about description
+		$hidebottom=1;
+		$hidetop=1;
 		if ($hidetop) $hidetop=-1;
 
 		$default_font_size = pdf_getPDFFontSize($outputlangs);
@@ -1088,7 +1149,7 @@ class pdf_cesgm extends ModelePDFPropales
 		$pdf->SetFont('','',$default_font_size - 1);
 
 		// Output Rect
-		$this->printRect($pdf,$this->marge_gauche, $tab_top, $this->page_largeur-$this->marge_gauche-$this->marge_droite, $tab_height, $hidetop, $hidebottom);	// Rect prend une longueur en 3eme param et 4eme param
+		//$this->printRect($pdf,$this->marge_gauche, $tab_top, $this->page_largeur-$this->marge_gauche-$this->marge_droite, $tab_height, $hidetop, $hidebottom);	// Rect prend une longueur en 3eme param et 4eme param
 
 		if (empty($hidetop))
 		{
@@ -1172,14 +1233,17 @@ class pdf_cesgm extends ModelePDFPropales
 
 		$default_font_size = pdf_getPDFFontSize($outputlangs);
 
-		pdf_pagehead($pdf,$outputlangs,$this->page_hauteur);
+		pdf_cesgm_pagehead($pdf,$outputlangs,$this->page_hauteur);
 
 		//  Show Draft Watermark
 		if($object->statut==0 && (! empty($conf->global->PROPALE_DRAFT_WATERMARK)) )
 		{
-            pdf_watermark($pdf,$outputlangs,$this->page_hauteur,$this->page_largeur,'mm',$conf->global->PROPALE_DRAFT_WATERMARK);
+            pdf_cesgm_watermark($pdf,$outputlangs,$this->page_hauteur,$this->page_largeur,'mm',$conf->global->PROPALE_DRAFT_WATERMARK);
 		}
 
+		
+ 
+///-----------------------cesgm logo + text (address etc.)----------------------------/////
 		$pdf->SetTextColor(0,0,60);
 		$pdf->SetFont('','B', $default_font_size + 3);
 
@@ -1188,8 +1252,9 @@ class pdf_cesgm extends ModelePDFPropales
 
 		$pdf->SetXY($this->marge_gauche,$posy);
 
-		// Logo //chnaged addresse to thumbs
-		$logo=$conf->mycompany->dir_output.'/logos/thumbs/'.$this->emetteur->logo;
+		// cesgm logo
+		//$logo=$conf->mycompany->dir_output.'/logos/thumbs/'.$this->emetteur->logo;
+		$logo=$conf->mycompany->dir_output.'/logos/thumbs/cesgm.png';
 		if ($this->emetteur->logo)
 		{
 			if (is_readable($logo))
@@ -1219,13 +1284,15 @@ class pdf_cesgm extends ModelePDFPropales
 		$pdf->SetFont('','B',$default_font_size - 1.2);
 		$pdf->SetXY($posx-70,$posy);
 		$pdf->SetTextColor(0,0,60);
-		$title=NOTE;
-		$pdf->MultiCell(70, 8, $title, 0, 'L',false);
-
-
+		$desc="Corporation des Entrepreneurs Spécialisés du Grand Montéal Inc. \n";
+		$address_cesgm="5181, rue d'Amiens, bureau 500, Montréal-Nord (Québec) H1G 6N9 Téléphone : 514.955.3548 * Fax : 514.955.6623";
+		$pdf->MultiCell(70, 10, $desc, 0, 'L',false);
+		$pdf->MultiCell(100, 8, $address_cesgm, 0, 'L',false);
 		
-///---------------------------------------------------/////
+///----------------------end cesgm logo + text (address etc.)-----------------------------/////
 
+
+///----------------Contrat d'entreprise-----------------------------------/////
 
 		$pdf->SetFont('','B',$default_font_size + 3);
 		$pdf->SetXY($posx,$posy);
@@ -1234,12 +1301,16 @@ class pdf_cesgm extends ModelePDFPropales
 		$pdf->MultiCell(100, 4, $title, '', 'R');
 
 		$pdf->SetFont('','B',$default_font_size);
-///---------------------------------------------------/////
+
 		$posy+=5;
 		$pdf->SetXY($posx,$posy);
 		$pdf->SetTextColor(0,0,60);
 		$pdf->MultiCell(100, 4, $outputlangs->transnoentities("Ref")." : " . $outputlangs->convToOutputCharset($object->ref), '', 'R');
 
+///---------------------end Contrat d'entreprise-------------------------------/////
+
+
+//------------------- to be modified ----------------//	
 		$posy+=1;
 		$pdf->SetFont('','', $default_font_size - 1);
 
@@ -1271,49 +1342,96 @@ class pdf_cesgm extends ModelePDFPropales
 
 		$posy+=2;
 
-		// Show list of linked objects
-		$posy = pdf_writeLinkedObjects($pdf, $object, $outputlangs, $posx, $posy, 100, 3, 'R', $default_font_size);
+//------------------- end to be modified ----------------//	
+
+
+
+
+
+		// Show list of linked objects 
+		//unused !?
+		//$posy = pdf_writeLinkedObjects($pdf, $object, $outputlangs, $posx, $posy, 100, 3, 'R', $default_font_size);
 
 		if ($showaddress)
 		{
 			// Sender properties
 			$carac_emetteur='';
+
+
+
+			//==============
+
 		 	// Add internal contact of proposal if defined
 			$arrayidcontact=$object->getIdContact('internal','SALESREPFOLL');
 		 	if (count($arrayidcontact) > 0)
 		 	{
 		 		$object->fetch_user($arrayidcontact[0]);
-		 		$carac_emetteur .= ($carac_emetteur ? "\n" : '' ).$outputlangs->transnoentities("Name").": ".$outputlangs->convToOutputCharset($object->user->getFullName($outputlangs))."\n";
+		 		$carac_emetteur .= ($carac_emetteur ? "" : '' ).$outputlangs->transnoentities("Name").": ".$outputlangs->convToOutputCharset($object->user->getFullName($outputlangs));
 		 	}
 
-		 	$carac_emetteur .= pdf_build_address($outputlangs, $this->emetteur, $object->client);
+
+		 	//==============
+
+		 	$carac_emetteur .= pdf_cesgm_build_address($outputlangs, $this->emetteur, $object->client);
 
 			// Show sender
+////[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
 			$posy=42;
 		 	$posx=$this->marge_gauche;
 			if (! empty($conf->global->MAIN_INVERT_SENDER_RECIPIENT)) $posx=$this->page_largeur-$this->marge_droite-80;
 			$hautcadre=40;
 
-			// Show sender frame
+			
+			$pdf->SetTextColor(0,0,0);
+			$pdf->SetFont('','B', $default_font_size);
+			$pdf->SetXY($posx,$posy-5);
+			$text_entre="ENTRE";
+			$pdf->MultiCell(200,5, $text_entre, 0, 'C');
+
 			$pdf->SetTextColor(0,0,0);
 			$pdf->SetFont('','', $default_font_size - 2);
-			$pdf->SetXY($posx,$posy-5);
-			$pdf->MultiCell(66,5, $outputlangs->transnoentities("BillFrom").":", 0, 'L');
-			$pdf->SetXY($posx,$posy);
-			$pdf->SetFillColor(230,230,230);
-			$pdf->MultiCell(82, $hautcadre, "", 0, 'R', 1);
-			$pdf->SetTextColor(0,0,60);
+			$pdf->SetXY($posx,$posy-1);
+			$under_text_entre="(Ci-après appelé l'Entrepreneur)";
+			$pdf->MultiCell(200,5, $under_text_entre, 0, 'C');
+
+
+
+			// // Show sender frame // to eliminate
+			// $pdf->SetXY($posx,$posy+3);
+			// $pdf->SetFillColor(230,230,230);
+			// $pdf->MultiCell(190, $hautcadre, "", 1, 'C', 1);
+			// $pdf->SetTextColor(0,0,60);
 
 			// Show sender name
-			$pdf->SetXY($posx+2,$posy+3);
-			$pdf->SetFont('','B', $default_font_size);
-			$pdf->MultiCell(80, 4, $outputlangs->convToOutputCharset($this->emetteur->name), 0, 'L');
+			$pdf->SetXY($posx+2,$posy+4);
+			$pdf->SetFont('','BU', $default_font_size);
+			$pdf->MultiCell(80, 4, "Nom : ".$outputlangs->convToOutputCharset($this->emetteur->name), 0, 'L');
 			$posy=$pdf->getY();
 
 			// Show sender information
 			$pdf->SetXY($posx+2,$posy);
-			$pdf->SetFont('','', $default_font_size - 1);
+			$pdf->SetFont('','U', $default_font_size - 1);
 			$pdf->MultiCell(80, 4, $carac_emetteur, 0, 'L');
+
+
+
+/////[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+			$posy = 85;
+
+			$pdf->SetTextColor(0,0,0);
+			$pdf->SetFont('','B', $default_font_size);
+			$pdf->SetXY($posx,$posy-3);
+			$text_et="ET";
+			$pdf->MultiCell(200,5, $text_et, 0, 'C');
+
+			$pdf->SetTextColor(0,0,0);
+			$pdf->SetFont('','', $default_font_size - 2);
+			$pdf->SetXY($posx,$posy);
+			$under_text_et="(Ci-après appelé le client)";
+			$pdf->MultiCell(200,5, $under_text_et, 0, 'C');
+
 
 
 			// If CUSTOMER contact defined, we use it
@@ -1338,21 +1456,23 @@ class pdf_cesgm extends ModelePDFPropales
 				$carac_client_name=$outputlangs->convToOutputCharset($object->client->nom);
 			}
 
-			$carac_client=pdf_build_address($outputlangs,$this->emetteur,$object->client,($usecontact?$object->contact:''),$usecontact,'target');
+			$carac_client=pdf_cesgm_build_address($outputlangs,$this->emetteur,$object->client,($usecontact?$object->contact:''),$usecontact,'target');
 
 			// Show recipient
 			$widthrecbox=100;
 			if ($this->page_largeur < 210) $widthrecbox=84;	// To work with US executive format
-			$posy=42;
-			$posx=$this->page_largeur-$this->marge_droite-$widthrecbox;
+			//$posy=85;
+			
+
+			$posx=10;//$this->page_largeur-$this->marge_gauche;//-$widthrecbox;
 			if (! empty($conf->global->MAIN_INVERT_SENDER_RECIPIENT)) $posx=$this->marge_gauche;
 
-			// Show recipient frame
-			$pdf->SetTextColor(0,0,0);
-			$pdf->SetFont('','', $default_font_size - 2);
-			$pdf->SetXY($posx+2,$posy-5);
-			$pdf->MultiCell($widthrecbox, 5, $outputlangs->transnoentities("BillTo").":", 0, 'L');
-			$pdf->Rect($posx, $posy, $widthrecbox, $hautcadre);
+			// // Show recipient frame
+			// $pdf->SetTextColor(0,0,0);
+			// $pdf->SetFont('','', $default_font_size - 2);
+			// $pdf->SetXY($posx+2,$posy-5);
+			// $pdf->MultiCell($widthrecbox, 5, $outputlangs->transnoentities("BillTo").":", 0, 'L');
+			// $pdf->Rect($posx, $posy, $widthrecbox, $hautcadre);
 
 			// Show recipient name
 			$pdf->SetXY($posx+2,$posy+3);
@@ -1363,7 +1483,38 @@ class pdf_cesgm extends ModelePDFPropales
 			$pdf->SetFont('','', $default_font_size - 1);
 			$pdf->SetXY($posx+2,$posy+4+(dol_nboflines_bis($carac_client_name,50)*4));
 			$pdf->MultiCell($widthrecbox, 4, $carac_client, 0, 'L');
+
+
+
+
+			///--- CONVIENNENT DE CE QUI SUIT:  + 1 -- //
+			$posy = 120;
+
+			$pdf->SetTextColor(0,0,0);
+			$pdf->SetFont('','B', $default_font_size);
+			$pdf->SetXY($posx,$posy-5);
+			$text_conv="CONVIENNENT DE CE QUI SUIT:";
+			$pdf->MultiCell(200,5, $text_conv, 0, 'L');
+
+			$pdf->SetTextColor(0,0,0);
+			$pdf->SetFont('','B', $default_font_size - 1);
+			$pdf->SetXY($posx,$posy);
+			$text_1="1. Ouvrage à réaliser";
+			$pdf->MultiCell(200,3, $text_1, 0, 'L');
+
+			$pdf->SetTextColor(0,0,0);
+			$pdf->SetFont('','', $default_font_size - 1);
+			$pdf->SetXY($posx,$posy+5);
+			$under_text_1="Le client retient, en date de ce jour, les services de l'Entrepreneur pour exécuter l'ouvrage ci-après décrit :";
+			$pdf->MultiCell(200,5, $under_text_1, 0, 'L');
+
+
+			/// -- CONVIENNENT DE CE QUI SUIT:  + 1 -- //
 		}
+
+
+
+
 
 		$pdf->SetTextColor(0,0,0);
 	}
@@ -1379,7 +1530,8 @@ class pdf_cesgm extends ModelePDFPropales
 	 */
 	function _pagefoot(&$pdf,$object,$outputlangs,$hidefreetext=0)
 	{
-		return pdf_pagefoot($pdf,$outputlangs,'PROPALE_FREE_TEXT',$this->emetteur,$this->marge_basse,$this->marge_gauche,$this->page_hauteur,$object,0,$hidefreetext);
+		$_text_ = "";//'PROPALE_FREE_TEXT';
+		return pdf_cesgm_pagefoot($pdf,$outputlangs,$_text_,$this->emetteur,$this->marge_basse,$this->marge_gauche,$this->page_hauteur,$object,0,$hidefreetext);
 	}
 
 }

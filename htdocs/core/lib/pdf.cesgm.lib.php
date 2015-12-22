@@ -23,6 +23,58 @@
  */
 
 
+// function pdf_cesgm_logo_and_text($pdf,$other,$conf)
+// {
+	
+// 	$pdf->SetTextColor(0,0,60);
+// 	$pdf->SetFont('','B', $default_font_size + 3);
+
+// 	$posy=$other->marge_haute;
+// 	$posx=$other->page_largeur-$other->marge_droite-100;
+
+// 	$pdf->SetXY($other->marge_gauche,$posy);
+
+// 	// Logo //chnaged addresse to thumbs
+// 	//$logo=$conf->mycompany->dir_output.'/logos/thumbs/'.$this->emetteur->logo;
+// 	$logo=$conf->mycompany->dir_output.'/logos/thumbs/cesgm.png';
+// 	if ($other->emetteur->logo)
+// 	{
+// 		if (is_readable($logo))
+// 		{
+// 		    //$height=pdf_getHeightForLogo($logo);
+// 		    $height = 10;// logo height
+// 		    $width=20; // width=0 (auto)
+// 		    $pdf->Image($logo, $other->marge_gauche, $posy, $width, $height);	
+
+// 		}
+
+// 		// else
+// 		// {
+// 		// 	///error message wiil be displayed
+// 		// 	$pdf->SetTextColor(200,0,0);
+// 		// 	$pdf->SetFont('','B',$default_font_size - 2);
+// 		// 	$pdf->MultiCell(100, 3, $outputlangs->transnoentities("ErrorLogoFileNotFound",$logo), 0, 'L');
+// 		// 	$pdf->MultiCell(100, 3, $outputlangs->transnoentities("ErrorGoToGlobalSetup"), 0, 'L');
+// 		// }
+// 	}
+// 	else
+// 	{
+// 		$text=$other->emetteur->name;
+// 		$pdf->MultiCell(100, 4, $outputlangs->convToOutputCharset($text), 0, 'L');
+// 	}
+
+// 	$pdf->SetFont('','B',$default_font_size - 1.2);
+// 	$pdf->SetXY($posx-70,$posy);
+// 	$pdf->SetTextColor(0,0,60);
+// 	$title="Corporation des Entrepreneurs Spécialisés du Grand Montéal Inc.";
+// 	$address_cesgm="5181, rue d'Amiens, bureau 500, Montréal-Nord (Québec) H1G 6N9 \n Téléphone : 514.955.3548 * Fax : 514.955.6623";
+// 	$pdf->MultiCell(70, 8, $title, 0, 'L',false);
+// 	//$pdf->MultiCell(100, 8, $address_cesgm, 0, 'L',false);
+
+
+// }
+
+
 
 /**
  *   	Return a string with full address formated
@@ -35,7 +87,7 @@
  * 		@param	int			$mode				Address type ('source', 'target', 'targetwithdetails')
  * 		@return	string							String with full address
  */
-function pdf_build_address($outputlangs,$sourcecompany,$targetcompany='',$targetcontact='',$usecontact=0,$mode='source')
+function pdf_cesgm_build_address($outputlangs,$sourcecompany,$targetcompany='',$targetcontact='',$usecontact=0,$mode='source')
 {
 	global $conf;
 
@@ -44,16 +96,24 @@ function pdf_build_address($outputlangs,$sourcecompany,$targetcompany='',$target
 	if ($mode == 'source' && ! is_object($sourcecompany)) return -1;
 	if ($mode == 'target' && ! is_object($targetcompany)) return -1;
 
-	if (! empty($sourcecompany->state_id) && empty($sourcecompany->departement)) $sourcecompany->departement=getState($sourcecompany->state_id); //TODO: Deprecated
+	// if (! empty($sourcecompany->state_id) && empty($sourcecompany->departement)) $sourcecompany->departement=getState($sourcecompany->state_id); //TODO: Deprecated
 	if (! empty($sourcecompany->state_id) && empty($sourcecompany->state)) $sourcecompany->state=getState($sourcecompany->state_id);
 	if (! empty($targetcompany->state_id) && empty($targetcompany->departement)) $targetcompany->departement=getState($targetcompany->state_id);
 
-	if ($mode == 'source')
+
+
+
+	if ($mode == 'source') //LICENCE_RBQ
 	{
 		$withCountry = 0;
 		if (!empty($sourcecompany->country_code) && ($targetcompany->country_code != $sourcecompany->country_code)) $withCountry = 1;
 
-		$stringaddress .= ($stringaddress ? "\n" : '' ).$outputlangs->convToOutputCharset(dol_format_address($sourcecompany, $withCountry, "\n", $outputlangs))."\n";
+
+
+		$stringaddress .= ($stringaddress ? "\n" : '' ).$outputlangs->convToOutputCharset(cesgm_format_address($sourcecompany, $withCountry, "\n", $outputlangs));
+
+
+		$stringaddress .="\n"."# licence RBQ : ".LICENCE_RBQ;
 
 		if (empty($conf->global->MAIN_PDF_DISABLESOURCEDETAILS))
 		{
@@ -163,31 +223,268 @@ function pdf_build_address($outputlangs,$sourcecompany,$targetcompany='',$target
  
 
 
+//{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}
+
+
+/**
+ *      Return a formated address (part address/zip/town/state) according to country rules
+ *
+ *      @param  Object		$object         A company or contact object
+ * 	    @param	int			$withcountry	1=Add country into address string
+ *      @param	string		$sep			Separator to use to build string
+ *      @param	Tranlsate	$outputlangs	Object lang that contains language for text translation.
+ *      @return string          			Formated string
+ */
+function cesgm_format_address($object,$withcountry=0,$sep="\n",$outputlangs='')
+{
+	global $conf,$langs;
+
+	$ret='';
+	$countriesusingstate=array('AU','US','IN','GB','ES','UK','TR');
+
+	// Address
+	$ret .= "Adresse : ";
+	$ret .= $object->address;
+	$ret .= $sep;
+	$ret .= "Ville : ";
+	$ret .= ' '.$object->town;
+
+		if ($object->state && in_array($object->country_code,$countriesusingstate))
+		{
+			$ret.=", ".$object->state;
+		}
+
+	$ret .= "\t Code postal : ";
+	$ret .= $object->zip;
+
+	return $ret;
+
+	// Zip/Town/State
+	// if (in_array($object->country_code,array('US','AU')) || ! empty($conf->global->MAIN_FORCE_STATE_INTO_ADDRESS))   	// US: title firstname name \n address lines \n town, state, zip \n country
+	// {
+	// 	$ret .= ($ret ? $sep : '' ).$object->town;
+	// 	if ($object->state && in_array($object->country_code,$countriesusingstate))
+	// 	{
+	// 		$ret.=", ".$object->state;
+	// 	}
+	// 	if ($object->zip) $ret .= ', '.$object->zip;
+	// }
+	// else if (in_array($object->country_code,array('GB','UK'))) // UK: title firstname name \n address lines \n town state \n zip \n country
+	// {
+	// 	$ret .= ($ret ? $sep : '' ).$object->town;
+	// 	if ($object->state && in_array($object->country_code,$countriesusingstate))
+	// 	{
+	// 		$ret.=", ".$object->state;
+	// 	}
+	// 	if ($object->zip) $ret .= ($ret ? $sep : '' ).$object->zip;
+	// }
+	// else if (in_array($object->country_code,array('ES','TR'))) // ES: title firstname name \n address lines \n zip town \n state \n country
+	// {
+	// 	$ret .= ($ret ? $sep : '' ).$object->zip;
+	// 	$ret .= ' '.$object->town;
+	// 	if ($object->state && in_array($object->country_code,$countriesusingstate))
+	// 	{
+	// 		$ret.="\n".$object->state;
+	// 	}
+	// }
+
+	// else                                        		// Other: title firstname name \n address lines \n zip town \n country
+	// {
+	// 	$ret .= ($ret ? $sep : '' ).$object->zip;
+	// 	$ret .= ' '.$object->town;
+	// 	if ($object->state && in_array($object->country_code,$countriesusingstate))
+	// 	{
+	// 		$ret.=", ".$object->state;
+	// 	}
+	// }
+
+
+	// if (! is_object($outputlangs)) $outputlangs=$langs;
+	// if ($withcountry) $ret.=($object->country_code?$sep.$outputlangs->convToOutputCharset($outputlangs->transnoentitiesnoconv("Country".$object->country_code)):'');
+
+	//return $ret;
+	
+}
+
+
+//{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}
+
+
+/**
+ *      Return a PDF instance object. We create a FPDI instance that instantiate TCPDF.
+ *
+ *      @param	string		$format         Array(width,height). Keep empty to use default setup.
+ *      @param	string		$metric         Unit of format ('mm')
+ *      @param  string		$pagetype       'P' or 'l'
+ *      @return TPDF						PDF object
+ */
+function pdf_cesgm_getInstance($format='',$metric='mm',$pagetype='P')
+{
+	global $conf;
+
+	// Define constant for TCPDF
+	if (! defined('K_TCPDF_EXTERNAL_CONFIG'))
+	{
+		define('K_TCPDF_EXTERNAL_CONFIG',1);	// this avoid using tcpdf_config file
+		define('K_PATH_CACHE', DOL_DATA_ROOT.'/admin/temp/');
+		define('K_PATH_URL_CACHE', DOL_DATA_ROOT.'/admin/temp/');
+		dol_mkdir(K_PATH_CACHE);
+		define('K_BLANK_IMAGE', '_blank.png');
+		define('PDF_PAGE_FORMAT', 'A4');
+		define('PDF_PAGE_ORIENTATION', 'P');
+		define('PDF_CREATOR', 'TCPDF');
+		define('PDF_AUTHOR', 'TCPDF');
+		define('PDF_HEADER_TITLE', 'TCPDF Example');
+		define('PDF_HEADER_STRING', "by Prunus for CESGM");
+		define('PDF_UNIT', 'mm');
+		define('PDF_MARGIN_HEADER', 5);
+		define('PDF_MARGIN_FOOTER', 10);
+		define('PDF_MARGIN_TOP', 27);
+		define('PDF_MARGIN_BOTTOM', 25);
+		define('PDF_MARGIN_LEFT', 15);
+		define('PDF_MARGIN_RIGHT', 15);
+		define('PDF_FONT_NAME_MAIN', 'helvetica');
+		define('PDF_FONT_SIZE_MAIN', 10);
+		define('PDF_FONT_NAME_DATA', 'helvetica');
+		define('PDF_FONT_SIZE_DATA', 8);
+		define('PDF_FONT_MONOSPACED', 'courier');
+		define('PDF_IMAGE_SCALE_RATIO', 1.25);
+		define('HEAD_MAGNIFICATION', 1.1);
+		define('K_CELL_HEIGHT_RATIO', 1.25);
+		define('K_TITLE_MAGNIFICATION', 1.3);
+		define('K_SMALL_RATIO', 2/3);
+		define('K_THAI_TOPCHARS', true);
+		define('K_TCPDF_CALLS_IN_HTML', true);
+		define('K_TCPDF_THROW_EXCEPTION_ERROR', false);
+	}
+
+	if (! empty($conf->global->MAIN_USE_FPDF) && ! empty($conf->global->MAIN_DISABLE_FPDI))
+		return "Error MAIN_USE_FPDF and MAIN_DISABLE_FPDI can't be set together";
+
+	// We use by default TCPDF else FPDF
+	if (empty($conf->global->MAIN_USE_FPDF)) require_once TCPDF_PATH.'tcpdf.php';
+	else require_once FPDF_PATH.'fpdf.php';
+
+	// We need to instantiate fpdi object (instead of tcpdf) to use merging features. But we can disable it.
+	if (empty($conf->global->MAIN_DISABLE_FPDI)) require_once FPDI_PATH.'fpdi.php';
+
+	//$arrayformat=pdf_getFormat();
+	//$format=array($arrayformat['width'],$arrayformat['height']);
+	//$metric=$arrayformat['unit'];
+
+	// Protection and encryption of pdf
+	if (empty($conf->global->MAIN_USE_FPDF) && ! empty($conf->global->PDF_SECURITY_ENCRYPTION))
+	{
+		/* Permission supported by TCPDF
+		- print : Print the document;
+		- modify : Modify the contents of the document by operations other than those controlled by 'fill-forms', 'extract' and 'assemble';
+		- copy : Copy or otherwise extract text and graphics from the document;
+		- annot-forms : Add or modify text annotations, fill in interactive form fields, and, if 'modify' is also set, create or modify interactive form fields (including signature fields);
+		- fill-forms : Fill in existing interactive form fields (including signature fields), even if 'annot-forms' is not specified;
+		- extract : Extract text and graphics (in support of accessibility to users with disabilities or for other purposes);
+		- assemble : Assemble the document (insert, rotate, or delete pages and create bookmarks or thumbnail images), even if 'modify' is not set;
+		- print-high : Print the document to a representation from which a faithful digital copy of the PDF content could be generated. When this is not set, printing is limited to a low-level representation of the appearance, possibly of degraded quality.
+		- owner : (inverted logic - only for public-key) when set permits change of encryption and enables all other permissions.
+		*/
+		if (class_exists('FPDI')) $pdf = new FPDI($pagetype,$metric,$format);
+		else $pdf = new TCPDF($pagetype,$metric,$format);
+		// For TCPDF, we specify permission we want to block
+		$pdfrights = array('modify','copy');
+
+		$pdfuserpass = ''; // Password for the end user
+		$pdfownerpass = NULL; // Password of the owner, created randomly if not defined
+		$pdf->SetProtection($pdfrights,$pdfuserpass,$pdfownerpass);
+	}
+	else
+	{
+		if (class_exists('FPDI')) $pdf = new FPDI($pagetype,$metric,$format);
+		else $pdf = new TCPDF($pagetype,$metric,$format);
+	}
+
+	// If we use FPDF class, we may need to add method writeHTMLCell
+	if (! empty($conf->global->MAIN_USE_FPDF) && ! method_exists($pdf, 'writeHTMLCell'))
+	{
+		// Declare here a class to overwrite FPDI to add method writeHTMLCell
+		/**
+		 *	This class is an enhanced FPDI class that support method writeHTMLCell
+		 */
+		class FPDI_DolExtended extends FPDI
+        {
+			/**
+			 * __call
+			 *
+			 * @param 	string	$method		Method
+			 * @param 	mixed	$args		Arguments
+			 * @return 	void
+			 */
+			public function __call($method, $args)
+			{
+				if (isset($this->$method)) {
+					$func = $this->$method;
+					$func($args);
+				}
+			}
+
+			/**
+			 * writeHTMLCell
+			 *
+			 * @param	int		$w				Width
+			 * @param 	int		$h				Height
+			 * @param 	int		$x				X
+			 * @param 	int		$y				Y
+			 * @param 	string	$html			Html
+			 * @param 	int		$border			Border
+			 * @param 	int		$ln				Ln
+			 * @param 	boolean	$fill			Fill
+			 * @param 	boolean	$reseth			Reseth
+			 * @param 	string	$align			Align
+			 * @param 	boolean	$autopadding	Autopadding
+			 * @return 	void
+			 */
+			public function writeHTMLCell($w, $h, $x, $y, $html = '', $border = 0, $ln = 0, $fill = false, $reseth = true, $align = '', $autopadding = true)
+			{
+				$this->SetXY($x,$y);
+				$val=str_replace('<br>',"\n",$html);
+				//$val=dol_string_nohtmltag($val,false,'ISO-8859-1');
+				$val=dol_string_nohtmltag($val,false,'UTF-8');
+				$this->MultiCell($w,$h,$val,$border,$align,$fill);
+			}
+		}
+
+		$pdf2=new FPDI_DolExtended($pagetype,$metric,$format);
+		unset($pdf);
+		$pdf=$pdf2;
+	}
+
+	return $pdf;
+}
+
+
+/**
+ *      Return font name to use for PDF generation
+ *
+ *      @param	Translate	$outputlangs    Output langs object
+ *      @return string          			Name of font to use
+ */
+function pdf_cesgm_getPDFFont($outputlangs)
+{
+	global $conf;
+
+	if (! empty($conf->global->MAIN_PDF_FORCE_FONT)) return $conf->global->MAIN_PDF_FORCE_FONT;
+
+	$font='Helvetica'; // By default, for FPDI, or ISO language on TCPDF
+	if (class_exists('TCPDF'))  // If TCPDF on, we can use an UTF8 one like DejaVuSans if required (slower)
+	{
+		if ($outputlangs->trans('FONTFORPDF')!='FONTFORPDF')
+		{
+			$font=$outputlangs->trans('FONTFORPDF');
+		}
+	}
+	return $font;
+}
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
 /**
  *   	Show header of page for PDF generation
  *
@@ -196,7 +493,7 @@ function pdf_build_address($outputlangs,$sourcecompany,$targetcompany='',$target
  * 		@param		int			$page_height	Height of page
  *      @return	void
  */
-function pdf_pagehead(&$pdf,$outputlangs,$page_height)
+function pdf_cesgm_pagehead(&$pdf,$outputlangs,$page_height)
 {
 	global $conf;
 
@@ -226,7 +523,7 @@ function pdf_pagehead(&$pdf,$outputlangs,$page_height)
  *  @param	int			$hidefreetext	1=Hide free text, 0=Show free text
  * 	@return	int							Return height of bottom margin including footer text
  */
-function pdf_pagefoot(&$pdf,$outputlangs,$paramfreetext,$fromcompany,$marge_basse,$marge_gauche,$page_hauteur,$object,$showdetails=0,$hidefreetext=0)
+function pdf_cesgm_pagefoot(&$pdf,$outputlangs,$paramfreetext,$fromcompany,$marge_basse,$marge_gauche,$page_hauteur,$object,$showdetails=0,$hidefreetext=0)
 {
 	global $conf,$user;
 
@@ -354,11 +651,12 @@ function pdf_pagefoot(&$pdf,$outputlangs,$paramfreetext,$fromcompany,$marge_bass
 
 	// The start of the bottom of this page footer is positioned according to # of lines
 	$freetextheight=0;
+	
 	if ($line)	// Free text
 	{
 		$width=20000; $align='L';	// By default, ask a manual break: We use a large value 20000, to not have automatic wrap. This make user understand, he need to add CR on its text.
 		if (! empty($conf->global->MAIN_USE_AUTOWRAP_ON_FREETEXT)) {
-			$width=200; $align='C';
+			$width=200; $align='L';
 		}
 		$freetextheight=$pdf->getStringHeight($width,$line);
 	}
@@ -368,6 +666,7 @@ function pdf_pagefoot(&$pdf,$outputlangs,$paramfreetext,$fromcompany,$marge_bass
 
 	if ($line)	// Free text
 	{
+	
 		$pdf->SetXY($dims['lm'],-$posy);
 		$pdf->MultiCell(0, 3, $line, 0, $align, 0);
 		$posy-=$freetextheight;
@@ -409,7 +708,7 @@ function pdf_pagefoot(&$pdf,$outputlangs,$paramfreetext,$fromcompany,$marge_bass
 	}
 
 	// Show page nb only on iso languages (so default Helvetica font)
-	if (strtolower(pdf_getPDFFont($outputlangs)) == 'helvetica')
+	if (strtolower(pdf_cesgm_getPDFFont($outputlangs)) == 'helvetica')
 	{
 		$pdf->SetXY(-20,-$posy);
 		//print 'xxx'.$pdf->PageNo().'-'.$pdf->getAliasNbPages().'-'.$pdf->getAliasNumPage();exit;
@@ -434,9 +733,9 @@ function pdf_pagefoot(&$pdf,$outputlangs,$paramfreetext,$fromcompany,$marge_bass
  *	@param	string		$default_font_size	Font size
  *	@return	float                           The Y PDF position
  */
-function pdf_writeLinkedObjects(&$pdf,$object,$outputlangs,$posx,$posy,$w,$h,$align,$default_font_size)
+function pdf_cesgm_writeLinkedObjects(&$pdf,$object,$outputlangs,$posx,$posy,$w,$h,$align,$default_font_size)
 {
-	$linkedobjects = pdf_getLinkedObjects($object,$outputlangs);
+	$linkedobjects = pdf_cesgm_getLinkedObjects($object,$outputlangs);
 	if (! empty($linkedobjects))
 	{
 		foreach($linkedobjects as $linkedobject)
@@ -474,7 +773,7 @@ function pdf_writeLinkedObjects(&$pdf,$object,$outputlangs,$posx,$posy,$w,$h,$al
  * 	@param	int				$issupplierline		Is it a line for a supplier object ?
  * 	@return	void
  */
-function pdf_writelinedesc(&$pdf,$object,$i,$outputlangs,$w,$h,$posx,$posy,$hideref=0,$hidedesc=0,$issupplierline=0)
+function pdf_cesgm_writelinedesc(&$pdf,$object,$i,$outputlangs,$w,$h,$posx,$posy,$hideref=0,$hidedesc=0,$issupplierline=0)
 {
 	global $db, $conf, $langs, $hookmanager;
 
@@ -485,11 +784,11 @@ function pdf_writelinedesc(&$pdf,$object,$i,$outputlangs,$w,$h,$posx,$posy,$hide
 		if (! empty($object->lines[$i]->fk_parent_line)) $special_code = $object->getSpecialCode($object->lines[$i]->fk_parent_line);
 		$parameters = array('pdf'=>$pdf,'i'=>$i,'outputlangs'=>$outputlangs,'w'=>$w,'h'=>$h,'posx'=>$posx,'posy'=>$posy,'hideref'=>$hideref,'hidedesc'=>$hidedesc,'issupplierline'=>$issupplierline,'special_code'=>$special_code);
 		$action='';
-		$reshook=$hookmanager->executeHooks('pdf_writelinedesc',$parameters,$object,$action);    // Note that $action and $object may have been modified by some hooks
+		$reshook=$hookmanager->executeHooks('pdf_cesgm_writelinedesc',$parameters,$object,$action);    // Note that $action and $object may have been modified by some hooks
 	}
 	if (empty($reshook))
 	{
-		$labelproductservice=pdf_getlinedesc($object,$i,$outputlangs,$hideref,$hidedesc,$issupplierline);
+		$labelproductservice=pdf_cesgm_getlinedesc($object,$i,$outputlangs,$hideref,$hidedesc,$issupplierline);
 		// Description
 		$pdf->writeHTMLCell($w, $h, $posx, $posy, $outputlangs->convToOutputCharset($labelproductservice), 0, 1, false, true, 'J',true);
 		return $labelproductservice;
@@ -507,7 +806,7 @@ function pdf_writelinedesc(&$pdf,$object,$i,$outputlangs,$w,$h,$posx,$posy,$hide
  *  @param  int			$issupplierline      Is it a line for a supplier object ?
  *  @return string       				     String with line
  */
-function pdf_getlinedesc($object,$i,$outputlangs,$hideref=0,$hidedesc=0,$issupplierline=0)
+function pdf_cesgm_getlinedesc($object,$i,$outputlangs,$hideref=0,$hidedesc=0,$issupplierline=0)
 {
 	global $db, $conf, $langs;
 
@@ -692,7 +991,7 @@ function pdf_getlinedesc($object,$i,$outputlangs,$hideref=0,$hidedesc=0,$issuppl
  *  @param	int			$hidedetails		Hide details (0=no, 1=yes, 2=just special lines)
  * 	@return	void
  */
-function pdf_getlinenum($object,$i,$outputlangs,$hidedetails=0)
+function pdf_cesgm_getlinenum($object,$i,$outputlangs,$hidedetails=0)
 {
 	global $hookmanager;
 
@@ -718,7 +1017,7 @@ function pdf_getlinenum($object,$i,$outputlangs,$hidedetails=0)
  *  @param	int			$hidedetails		Hide details (0=no, 1=yes, 2=just special lines)
  * 	@return	void
  */
-function pdf_getlineref($object,$i,$outputlangs,$hidedetails=0)
+function pdf_cesgm_getlineref($object,$i,$outputlangs,$hidedetails=0)
 {
 	global $hookmanager;
 
@@ -743,7 +1042,7 @@ function pdf_getlineref($object,$i,$outputlangs,$hidedetails=0)
  *  @param	int			$hidedetails		Hide details (0=no, 1=yes, 2=just special lines)
  * 	@return	void
  */
-function pdf_getlineref_supplier($object,$i,$outputlangs,$hidedetails=0)
+function pdf_cesgm_getlineref_supplier($object,$i,$outputlangs,$hidedetails=0)
 {
 	global $hookmanager;
 
@@ -768,7 +1067,7 @@ function pdf_getlineref_supplier($object,$i,$outputlangs,$hidedetails=0)
  *  @param	int			$hidedetails		Hide details (0=no, 1=yes, 2=just special lines)
  * 	@return	string
  */
-function pdf_getlinevatrate($object,$i,$outputlangs,$hidedetails=0)
+function pdf_cesgm_getlinevatrate($object,$i,$outputlangs,$hidedetails=0)
 {
 	global $hookmanager;
 
@@ -778,7 +1077,7 @@ function pdf_getlinevatrate($object,$i,$outputlangs,$hidedetails=0)
 		if (! empty($object->lines[$i]->fk_parent_line)) $special_code = $object->getSpecialCode($object->lines[$i]->fk_parent_line);
 		$parameters = array('i'=>$i,'outputlangs'=>$outputlangs,'hidedetails'=>$hidedetails,'special_code'=>$special_code);
 		$action='';
-		return $hookmanager->executeHooks('pdf_getlinevatrate',$parameters,$object,$action);    // Note that $action and $object may have been modified by some hooks
+		return $hookmanager->executeHooks('pdf_cesgm_getlinevatrate',$parameters,$object,$action);    // Note that $action and $object may have been modified by some hooks
 	}
 	else
 	{
@@ -795,7 +1094,7 @@ function pdf_getlinevatrate($object,$i,$outputlangs,$hidedetails=0)
  *  @param	int			$hidedetails		Hide details (0=no, 1=yes, 2=just special lines)
  * 	@return	string
  */
-function pdf_getlineupexcltax($object,$i,$outputlangs,$hidedetails=0)
+function pdf_cesgm_getlineupexcltax($object,$i,$outputlangs,$hidedetails=0)
 {
 	global $conf, $hookmanager;
 
@@ -808,7 +1107,7 @@ function pdf_getlineupexcltax($object,$i,$outputlangs,$hidedetails=0)
 		if (! empty($object->lines[$i]->fk_parent_line)) $special_code = $object->getSpecialCode($object->lines[$i]->fk_parent_line);
 		$parameters = array('i'=>$i,'outputlangs'=>$outputlangs,'hidedetails'=>$hidedetails,'special_code'=>$special_code);
 		$action='';
-		return $hookmanager->executeHooks('pdf_getlineupexcltax',$parameters,$object,$action);    // Note that $action and $object may have been modified by some hooks
+		return $hookmanager->executeHooks('pdf_cesgm_getlineupexcltax',$parameters,$object,$action);    // Note that $action and $object may have been modified by some hooks
 	}
 	else
 	{
@@ -825,7 +1124,7 @@ function pdf_getlineupexcltax($object,$i,$outputlangs,$hidedetails=0)
  *  @param	int			$hidedetails		Hide value (0 = no,	1 = yes, 2 = just special lines)
  *  @return	void
  */
-function pdf_getlineupwithtax($object,$i,$outputlangs,$hidedetails=0)
+function pdf_cesgm_getlineupwithtax($object,$i,$outputlangs,$hidedetails=0)
 {
 	global $hookmanager;
 
@@ -835,7 +1134,7 @@ function pdf_getlineupwithtax($object,$i,$outputlangs,$hidedetails=0)
 		if (! empty($object->lines[$i]->fk_parent_line)) $special_code = $object->getSpecialCode($object->lines[$i]->fk_parent_line);
 		foreach($object->hooks as $modules)
 		{
-			if (method_exists($modules[$special_code],'pdf_getlineupwithtax')) return $modules[$special_code]->pdf_getlineupwithtax($object,$i,$outputlangs,$hidedetails);
+			if (method_exists($modules[$special_code],'pdf_cesgm_getlineupwithtax')) return $modules[$special_code]->pdf_cesgm_getlineupwithtax($object,$i,$outputlangs,$hidedetails);
 		}
 	}
 	else
@@ -853,7 +1152,7 @@ function pdf_getlineupwithtax($object,$i,$outputlangs,$hidedetails=0)
  *  @param	int			$hidedetails		Hide details (0=no, 1=yes, 2=just special lines)
  *  @return	string
  */
-function pdf_getlineqty($object,$i,$outputlangs,$hidedetails=0)
+function pdf_cesgm_getlineqty($object,$i,$outputlangs,$hidedetails=0)
 {
 	global $hookmanager;
 
@@ -865,7 +1164,7 @@ function pdf_getlineqty($object,$i,$outputlangs,$hidedetails=0)
 			if (! empty($object->lines[$i]->fk_parent_line)) $special_code = $object->getSpecialCode($object->lines[$i]->fk_parent_line);
 			$parameters = array('i'=>$i,'outputlangs'=>$outputlangs,'hidedetails'=>$hidedetails,'special_code'=>$special_code);
 			$action='';
-			return $hookmanager->executeHooks('pdf_getlineqty',$parameters,$object,$action);    // Note that $action and $object may have been modified by some hooks
+			return $hookmanager->executeHooks('pdf_cesgm_getlineqty',$parameters,$object,$action);    // Note that $action and $object may have been modified by some hooks
 		}
 		else
 		{
@@ -883,7 +1182,7 @@ function pdf_getlineqty($object,$i,$outputlangs,$hidedetails=0)
  *  @param	int			$hidedetails		Hide details (0=no, 1=yes, 2=just special lines)
  * 	@return	string
  */
-function pdf_getlineqty_asked($object,$i,$outputlangs,$hidedetails=0)
+function pdf_cesgm_getlineqty_asked($object,$i,$outputlangs,$hidedetails=0)
 {
 	global $hookmanager;
 
@@ -895,7 +1194,7 @@ function pdf_getlineqty_asked($object,$i,$outputlangs,$hidedetails=0)
 			if (! empty($object->lines[$i]->fk_parent_line)) $special_code = $object->getSpecialCode($object->lines[$i]->fk_parent_line);
 			$parameters = array('i'=>$i,'outputlangs'=>$outputlangs,'hidedetails'=>$hidedetails,'special_code'=>$special_code);
 			$action='';
-			return $hookmanager->executeHooks('pdf_getlineqty_asked',$parameters,$object,$action);    // Note that $action and $object may have been modified by some hooks
+			return $hookmanager->executeHooks('pdf_cesgm_getlineqty_asked',$parameters,$object,$action);    // Note that $action and $object may have been modified by some hooks
 		}
 		else
 		{
@@ -913,7 +1212,7 @@ function pdf_getlineqty_asked($object,$i,$outputlangs,$hidedetails=0)
  *  @param	int			$hidedetails		Hide details (0=no, 1=yes, 2=just special lines)
  * 	@return	string
  */
-function pdf_getlineqty_shipped($object,$i,$outputlangs,$hidedetails=0)
+function pdf_cesgm_getlineqty_shipped($object,$i,$outputlangs,$hidedetails=0)
 {
 	global $hookmanager;
 
@@ -925,7 +1224,7 @@ function pdf_getlineqty_shipped($object,$i,$outputlangs,$hidedetails=0)
 			if (! empty($object->lines[$i]->fk_parent_line)) $special_code = $object->getSpecialCode($object->lines[$i]->fk_parent_line);
 			$parameters = array('i'=>$i,'outputlangs'=>$outputlangs,'hidedetails'=>$hidedetails,'special_code'=>$special_code);
 			$action='';
-			return $hookmanager->executeHooks('pdf_getlineqty_shipped',$parameters,$object,$action);    // Note that $action and $object may have been modified by some hooks
+			return $hookmanager->executeHooks('pdf_cesgm_getlineqty_shipped',$parameters,$object,$action);    // Note that $action and $object may have been modified by some hooks
 		}
 		else
 		{
@@ -943,7 +1242,7 @@ function pdf_getlineqty_shipped($object,$i,$outputlangs,$hidedetails=0)
  *  @param	int			$hidedetails		Hide details (0=no, 1=yes, 2=just special lines)
  * 	@return	void
  */
-function pdf_getlineqty_keeptoship($object,$i,$outputlangs,$hidedetails=0)
+function pdf_cesgm_getlineqty_keeptoship($object,$i,$outputlangs,$hidedetails=0)
 {
 	global $hookmanager;
 
@@ -955,7 +1254,7 @@ function pdf_getlineqty_keeptoship($object,$i,$outputlangs,$hidedetails=0)
 			if (! empty($object->lines[$i]->fk_parent_line)) $special_code = $object->getSpecialCode($object->lines[$i]->fk_parent_line);
 			$parameters = array('i'=>$i,'outputlangs'=>$outputlangs,'hidedetails'=>$hidedetails,'special_code'=>$special_code);
 			$action='';
-			return $hookmanager->executeHooks('pdf_getlineqty_keeptoship',$parameters,$object,$action);    // Note that $action and $object may have been modified by some hooks
+			return $hookmanager->executeHooks('pdf_cesgm_getlineqty_keeptoship',$parameters,$object,$action);    // Note that $action and $object may have been modified by some hooks
 		}
 		else
 		{
@@ -973,7 +1272,7 @@ function pdf_getlineqty_keeptoship($object,$i,$outputlangs,$hidedetails=0)
  *  @param	int			$hidedetails		Hide details (0=no, 1=yes, 2=just special lines)
  * 	@return	string
  */
-function pdf_getlineremisepercent($object,$i,$outputlangs,$hidedetails=0)
+function pdf_cesgm_getlineremisepercent($object,$i,$outputlangs,$hidedetails=0)
 {
 	global $hookmanager;
 
@@ -987,7 +1286,7 @@ function pdf_getlineremisepercent($object,$i,$outputlangs,$hidedetails=0)
 			if (! empty($object->lines[$i]->fk_parent_line)) $special_code = $object->getSpecialCode($object->lines[$i]->fk_parent_line);
 			$parameters = array('i'=>$i,'outputlangs'=>$outputlangs,'hidedetails'=>$hidedetails,'special_code'=>$special_code);
 			$action='';
-			return $hookmanager->executeHooks('pdf_getlineremisepercent',$parameters,$object,$action);    // Note that $action and $object may have been modified by some hooks
+			return $hookmanager->executeHooks('pdf_cesgm_getlineremisepercent',$parameters,$object,$action);    // Note that $action and $object may have been modified by some hooks
 		}
 		else
 		{
@@ -1005,7 +1304,7 @@ function pdf_getlineremisepercent($object,$i,$outputlangs,$hidedetails=0)
  *  @param	int			$hidedetails		Hide details (0=no, 1=yes, 2=just special lines)
  * 	@return	string							Return total of line excl tax
  */
-function pdf_getlinetotalexcltax($object,$i,$outputlangs,$hidedetails=0)
+function pdf_cesgm_getlinetotalexcltax($object,$i,$outputlangs,$hidedetails=0)
 {
 	global $conf, $hookmanager;
 
@@ -1024,7 +1323,7 @@ function pdf_getlinetotalexcltax($object,$i,$outputlangs,$hidedetails=0)
 			if (! empty($object->lines[$i]->fk_parent_line)) $special_code = $object->getSpecialCode($object->lines[$i]->fk_parent_line);
 			$parameters = array('i'=>$i,'outputlangs'=>$outputlangs,'hidedetails'=>$hidedetails,'special_code'=>$special_code);
 			$action='';
-			return $hookmanager->executeHooks('pdf_getlinetotalexcltax',$parameters,$object,$action);    // Note that $action and $object may have been modified by some hooks
+			return $hookmanager->executeHooks('pdf_cesgm_getlinetotalexcltax',$parameters,$object,$action);    // Note that $action and $object may have been modified by some hooks
 		}
 		else
 		{
@@ -1043,7 +1342,7 @@ function pdf_getlinetotalexcltax($object,$i,$outputlangs,$hidedetails=0)
  *  @param	int			$hidedetails		Hide value (0 = no, 1 = yes, 2 = just special lines)
  *  @return	string							Return total of line incl tax
  */
-function pdf_getlinetotalwithtax($object,$i,$outputlangs,$hidedetails=0)
+function pdf_cesgm_getlinetotalwithtax($object,$i,$outputlangs,$hidedetails=0)
 {
 	global $hookmanager;
 
@@ -1059,7 +1358,7 @@ function pdf_getlinetotalwithtax($object,$i,$outputlangs,$hidedetails=0)
 			if (! empty($object->lines[$i]->fk_parent_line)) $special_code = $object->getSpecialCode($object->lines[$i]->fk_parent_line);
 			$parameters = array('i'=>$i,'outputlangs'=>$outputlangs,'hidedetails'=>$hidedetails,'special_code'=>$special_code);
 			$action='';
-			return $hookmanager->executeHooks('pdf_getlinetotalwithtax',$parameters,$object,$action);    // Note that $action and $object may have been modified by some hooks
+			return $hookmanager->executeHooks('pdf_cesgm_getlinetotalwithtax',$parameters,$object,$action);    // Note that $action and $object may have been modified by some hooks
 		}
 		else
 		{
@@ -1077,7 +1376,7 @@ function pdf_getlinetotalwithtax($object,$i,$outputlangs,$hidedetails=0)
  *  @param  Translate	$outputlangs		Object langs for output
  * 	@return	void
  */
-function pdf_getTotalQty($object,$type,$outputlangs)
+function pdf_cesgm_getTotalQty($object,$type,$outputlangs)
 {
 	global $hookmanager;
 
@@ -1120,7 +1419,7 @@ function pdf_getTotalQty($object,$type,$outputlangs)
  * 	@param	Translate	$outputlangs	Object lang for output
  * 	@return	array   Linked objects
  */
-function pdf_getLinkedObjects($object,$outputlangs)
+function pdf_cesgm_getLinkedObjects($object,$outputlangs)
 {
 	global $hookmanager;
 
@@ -1206,7 +1505,7 @@ function pdf_getLinkedObjects($object,$outputlangs)
  * @param	string		$realpath		Full path to photo file to use
  * @return	array						Height and width to use to output image (in pdf user unit, so mm)
  */
-function pdf_getSizeForImage($realpath)
+function pdf_cesgm_getSizeForImage($realpath)
 {
 	global $conf;
 

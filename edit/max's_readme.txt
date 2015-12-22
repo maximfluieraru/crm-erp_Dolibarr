@@ -26,6 +26,8 @@ cesgm - will be owner  of application. all user should be added to groups (if ce
 
 null label for all model in document_model(DB)
 
+for pdf docs you must add cesgm.logo in  docouments/mycompany/logos/thumbs/
+
 [[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 
 
@@ -52,7 +54,7 @@ PDF  - TCPDF (/Applications/XAMPP/xamppfiles/htdocs/cesgm/htdocs/includes/tcpdf/
 
 code_client (Customer code) - DB 'societe'
 
-
+1092 - main rectangle pdf (pdf_cesgm)
 
 Class to manage numbering of thirdparties code - core/societe/doc/mod_codeclient_leopard.php
 
