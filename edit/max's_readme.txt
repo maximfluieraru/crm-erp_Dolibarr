@@ -24,9 +24,18 @@
 cesgm - will be owner  of application. all user should be added to groups (if cesgm want to see all clients (DB unique numbers)
 		* core/societe/doc/mod_codeclient 
 
-null label for all model in document_model(DB)
 
-for pdf docs you must add cesgm.logo in  docouments/mycompany/logos/thumbs/
+user address ?!!!??
+
+addresse des travaux : ????
+
+prefix contrat !!???
+
+date début-fin !!???
+
+prix + taxes ????
+
+scaner
 
 [[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 
@@ -42,21 +51,21 @@ DB table CONST
 admin/system/about
 
 
-j script error when try to add a group for user - script was commented 
+javascript error [when try to add a group for user] -  was commented 
 
 core/class/html_form.class.php 
 
 
 PDF  - TCPDF (/Applications/XAMPP/xamppfiles/htdocs/cesgm/htdocs/includes/tcpdf/) + FPDI (/Applications/XAMPP/xamppfiles/htdocs/cesgm/htdocs/includes/fpdfi/)
 
-# create user ..... (language from browser) !!!
+# create user ..... (language from browser) !!! (users>user interface>language)
 
 
 code_client (Customer code) - DB 'societe'
 
 1092 - main rectangle pdf (pdf_cesgm)
 
-Class to manage numbering of thirdparties code - core/societe/doc/mod_codeclient_leopard.php
+-!-Class to manage numbering of thirdparties code - core/societe/doc/mod_codeclient_leopard.php
 
 ----------------------=========================----------------------------------
 
@@ -69,7 +78,6 @@ Max's chages:
 		"MAIN_APPLICATION_TITLE" ( rowid = 1; name="MAIN_APPLICATION_TITLE"; value = "your company name") in "const" table
 		or (use Configuration/Other)
 
-
 	
 	# documents/
 			* added install.lock 
@@ -78,10 +86,10 @@ Max's chages:
 	# htdocs/
 			* added bootstrap.js (script js to import boostrap from web server)
 			* modified main.inc.php 
-						- (line 1268 ) added <script type="text/javascript"> to import bootsrap.js .. in <head>
-						- (line 1658 - 1662) info about Dolibarr (put in comments)
-						- (line 1682 - 1693) Dolibarr wiki (put in comments)
-						- (line 1697 - 1718) Link to bugtrack (put in comments)
+				- (line 1268 ) added <script type="text/javascript"> to import bootsrap.js .. in <head>
+				- (line 1658 - 1662) info about Dolibarr (put in comments)
+				- (line 1682 - 1693) Dolibarr wiki (put in comments)
+				- (line 1697 - 1718) Link to bugtrack (put in comments)
 
 	# htdocs/install/ (moved to unused folders)
 			*index.php added (redirection to htdocs/index.php)
@@ -90,22 +98,38 @@ Max's chages:
 	# htdocs/core/tpl/
 			* added login_style.css
 			* modified login.tpl.php : 
-				- added new login , and a <script> for style(login_style.css + bootstrap)
-				- added old login is hidden <center style="visibility:hidden;">
+				- added new login and a <script> for style(login_style.css + bootstrap)
+				- old login is hidden <center style="visibility:hidden;">
 
 
 	# htdocs/core/menus/stadard/
 			* modified eldy.lib.php  
-					- (line 521 - 543) Left menu System Tools was commented(//) (it's a submenu to see infos about dolybarr -not for client use) 
+				- (line 521 - 543) Left menu System Tools was commented(//) (it's a submenu to see infos about dolybarr -not for client use) 
 
 	# htdocs/admin/
 			* index.php
-					- (line 26) added header('Location: ../index.php'); (resolve some issues of style for login page if user is not connected)
+				- (line 26) added header('Location: ../index.php'); (resolve some issues of style for login page if user is not connected)
 
 
 	# htdocs/includes/
 			* index.php added script for redirect users to main page (before that file was empty) 
 
+
+	# DATABASE 
+			* document_model table 
+				- cesgm added (important value of label must be null)
+
+
+	# htdocs/core/modules/propale
+			* pdf_cesgm_modules.php(added)
+
+
+	# htdocs/core/lib
+			* pdf.cesgm.lib.php(added)
+
+
+	# Documents/mycompany/logos/thumbs/
+			* cesgm.logo.png (added)
 	
 
 

@@ -22,7 +22,7 @@
  */
 
 /**
- *	\file       htdocs/core/modules/propale/doc/pdf_azur.modules.php
+ *	\file       htdocs/core/modules/propale/doc/pdf_cesgm.modules.php
  *	\ingroup    propale
  *	\brief      Fichier de la classe permettant de generer les propales au modele cesgm
  */
@@ -231,7 +231,7 @@ class pdf_cesgm extends ModelePDFPropales
                 // Set path to the background PDF File
                 if (empty($conf->global->MAIN_DISABLE_FPDI) && ! empty($conf->global->MAIN_ADD_PDF_BACKGROUND))
                 {
-                    $pagecount = $pdf->setSourceFile($conf->mycompany->dir_output.'/'.$conf->global->MAIN_ADD_PDF_BACKGROUND);
+                	$pagecount = $pdf->setSourceFile($conf->mycompany->dir_output.'/'.$conf->global->MAIN_ADD_PDF_BACKGROUND);
                     $tplidx = $pdf->importPage(1);
                 }
 
@@ -315,7 +315,7 @@ class pdf_cesgm extends ModelePDFPropales
 				}
 ////////////////////////// begin position of main table //////////////
 //----------------------------------------------
-				$tab_top = 150;
+				$tab_top = $pdf->getY();
 //----------------------------------------------
 
 
@@ -423,10 +423,10 @@ class pdf_cesgm extends ModelePDFPropales
 						$pdf->MultiCell($this->posxup-$this->posxtva-0.8, 3, $vat_rate, 0, 'R');
 					}
 
-					// Unit price before discount
-					$up_excl_tax = pdf_getlineupexcltax($object, $i, $outputlangs, $hidedetails);
-					$pdf->SetXY($this->posxup, $curY);
-					$pdf->MultiCell($this->posxqty-$this->posxup-0.8, 3, $up_excl_tax, 0, 'R', 0);
+					// Unit price before discount - - - - - - - - - -
+					// $up_excl_tax = pdf_getlineupexcltax($object, $i, $outputlangs, $hidedetails);
+					// $pdf->SetXY($this->posxup, $curY);
+					// $pdf->MultiCell($this->posxqty-$this->posxup-0.8, 3, $up_excl_tax, 0, 'R', 0);
 
 					// // Quantity
 					// $qty = pdf_getlineqty($object, $i, $outputlangs, $hidedetails);
@@ -441,7 +441,7 @@ class pdf_cesgm extends ModelePDFPropales
 						$pdf->MultiCell($this->postotalht-$this->posxdiscount+2, 3, $remise_percent, 0, 'R');
 					}
 
-					// Total HT line
+					// Total HT line Total Price By Service
 					$total_excl_tax = pdf_getlinetotalexcltax($object, $i, $outputlangs, $hidedetails);
 					$pdf->SetXY($this->postotalht, $curY);
 					$pdf->MultiCell($this->page_largeur-$this->marge_droite-$this->postotalht, 3, $total_excl_tax, 0, 'R', 0);
@@ -482,7 +482,7 @@ class pdf_cesgm extends ModelePDFPropales
 
 					if ($posYAfterImage > $posYAfterDescription) $nexY=$posYAfterImage;
 
-					// Add line
+					// Add line after each service descrition
 					if (! empty($conf->global->MAIN_PDF_DASH_BETWEEN_LINES) && $i < ($nblignes - 1))
 					{
 						$pdf->setPage($pageposafter);
@@ -531,6 +531,8 @@ class pdf_cesgm extends ModelePDFPropales
 					}
 				}
 
+				$pdf->SetXY(10,$pdf->getY());
+				
 				// Show square
 				if ($pagenb == 1)
 				{
@@ -543,6 +545,7 @@ class pdf_cesgm extends ModelePDFPropales
 					$bottomlasttab=$this->page_hauteur - $heightforinfotot - $heightforfreetext - $heightforfooter + 1;
 				}
 
+				
 				// Affiche zone infos
 				$posy=$this->_tableau_info($pdf, $object, $bottomlasttab, $outputlangs);
 
@@ -619,6 +622,8 @@ class pdf_cesgm extends ModelePDFPropales
 	 */
 	function _tableau_info(&$pdf, $object, $posy, $outputlangs)
 	{
+
+		$pdf->line($this->marge_gauche, $posy-2, $this->page_largeur - $this->marge_droite, $posy-2);
 		global $conf;
 		$default_font_size = pdf_getPDFFontSize($outputlangs);
 
@@ -800,20 +805,20 @@ class pdf_cesgm extends ModelePDFPropales
 
 ///================================= begin
 
-		$posy = $tab2_top+20 + $tab2_hl * $index;
-			$posx = 10;
+		//$posy = $tab2_top+20 + $tab2_hl * $index;
+		$posx = 10;
 
-			$pdf->SetTextColor(0,0,0);
-			$pdf->SetFont('','', $default_font_size-1);
-			$pdf->SetXY($posx,$posy-5);
+		$pdf->SetTextColor(0,0,0);
+		$pdf->SetFont('','', $default_font_size-1);
+		$pdf->SetXY($posx,$posy-5);
 
-			// when we use CONST
-			//$text_conv='PROPALE_FREE_TEXT';
-			//$pdf->MultiCell(200,5, $conf->global->$text_conv, 0, 'L');
+		// when we use CONSTs
+		//$text_conv='PROPALE_FREE_TEXT';
+		//$pdf->MultiCell(200,5, $conf->global->$text_conv, 0, 'L');
 
-			$text_conv = "Toutefois ce prix est soumis aux réserves suivantes: \n\t4.1\tLe client paiera à l'entrepreneur un intérêt mensuel de deux pour cent (2%) sur toute somme due, soit 24% par année, le tout sous réserve à tout autre recours de l'entrepreneur contre le client.";	
-			$text_conv .="\n\t4.2\tEn cas de recours judiciaire de l'entrepreneur contre le client pour le recouvrement de sommes dues, les frais judiciaires et extrajuiciares en cours en pareil cas par l'entrepreneur sont à la charge du client mais ne seront en aucun cas supérieur à 30% du prix du contrat.";
-			$pdf->MultiCell(200,5,$text_conv, 0, 'L');
+		$text_conv = "Toutefois ce prix est soumis aux réserves suivantes: \n\t4.1\tLe client paiera à l'entrepreneur un intérêt mensuel de deux pour cent (2%) sur toute somme due, soit 24% par année, le tout sous réserve à tout autre recours de l'entrepreneur contre le client.";
+		$text_conv .="\n\t4.2\tEn cas de recours judiciaire de l'entrepreneur contre le client pour le recouvrement de sommes dues, les frais judiciaires et extrajuiciares en cours en pareil cas par l'entrepreneur sont à la charge du client mais ne seront en aucun cas supérieur à 30% du prix du contrat.";
+		$pdf->MultiCell(200,5,$text_conv, 0, 'L');
 
 ///================================= end
 
@@ -1121,96 +1126,100 @@ class pdf_cesgm extends ModelePDFPropales
 	 */
 	function _tableau(&$pdf, $tab_top, $tab_height, $nexY, $outputlangs, $hidetop=0, $hidebottom=0)
 	{
-		global $conf;
+		//global $conf;
 
 
 		// Force to disable hidetop and hidebottom data about description
-		$hidebottom=1;
-		$hidetop=1;
-		if ($hidetop) $hidetop=-1;
+		// $hidebottom=1;
+		// $hidetop=1;
 
-		$default_font_size = pdf_getPDFFontSize($outputlangs);
+		// if ($hidetop) $hidetop=-1;
+
+		// $default_font_size = pdf_getPDFFontSize($outputlangs);
 
 		// Amount in (at tab_top - 1)
-		$pdf->SetTextColor(0,0,0);
-		$pdf->SetFont('','',$default_font_size - 2);
+		// $pdf->SetTextColor(0,0,0);
+		// $pdf->SetFont('','',$default_font_size - 2);
 
-		if (empty($hidetop))
-		{
-			$titre = $outputlangs->transnoentities("AmountInCurrency",$outputlangs->transnoentitiesnoconv("Currency".$conf->currency));
-			$pdf->SetXY($this->page_largeur - $this->marge_droite - ($pdf->GetStringWidth($titre) + 3), $tab_top-4);
-			$pdf->MultiCell(($pdf->GetStringWidth($titre) + 3), 2, $titre);
+		// if (empty($hidetop))
+		// {
+		// 	$titre = $outputlangs->transnoentities("AmountInCurrency",$outputlangs->transnoentitiesnoconv("Currency".$conf->currency));
+		// 	$pdf->SetXY($this->page_largeur - $this->marge_droite - ($pdf->GetStringWidth($titre) + 3), $tab_top-4);
+		// 	$pdf->MultiCell(($pdf->GetStringWidth($titre) + 3), 2, $titre);
 
-			//$conf->global->MAIN_PDF_TITLE_BACKGROUND_COLOR='230,230,230';
-			if (! empty($conf->global->MAIN_PDF_TITLE_BACKGROUND_COLOR)) $pdf->Rect($this->marge_gauche, $tab_top, $this->page_largeur-$this->marge_droite-$this->marge_gauche, 6, 'F', null, explode(',',$conf->global->MAIN_PDF_TITLE_BACKGROUND_COLOR));
-		}
+		// 	//$conf->global->MAIN_PDF_TITLE_BACKGROUND_COLOR='230,230,230';
+		// 	if (! empty($conf->global->MAIN_PDF_TITLE_BACKGROUND_COLOR)) $pdf->Rect($this->marge_gauche, $tab_top, $this->page_largeur-$this->marge_droite-$this->marge_gauche, 6, 'F', null, explode(',',$conf->global->MAIN_PDF_TITLE_BACKGROUND_COLOR));
+		// }
 
-		$pdf->SetDrawColor(128,128,128);
-		$pdf->SetFont('','',$default_font_size - 1);
+		// $pdf->SetDrawColor(128,128,128);
+		// $pdf->SetFont('','',$default_font_size - 1);
 
 		// Output Rect
 		//$this->printRect($pdf,$this->marge_gauche, $tab_top, $this->page_largeur-$this->marge_gauche-$this->marge_droite, $tab_height, $hidetop, $hidebottom);	// Rect prend une longueur en 3eme param et 4eme param
 
-		if (empty($hidetop))
-		{
-			$pdf->line($this->marge_gauche, $tab_top+6, $this->page_largeur-$this->marge_droite, $tab_top+6);	// line prend une position y en 2eme param et 4eme param
+		// if (empty($hidetop))
+		// {
+		// 	$pdf->line($this->marge_gauche, $tab_top+6, $this->page_largeur-$this->marge_droite, $tab_top+6);	// line prend une position y en 2eme param et 4eme param
 
-			$pdf->SetXY($this->posxdesc-1, $tab_top+1);
-			$pdf->MultiCell(108,2, $outputlangs->transnoentities("Designation"),'','L');
-		}
+		// 	$pdf->SetXY($this->posxdesc-1, $tab_top+1);
+		// 	$pdf->MultiCell(108,2, $outputlangs->transnoentities("Designation"),'','L');
+		// }
 
-		if (! empty($conf->global->MAIN_GENERATE_PROPOSALS_WITH_PICTURE))
-		{
-			$pdf->line($this->posxpicture-1, $tab_top, $this->posxpicture-1, $tab_top + $tab_height);
-			if (empty($hidetop))
-			{
-				//$pdf->SetXY($this->posxpicture-1, $tab_top+1);
-				//$pdf->MultiCell($this->posxtva-$this->posxpicture-1,2, $outputlangs->transnoentities("Photo"),'','C');
-			}
-		}
+		// if (! empty($conf->global->MAIN_GENERATE_PROPOSALS_WITH_PICTURE))
+		// {
+		// 	$pdf->line($this->posxpicture-1, $tab_top, $this->posxpicture-1, $tab_top + $tab_height);
+		// 	if (empty($hidetop))
+		// 	{
+		// 		//$pdf->SetXY($this->posxpicture-1, $tab_top+1);
+		// 		//$pdf->MultiCell($this->posxtva-$this->posxpicture-1,2, $outputlangs->transnoentities("Photo"),'','C');
+		// 	}
+		// }
 
-		if (empty($conf->global->MAIN_GENERATE_DOCUMENTS_WITHOUT_VAT))
-		{
-			$pdf->line($this->posxtva-1, $tab_top, $this->posxtva-1, $tab_top + $tab_height);
-			if (empty($hidetop))
-			{
-				$pdf->SetXY($this->posxtva-3, $tab_top+1);
-				$pdf->MultiCell($this->posxup-$this->posxtva+3,2, $outputlangs->transnoentities("VAT"),'','C');
-			}
-		}
+		// if (empty($conf->global->MAIN_GENERATE_DOCUMENTS_WITHOUT_VAT))
+		// {
+		// 	$pdf->line($this->posxtva-1, $tab_top, $this->posxtva-1, $tab_top + $tab_height);
+		// 	if (empty($hidetop))
+		// 	{
+		// 		$pdf->SetXY($this->posxtva-3, $tab_top+1);
+		// 		$pdf->MultiCell($this->posxup-$this->posxtva+3,2, $outputlangs->transnoentities("VAT"),'','C');
+		// 	}
+		// }
 
-		$pdf->line($this->posxup-1, $tab_top, $this->posxup-1, $tab_top + $tab_height);
-		if (empty($hidetop))
-		{
-			$pdf->SetXY($this->posxup-1, $tab_top+1);
-			$pdf->MultiCell($this->posxqty-$this->posxup-1,2, $outputlangs->transnoentities("PriceUHT"),'','C');
-		}
+		// 	//vertical line + price UHT
+		// //$pdf->line($this->posxup-1, $tab_top, $this->posxup-1, $tab_top + $tab_height);
+		// if (empty($hidetop))
+		// {
+		// 	$pdf->SetXY($this->posxup-1, $tab_top+1);
+		// 	$pdf->MultiCell($this->posxqty-$this->posxup-1,2, $outputlangs->transnoentities("PriceUHT"),'','C');
+		// }
+		// 	//vertical line + qty
+		// //$pdf->line($this->posxqty-1, $tab_top, $this->posxqty-1, $tab_top + $tab_height);
+		// if (empty($hidetop))
+		// {
+		// 	$pdf->SetXY($this->posxqty-1, $tab_top+1);
+		// 	$pdf->MultiCell($this->posxdiscount-$this->posxqty-1,2, $outputlangs->transnoentities("Qty"),'','C');
+		// }
 
-		$pdf->line($this->posxqty-1, $tab_top, $this->posxqty-1, $tab_top + $tab_height);
-		if (empty($hidetop))
-		{
-			$pdf->SetXY($this->posxqty-1, $tab_top+1);
-			$pdf->MultiCell($this->posxdiscount-$this->posxqty-1,2, $outputlangs->transnoentities("Qty"),'','C');
-		}
+		// 	//vertical line
+		// //$pdf->line($this->posxdiscount-1, $tab_top, $this->posxdiscount-1, $tab_top + $tab_height);
+		// if (empty($hidetop))
+		// {
+		// 	if ($this->atleastonediscount)
+		// 	{
+		// 		$pdf->SetXY($this->posxdiscount-1, $tab_top+1);
+		// 		$pdf->MultiCell($this->postotalht-$this->posxdiscount+1,2, $outputlangs->transnoentities("ReductionShort"),'','C');
+		// 	}
+		// }
+		// if ($this->atleastonediscount)
+		// {
+		// 	$pdf->line($this->postotalht, $tab_top, $this->postotalht, $tab_top + $tab_height);
+		// }
 
-		$pdf->line($this->posxdiscount-1, $tab_top, $this->posxdiscount-1, $tab_top + $tab_height);
-		if (empty($hidetop))
-		{
-			if ($this->atleastonediscount)
-			{
-				$pdf->SetXY($this->posxdiscount-1, $tab_top+1);
-				$pdf->MultiCell($this->postotalht-$this->posxdiscount+1,2, $outputlangs->transnoentities("ReductionShort"),'','C');
-			}
-		}
-		if ($this->atleastonediscount)
-		{
-			$pdf->line($this->postotalht, $tab_top, $this->postotalht, $tab_top + $tab_height);
-		}
-		if (empty($hidetop))
-		{
-			$pdf->SetXY($this->postotalht-1, $tab_top+1);
-			$pdf->MultiCell(30,2, $outputlangs->transnoentities("TotalHT"),'','C');
-		}
+		// if (empty($hidetop))
+		// {
+		// 	$pdf->SetXY($this->postotalht-1, $tab_top+1);
+		// 	//$pdf->MultiCell(30,2, $outputlangs->transnoentities("TotalHT"),'','C');
+		// }
 	}
 
 	/**
@@ -1355,7 +1364,7 @@ class pdf_cesgm extends ModelePDFPropales
 		if ($showaddress)
 		{
 			// Sender properties
-			$carac_emetteur='';
+			// $carac_emetteur='';
 
 
 
@@ -1363,74 +1372,286 @@ class pdf_cesgm extends ModelePDFPropales
 
 		 	// Add internal contact of proposal if defined
 			$arrayidcontact=$object->getIdContact('internal','SALESREPFOLL');
-		 	if (count($arrayidcontact) > 0)
-		 	{
-		 		$object->fetch_user($arrayidcontact[0]);
-		 		$carac_emetteur .= ($carac_emetteur ? "" : '' ).$outputlangs->transnoentities("Name").": ".$outputlangs->convToOutputCharset($object->user->getFullName($outputlangs));
-		 	}
+// 		 	if (count($arrayidcontact) > 0)
+// 		 	{
+// 		 		$object->fetch_user($arrayidcontact[0]);
+// 		 		$carac_emetteur .= ($carac_emetteur ? "" : '' ).$outputlangs->transnoentities("Name").": ".$outputlangs->convToOutputCharset($object->user->getFullName($outputlangs));
+// 		 	}
 
 
-		 	//==============
+// //============================
 
-		 	$carac_emetteur .= pdf_cesgm_build_address($outputlangs, $this->emetteur, $object->client);
+// 		 	$carac_emetteur .= pdf_cesgm_build_address($outputlangs, $this->emetteur, $object->client);
 
+
+
+//============================
 			// Show sender
 ////[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]
 
-			$posy=42;
+			// $posy=42;
+
 		 	$posx=$this->marge_gauche;
 			if (! empty($conf->global->MAIN_INVERT_SENDER_RECIPIENT)) $posx=$this->page_largeur-$this->marge_droite-80;
 			$hautcadre=40;
 
-			
+			$posy=$pdf->getY();
+
+			$posy += 5;
 			$pdf->SetTextColor(0,0,0);
 			$pdf->SetFont('','B', $default_font_size);
-			$pdf->SetXY($posx,$posy-5);
+			$pdf->SetXY($posx,$posy);
 			$text_entre="ENTRE";
-			$pdf->MultiCell(200,5, $text_entre, 0, 'C');
+			$pdf->MultiCell(180,5, $text_entre, 0, 'C');
+
+			$posy=$pdf->getY();
 
 			$pdf->SetTextColor(0,0,0);
 			$pdf->SetFont('','', $default_font_size - 2);
-			$pdf->SetXY($posx,$posy-1);
+			$pdf->SetXY($posx,$posy);
 			$under_text_entre="(Ci-après appelé l'Entrepreneur)";
-			$pdf->MultiCell(200,5, $under_text_entre, 0, 'C');
+			$pdf->MultiCell(180,5, $under_text_entre, 0, 'C');
 
 
 
-			// // Show sender frame // to eliminate
+			// // Show sender frame // 
 			// $pdf->SetXY($posx,$posy+3);
 			// $pdf->SetFillColor(230,230,230);
 			// $pdf->MultiCell(190, $hautcadre, "", 1, 'C', 1);
 			// $pdf->SetTextColor(0,0,60);
 
 			// Show sender name
-			$pdf->SetXY($posx+2,$posy+4);
-			$pdf->SetFont('','BU', $default_font_size);
-			$pdf->MultiCell(80, 4, "Nom : ".$outputlangs->convToOutputCharset($this->emetteur->name), 0, 'L');
 			$posy=$pdf->getY();
 
+			global $user;
+
+			$_emetteur_infos = [	"Nom :" => $this->emetteur->name,
+									"Adresse :" => $this->emetteur->address,
+									"Ville :" => $this->emetteur->town,
+									"Code postal :" => $this->emetteur->zip,
+									"Téléphone :" => $this->emetteur->phone,
+									"Télécopieur :" => $this->emetteur->fax,
+									"# licence RBQ :" => LICENCE_RBQ,
+									"Courriel :" => $this->emetteur->email,
+									"Représentant :" => $user->getFullName($outputlangs),
+									"R_Adresse :" => "à determiner",
+									"R_Ville :" => "à determiner",
+									"R_Code postal :" => "à determiner"
+								];
+
+
+			$line_end = $posx+191;
+		
+			foreach ($_emetteur_infos as $key => $value) {
+				
+				$pdf->SetXY($posx,$posy);
+				$pdf->SetFont('','B', $default_font_size+1);
+
+
+				switch ($key) {
+
+					case "Nom :":
+
+						$pdf->MultiCell(16, 4, $key, 0, 'L');
+						$pdf->SetXY($posx+19,$posy);
+						$pdf->SetFont('','', $default_font_size + 1);
+						$pdf->MultiCell(161, 4, $outputlangs->convToOutputCharset($value), 0, 'L');
+						$posy += 5;	
+						$pdf->line($posx+17,$posy,$line_end,$posy);
+						$posy+=1;	
+						
+						break;
+					
+					case "Adresse :":
+
+						$pdf->MultiCell(23, 4, $key, 0, 'L');
+						$pdf->SetXY($posx+26,$posy);
+						$pdf->SetFont('','', $default_font_size + 1);
+						$pdf->MultiCell(155, 4, $outputlangs->convToOutputCharset($value), 0, 'L');
+						$posy += 5;	
+						$pdf->line($posx+24,$posy,$line_end,$posy);
+						$posy+= 1;	
+
+						break;
+
+					case "Ville :":
+					
+						$pdf->MultiCell(16, 4, $key, 0, 'L');
+						$pdf->SetXY($posx+19,$posy);
+						$pdf->SetFont('','', $default_font_size + 1);
+						$pdf->MultiCell(100, 4, $outputlangs->convToOutputCharset($value), 0, 'L');
+						$pdf->line($posx+16,$posy + 5,$line_end - 61 ,$posy + 5);	
+						
+						break;
+
+					case "Code postal :":
+
+						$pdf->SetXY($line_end - 60,$posy);
+						$pdf->MultiCell(30, 4, $key, 0, 'L');
+						$pdf->SetXY($line_end - 27,$posy);
+						$pdf->SetFont('','', $default_font_size + 1);
+						$pdf->MultiCell(27, 4, $outputlangs->convToOutputCharset($value), 0, 'L');
+						$posy += 5;	
+						$pdf->line($line_end - 30 ,$posy, $line_end,$posy);
+						$posy+=1;
+
+						break;
+						
+					case "Téléphone :":
+
+						$pdf->MultiCell(26, 4, $key, 0, 'L');
+						$pdf->SetXY($posx+29,$posy);
+						$pdf->SetFont('','', $default_font_size + 1);
+						$pdf->MultiCell(58, 4, $outputlangs->convToOutputCharset($value), 0, 'L');
+						$pdf->line($posx+27,$posy + 5,$line_end - 91,$posy + 5);
+
+						break;
+
+					case "Télécopieur :" :
+
+						$pdf->SetXY($line_end - 90,$posy);
+						$pdf->MultiCell(30, 4, $key, 0, 'L');
+						$pdf->SetXY($line_end - 57,$posy);
+						$pdf->SetFont('','', $default_font_size + 1);
+						$pdf->MultiCell(58, 4, $outputlangs->convToOutputCharset($value), 0, 'L');
+						$posy += 5;	
+						$pdf->line($line_end - 59,$posy, $line_end,$posy);
+						$posy+=1;
+
+						break;
+
+					case "# licence RBQ :":
+
+						$pdf->MultiCell(34, 4, $key, 0, 'L');
+						$pdf->SetXY($posx+37,$posy);
+						$pdf->SetFont('','', $default_font_size + 1);
+						$pdf->MultiCell(40, 4, $outputlangs->convToOutputCharset($value), 0, 'L');
+						$pdf->line($posx+35,$posy + 5.5,$line_end - 118,$posy + 5.5);	
+				
+						break;
+
+					case "Courriel :":
+
+						$pdf->SetXY($line_end - 117,$posy);
+						$pdf->MultiCell(24, 4, $key, 0, 'L');
+						$pdf->SetXY($line_end - 92,$posy);
+						$pdf->SetFont('','', $default_font_size + 1);
+						$pdf->MultiCell(58, 4, $outputlangs->convToOutputCharset($value), 0, 'L');
+						$posy += 5;	
+						$pdf->line($line_end - 94,$posy, $line_end,$posy);
+						$posy+=1;
+
+						break;
+
+					case "Représentant :":
+
+						$pdf->MultiCell(33, 4, $key, 0, 'L');
+						$pdf->SetXY($posx+36,$posy);
+						$pdf->SetFont('','', $default_font_size + 1);
+						$pdf->MultiCell(144, 4, $outputlangs->convToOutputCharset($value), 0, 'L');
+						$posy += 5;	
+						$pdf->line($posx+34,$posy,$line_end,$posy);
+						$posy+=1;	
+
+						break;
+
+					// case "R_Adresse :":
+
+					// 	$pdf->MultiCell(23, 4, substr($key,2), 0, 'L');
+					// 	$pdf->SetXY($posx+26,$posy);
+					// 	$pdf->SetFont('','', $default_font_size + 1);
+					// 	$pdf->MultiCell(155, 4, $outputlangs->convToOutputCharset($value), 0, 'L');
+					// 	$posy += 5;	
+					// 	$pdf->line($posx+24,$posy,$line_end,$posy);
+					// 	$posy+=1;	
+
+					// 	break;
+
+					// case "R_Ville :":
+					
+					// 	$pdf->MultiCell(16, 4, substr($key,2), 0, 'L');
+					// 	$pdf->SetXY($posx+19,$posy);
+					// 	$pdf->SetFont('','', $default_font_size + 1);
+					// 	$pdf->MultiCell(100, 4, $outputlangs->convToOutputCharset($value), 0, 'L');
+					// 	$pdf->line($posx+16,$posy + 5,$line_end - 61 ,$posy + 5);	
+						
+					// 	break;
+
+					// case "R_Code postal :":
+
+					// 	$pdf->SetXY($line_end - 60,$posy);
+					// 	$pdf->MultiCell(30, 4, substr($key,2), 0, 'L');
+					// 	$pdf->SetXY($line_end - 27,$posy);
+					// 	$pdf->SetFont('','', $default_font_size + 1);
+					// 	$pdf->MultiCell(27, 4, $outputlangs->convToOutputCharset($value), 0, 'L');
+					// 	$posy += 5;	
+					// 	$pdf->line($line_end - 30 ,$posy, $line_end,$posy);
+					// 	$posy+=1;
+
+					// 	break;
+
+					default:
+
+						// $pdf->MultiCell(180, 4, $key, 0, 'L');
+						// $pdf->SetXY($posx+42,$posy);
+						// $pdf->SetFont('','', $default_font_size + 1);
+						// $pdf->MultiCell(180, 4, $outputlangs->convToOutputCharset($value), 0, 'L');
+						
+		 			// 	$posy+=5.5;
+		 			// 	$pdf->line($posx+40,$posy,180,$posy);
+
+		 			// 	$posy+=0.5;
+						break;
+				}	
+		
+			}
+
+			// $pdf->SetXY($posx,$posy);
+			// $pdf->SetFont('','B', $default_font_size+2);
+			// $pdf->MultiCell(180, 4, "Nom :", 0, 'L');
+			// $pdf->SetXY($posx+30,$posy);
+			// $pdf->MultiCell(180, 4, $outputlangs->convToOutputCharset($this->emetteur->name), 0, 'L');
+ 			
+			// $this->emetteur->name;
+			// $this->emetteur->address;
+		 // 	$this->emetteur->town;
+		 // 	$this->emetteur->zip;
+		 // 	$this->emetteur->phone;
+		 // 	$this->emetteur->fax;
+		 // 	$this->emetteur->email;
+		 // 	$this->emetteur->url;
+		
+			
+			//$posy=$pdf->getY();
+
+			//$pdf->line($posx+30,$posy,180,$posy);
+			
+
 			// Show sender information
-			$pdf->SetXY($posx+2,$posy);
-			$pdf->SetFont('','U', $default_font_size - 1);
-			$pdf->MultiCell(80, 4, $carac_emetteur, 0, 'L');
+			// $pdf->SetXY($posx+20,$posy);
+			// $pdf->SetFont('','', $default_font_size + 1);
+			// $pdf->MultiCell(180, 4, $carac_emetteur, 0, 'L');
 
 
 
 /////[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]
 
-			$posy = 85;
-
+			//$posy = 85;
+			$posy=$pdf->getY();
+			$posy +=3;
 			$pdf->SetTextColor(0,0,0);
 			$pdf->SetFont('','B', $default_font_size);
-			$pdf->SetXY($posx,$posy-3);
+			$pdf->SetXY($posx,$posy);
 			$text_et="ET";
-			$pdf->MultiCell(200,5, $text_et, 0, 'C');
+			$pdf->MultiCell(180,5, $text_et, 0, 'C');
+
+			$posy=$pdf->getY();
 
 			$pdf->SetTextColor(0,0,0);
 			$pdf->SetFont('','', $default_font_size - 2);
 			$pdf->SetXY($posx,$posy);
 			$under_text_et="(Ci-après appelé le client)";
-			$pdf->MultiCell(200,5, $under_text_et, 0, 'C');
+			$pdf->MultiCell(180,5, $under_text_et, 0, 'C');
 
 
 
@@ -1456,16 +1677,31 @@ class pdf_cesgm extends ModelePDFPropales
 				$carac_client_name=$outputlangs->convToOutputCharset($object->client->nom);
 			}
 
-			$carac_client=pdf_cesgm_build_address($outputlangs,$this->emetteur,$object->client,($usecontact?$object->contact:''),$usecontact,'target');
+
+//-------------------------------------
+			//$carac_client=pdf_cesgm_build_address($outputlangs,$this->emetteur,$object->client,($usecontact?$object->contact:''),$usecontact,'target');
+//----------------------------------------
+			$_client_ = $object->client;
+
+			$_emetteur_infos = [	"Nom :" => $_client_ ->name,
+									"Adresse :" => $_client_ ->address,
+									"Ville :" => $_client_ ->town,
+									"Code postal :" => $_client_ ->zip,
+									"Téléphone :" => $_client_ ->phone,
+									"Télécopieur :" => $_client_ ->fax,
+									"Adresse des travaux :" => $object->note_private//"à determiner à determiner à determiner à determiner"//"à determiner à determiner à determiner à determiner à determiner à determiner à determiner à determiner à determiner à determinerà determiner à determiner à determinerà determiner à determiner à determiner à determiner à determiner à determiner à determiner à determiner"
+								];
+
+
 
 			// Show recipient
-			$widthrecbox=100;
-			if ($this->page_largeur < 210) $widthrecbox=84;	// To work with US executive format
-			//$posy=85;
+			// $widthrecbox=100;
+			// if ($this->page_largeur < 210) $widthrecbox=84;	// To work with US executive format
+			// //$posy=85;
 			
 
-			$posx=10;//$this->page_largeur-$this->marge_gauche;//-$widthrecbox;
-			if (! empty($conf->global->MAIN_INVERT_SENDER_RECIPIENT)) $posx=$this->marge_gauche;
+			//$posx=10;//$this->page_largeur-$this->marge_gauche;//-$widthrecbox;
+			// if (! empty($conf->global->MAIN_INVERT_SENDER_RECIPIENT)) $posx=$this->marge_gauche;
 
 			// // Show recipient frame
 			// $pdf->SetTextColor(0,0,0);
@@ -1475,36 +1711,147 @@ class pdf_cesgm extends ModelePDFPropales
 			// $pdf->Rect($posx, $posy, $widthrecbox, $hautcadre);
 
 			// Show recipient name
-			$pdf->SetXY($posx+2,$posy+3);
-			$pdf->SetFont('','B', $default_font_size);
-			$pdf->MultiCell($widthrecbox, 4, $carac_client_name, 0, 'L');
 
-			// Show recipient information
-			$pdf->SetFont('','', $default_font_size - 1);
-			$pdf->SetXY($posx+2,$posy+4+(dol_nboflines_bis($carac_client_name,50)*4));
-			$pdf->MultiCell($widthrecbox, 4, $carac_client, 0, 'L');
+			$posy = $pdf->getY();
+
+			foreach ($_emetteur_infos as $key => $value) {
+
+				$pdf->SetXY($posx,$posy);
+				$pdf->SetFont('','B', $default_font_size+1);
+
+
+				switch ($key) {
+
+					case "Nom :":
+
+						$pdf->MultiCell(16, 4, $key, 0, 'L');
+						$pdf->SetXY($posx+19,$posy);
+						$pdf->SetFont('','', $default_font_size + 1);
+						$pdf->MultiCell(161, 4, $outputlangs->convToOutputCharset($value), 0, 'L');
+						$posy += 5;	
+						$pdf->line($posx+17,$posy,$line_end,$posy);
+						$posy+=1;	
+						
+						break;
+					
+					case "Adresse :":
+
+						$pdf->MultiCell(23, 4, $key, 0, 'L');
+						$pdf->SetXY($posx+26,$posy);
+						$pdf->SetFont('','', $default_font_size + 1);
+						$pdf->MultiCell(155, 4, $outputlangs->convToOutputCharset($value), 0, 'L');
+						$posy += 5;	
+						$pdf->line($posx+24,$posy,$line_end,$posy);
+						$posy+=1;	
+
+						break;
+
+					case "Ville :":
+					
+						$pdf->MultiCell(16, 4, $key, 0, 'L');
+						$pdf->SetXY($posx+19,$posy);
+						$pdf->SetFont('','', $default_font_size + 1);
+						$pdf->MultiCell(100, 4, $outputlangs->convToOutputCharset($value), 0, 'L');
+						$pdf->line($posx+16,$posy + 5,$line_end - 61 ,$posy + 5);	
+						
+						break;
+
+					case "Code postal :":
+
+						$pdf->SetXY($line_end - 60,$posy);
+						$pdf->MultiCell(30, 4, $key, 0, 'L');
+						$pdf->SetXY($line_end - 27,$posy);
+						$pdf->SetFont('','', $default_font_size + 1);
+						$pdf->MultiCell(27, 4, $outputlangs->convToOutputCharset($value), 0, 'L');
+						$posy += 5;	
+						$pdf->line($line_end - 30 ,$posy, $line_end,$posy);
+						$posy+=1;
+
+						break;
+						
+					case "Téléphone :":
+
+						$pdf->MultiCell(26, 4, $key, 0, 'L');
+						$pdf->SetXY($posx+29,$posy);
+						$pdf->SetFont('','', $default_font_size + 1);
+						$pdf->MultiCell(58, 4, $outputlangs->convToOutputCharset($value), 0, 'L');
+						$pdf->line($posx+27,$posy + 5,$line_end - 91,$posy + 5);
+
+						break;
+
+					case "Télécopieur :" :
+
+						$pdf->SetXY($line_end - 90,$posy);
+						$pdf->MultiCell(30, 4, $key, 0, 'L');
+						$pdf->SetXY($line_end - 57,$posy);
+						$pdf->SetFont('','', $default_font_size + 1);
+						$pdf->MultiCell(58, 4, $outputlangs->convToOutputCharset($value), 0, 'L');
+						$posy += 5;	
+						$pdf->line($line_end - 59,$posy, $line_end,$posy);
+						$posy+=1;
+
+						break;
+
+					case "Adresse des travaux :":
+
+						$pdf->SetXY($posx,$posy+=3);
+						$pdf->MultiCell(46, 4, $key, 0, 'L');
+						$pdf->SetXY($posx+49,$posy);
+						$pdf->SetFont('','', $default_font_size - 1);
+						$pdf->MultiCell(141, 4, $outputlangs->convToOutputCharset($value), 0, 'L');
+						$posy += 8;	
+						$pdf->line($posx+47,$posy+=1,$line_end,$posy);
+						$posy+=1;	
+
+						break;
+
+					default:
+
+						// $pdf->MultiCell(180, 4, $key, 0, 'L');
+						// $pdf->SetXY($posx+42,$posy);
+						// $pdf->SetFont('','', $default_font_size + 1);
+						// $pdf->MultiCell(180, 4, $outputlangs->convToOutputCharset($value), 0, 'L');
+						
+		 			// 	$posy+=5.5;
+		 			// 	$pdf->line($posx+40,$posy,180,$posy);
+
+		 			// 	$posy+=0.5;
+						break;
+				}	
+		
+			}
+
+			// $posy = $pdf->getY();
+			// $pdf->SetXY($posx,$posy);
+			// $pdf->SetFont('','B', $default_font_size);
+			// $pdf->MultiCell(180, 4, $carac_client_name, 0, 'L');
+
+			// // Show recipient information
+			// $pdf->SetFont('','', $default_font_size - 1);
+			// $pdf->SetXY($posx+2,$posy+6);
+			// $pdf->MultiCell(180, 4, $carac_client, 0, 'L');
 
 
 
 
 			///--- CONVIENNENT DE CE QUI SUIT:  + 1 -- //
-			$posy = 120;
+			$posy += 8;
 
 			$pdf->SetTextColor(0,0,0);
 			$pdf->SetFont('','B', $default_font_size);
-			$pdf->SetXY($posx,$posy-5);
+			$pdf->SetXY($posx,$posy);
 			$text_conv="CONVIENNENT DE CE QUI SUIT:";
 			$pdf->MultiCell(200,5, $text_conv, 0, 'L');
 
 			$pdf->SetTextColor(0,0,0);
 			$pdf->SetFont('','B', $default_font_size - 1);
-			$pdf->SetXY($posx,$posy);
+			$pdf->SetXY($posx,$posy+5);
 			$text_1="1. Ouvrage à réaliser";
 			$pdf->MultiCell(200,3, $text_1, 0, 'L');
 
 			$pdf->SetTextColor(0,0,0);
 			$pdf->SetFont('','', $default_font_size - 1);
-			$pdf->SetXY($posx,$posy+5);
+			$pdf->SetXY($posx,$posy+10);
 			$under_text_1="Le client retient, en date de ce jour, les services de l'Entrepreneur pour exécuter l'ouvrage ci-après décrit :";
 			$pdf->MultiCell(200,5, $under_text_1, 0, 'L');
 

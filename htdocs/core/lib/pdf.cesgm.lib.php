@@ -103,7 +103,7 @@ function pdf_cesgm_build_address($outputlangs,$sourcecompany,$targetcompany='',$
 
 
 
-	if ($mode == 'source') //LICENCE_RBQ
+	if ($mode == 'source') //+LICENCE_RBQ
 	{
 		$withCountry = 0;
 		if (!empty($sourcecompany->country_code) && ($targetcompany->country_code != $sourcecompany->country_code)) $withCountry = 1;
@@ -113,18 +113,19 @@ function pdf_cesgm_build_address($outputlangs,$sourcecompany,$targetcompany='',$
 		$stringaddress .= ($stringaddress ? "\n" : '' ).$outputlangs->convToOutputCharset(cesgm_format_address($sourcecompany, $withCountry, "\n", $outputlangs));
 
 
-		$stringaddress .="\n"."# licence RBQ : ".LICENCE_RBQ;
+		//$stringaddress .="\n"."# licence RBQ : ".LICENCE_RBQ;
+		$stringaddress .="\n".LICENCE_RBQ;
 
 		if (empty($conf->global->MAIN_PDF_DISABLESOURCEDETAILS))
 		{
 			// Phone
-			if ($sourcecompany->phone) $stringaddress .= ($stringaddress ? "\n" : '' ).$outputlangs->transnoentities("Phone").": ".$outputlangs->convToOutputCharset($sourcecompany->phone);
+			if ($sourcecompany->phone) $stringaddress .= ($stringaddress ? "\n" : '' )./*$outputlangs->transnoentities("Phone").": ".*/$outputlangs->convToOutputCharset($sourcecompany->phone);
 			// Fax
-			if ($sourcecompany->fax) $stringaddress .= ($stringaddress ? "\n" : '' ).$outputlangs->transnoentities("Fax").": ".$outputlangs->convToOutputCharset($sourcecompany->fax);
+			if ($sourcecompany->fax) $stringaddress .= ($stringaddress ? "\n" : '' )./*$outputlangs->transnoentities("Fax").": ".*/$outputlangs->convToOutputCharset($sourcecompany->fax);
 			// EMail
-			if ($sourcecompany->email) $stringaddress .= ($stringaddress ? "\n" : '' ).$outputlangs->transnoentities("Email").": ".$outputlangs->convToOutputCharset($sourcecompany->email);
+			if ($sourcecompany->email) $stringaddress .= ($stringaddress ? "\n" : '' )./*$outputlangs->transnoentities("Email").": ".*/$outputlangs->convToOutputCharset($sourcecompany->email);
 			// Web
-			if ($sourcecompany->url) $stringaddress .= ($stringaddress ? "\n" : '' ).$outputlangs->transnoentities("Web").": ".$outputlangs->convToOutputCharset($sourcecompany->url);
+			if ($sourcecompany->url) $stringaddress .= ($stringaddress ? "\n" : '' )./*$outputlangs->transnoentities("Web").": ".*/$outputlangs->convToOutputCharset($sourcecompany->url);
 		}
 	}
 
@@ -155,11 +156,11 @@ function pdf_cesgm_build_address($outputlangs,$sourcecompany,$targetcompany='',$
 				if (! empty($targetcontact->phone_pro) && ! empty($targetcontact->phone_mobile)) $stringaddress .= " / ";
 				if (! empty($targetcontact->phone_mobile)) $stringaddress .= $outputlangs->convToOutputCharset($targetcontact->phone_mobile);
 				// Fax
-				if ($targetcontact->fax) $stringaddress .= ($stringaddress ? "\n" : '' ).$outputlangs->transnoentities("Fax").": ".$outputlangs->convToOutputCharset($targetcontact->fax);
+				if ($targetcontact->fax) $stringaddress .= ($stringaddress ? "\n" : '' )./*$outputlangs->transnoentities("Fax").": ".*/$outputlangs->convToOutputCharset($targetcontact->fax);
 				// EMail
-				if ($targetcontact->email) $stringaddress .= ($stringaddress ? "\n" : '' ).$outputlangs->transnoentities("Email").": ".$outputlangs->convToOutputCharset($targetcontact->email);
+				if ($targetcontact->email) $stringaddress .= ($stringaddress ? "\n" : '' )./*$outputlangs->transnoentities("Email").": ".*/$outputlangs->convToOutputCharset($targetcontact->email);
 				// Web
-				if ($targetcontact->url) $stringaddress .= ($stringaddress ? "\n" : '' ).$outputlangs->transnoentities("Web").": ".$outputlangs->convToOutputCharset($targetcontact->url);
+				if ($targetcontact->url) $stringaddress .= ($stringaddress ? "\n" : '' )./*$outputlangs->transnoentities("Web").": ".*/$outputlangs->convToOutputCharset($targetcontact->url);
 			}
 		}
 		else
@@ -176,11 +177,11 @@ function pdf_cesgm_build_address($outputlangs,$sourcecompany,$targetcompany='',$
 				if (! empty($targetcompany->phone) && ! empty($targetcompany->phone_mobile)) $stringaddress .= " / ";
 				if (! empty($targetcompany->phone_mobile)) $stringaddress .= $outputlangs->convToOutputCharset($targetcompany->phone_mobile);
 				// Fax
-				if ($targetcompany->fax) $stringaddress .= ($stringaddress ? "\n" : '' ).$outputlangs->transnoentities("Fax").": ".$outputlangs->convToOutputCharset($targetcompany->fax);
+				if ($targetcompany->fax) $stringaddress .= ($stringaddress ? "\n" : '' )./*$outputlangs->transnoentities("Fax").": ".*/$outputlangs->convToOutputCharset($targetcompany->fax);
 				// EMail
-				if ($targetcompany->email) $stringaddress .= ($stringaddress ? "\n" : '' ).$outputlangs->transnoentities("Email").": ".$outputlangs->convToOutputCharset($targetcompany->email);
+				if ($targetcompany->email) $stringaddress .= ($stringaddress ? "\n" : '' )./*$outputlangs->transnoentities("Email").": ".*/$outputlangs->convToOutputCharset($targetcompany->email);
 				// Web
-				if ($targetcompany->url) $stringaddress .= ($stringaddress ? "\n" : '' ).$outputlangs->transnoentities("Web").": ".$outputlangs->convToOutputCharset($targetcompany->url);
+				if ($targetcompany->url) $stringaddress .= ($stringaddress ? "\n" : '' )./*$outputlangs->transnoentities("Web").": ".*/$outputlangs->convToOutputCharset($targetcompany->url);
 			}
 		}
 
@@ -243,18 +244,20 @@ function cesgm_format_address($object,$withcountry=0,$sep="\n",$outputlangs='')
 	$countriesusingstate=array('AU','US','IN','GB','ES','UK','TR');
 
 	// Address
-	$ret .= "Adresse : ";
+	//$ret .= "Adresse : ";
 	$ret .= $object->address;
 	$ret .= $sep;
-	$ret .= "Ville : ";
-	$ret .= ' '.$object->town;
+	//$ret .= "Ville : ";
+	$ret .= $object->town;
 
 		if ($object->state && in_array($object->country_code,$countriesusingstate))
 		{
 			$ret.=", ".$object->state;
 		}
 
-	$ret .= "\t Code postal : ";
+	//$ret .= "\t Code postal : ";
+
+	
 	$ret .= $object->zip;
 
 	return $ret;
