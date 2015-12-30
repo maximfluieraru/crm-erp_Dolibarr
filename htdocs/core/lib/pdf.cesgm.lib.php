@@ -813,48 +813,48 @@ function pdf_cesgm_getlinedesc($object,$i,$outputlangs,$hideref=0,$hidedesc=0,$i
 {
 	global $db, $conf, $langs;
 
-	$idprod=(! empty($object->lines[$i]->fk_product)?$object->lines[$i]->fk_product:false);
-	$label=(! empty($object->lines[$i]->label)?$object->lines[$i]->label:(! empty($object->lines[$i]->product_label)?$object->lines[$i]->product_label:''));
+	//$idprod=(! empty($object->lines[$i]->fk_product)?$object->lines[$i]->fk_product:false);
+	//$label=(! empty($object->lines[$i]->label)?$object->lines[$i]->label:(! empty($object->lines[$i]->product_label)?$object->lines[$i]->product_label:''));
 	$desc=(! empty($object->lines[$i]->desc)?$object->lines[$i]->desc:(! empty($object->lines[$i]->description)?$object->lines[$i]->description:''));
-	$ref_supplier=(! empty($object->lines[$i]->ref_supplier)?$object->lines[$i]->ref_supplier:(! empty($object->lines[$i]->ref_fourn)?$object->lines[$i]->ref_fourn:''));    // TODO Not yet saved for supplier invoices, only supplier orders
-	$note=(! empty($object->lines[$i]->note)?$object->lines[$i]->note:'');
-	$dbatch=(! empty($object->lines[$i]->detail_batch)?$object->lines[$i]->detail_batch:false);
+	//$ref_supplier=(! empty($object->lines[$i]->ref_supplier)?$object->lines[$i]->ref_supplier:(! empty($object->lines[$i]->ref_fourn)?$object->lines[$i]->ref_fourn:''));    // TODO Not yet saved for supplier invoices, only supplier orders
+	//$note=(! empty($object->lines[$i]->note)?$object->lines[$i]->note:'');
+	//$dbatch=(! empty($object->lines[$i]->detail_batch)?$object->lines[$i]->detail_batch:false);
 
-	if ($issupplierline) $prodser = new ProductFournisseur($db);
-	else $prodser = new Product($db);
+	// if ($issupplierline) $prodser = new ProductFournisseur($db);
+	// else $prodser = new Product($db);
 
-	if ($idprod)
-	{
-		$prodser->fetch($idprod);
-		// If a predefined product and multilang and on other lang, we renamed label with label translated
-		if (! empty($conf->global->MAIN_MULTILANGS) && ($outputlangs->defaultlang != $langs->defaultlang))
-		{
-			$translatealsoifmodified=(! empty($conf->global->MAIN_MULTILANG_TRANSLATE_EVEN_IF_MODIFIED));	// By default if value was modified manually, we keep it (no translation because we don't have it)
+	// if ($idprod)
+	// {
+	// 	$prodser->fetch($idprod);
+	// 	// If a predefined product and multilang and on other lang, we renamed label with label translated
+	// 	if (! empty($conf->global->MAIN_MULTILANGS) && ($outputlangs->defaultlang != $langs->defaultlang))
+	// 	{
+	// 		$translatealsoifmodified=(! empty($conf->global->MAIN_MULTILANG_TRANSLATE_EVEN_IF_MODIFIED));	// By default if value was modified manually, we keep it (no translation because we don't have it)
 
-			// TODO Instead of making a compare to see if param was modified, check that content contains reference translation. If yes, add the added part to the new translation
-			// ($textwasmodified is replaced with $textwasmodifiedorcompleted and we add completion).
+	// 		// TODO Instead of making a compare to see if param was modified, check that content contains reference translation. If yes, add the added part to the new translation
+	// 		// ($textwasmodified is replaced with $textwasmodifiedorcompleted and we add completion).
 
-			// Set label
-			// If we want another language, and if label is same than default language (we did force it to a specific value), we can use translation.
-			//var_dump($outputlangs->defaultlang.' - '.$langs->defaultlang.' - '.$label.' - '.$prodser->label);exit;
-			$textwasmodified=($label == $prodser->label);
-			if (! empty($prodser->multilangs[$outputlangs->defaultlang]["label"]) && ($textwasmodified || $translatealsoifmodified))     $label=$prodser->multilangs[$outputlangs->defaultlang]["label"];
+	// 		// Set label
+	// 		// If we want another language, and if label is same than default language (we did force it to a specific value), we can use translation.
+	// 		//var_dump($outputlangs->defaultlang.' - '.$langs->defaultlang.' - '.$label.' - '.$prodser->label);exit;
+	// 		$textwasmodified=($label == $prodser->label);
+	// 		if (! empty($prodser->multilangs[$outputlangs->defaultlang]["label"]) && ($textwasmodified || $translatealsoifmodified))     $label=$prodser->multilangs[$outputlangs->defaultlang]["label"];
 
-			// Set desc
-			// Manage HTML entities description test because $prodser->description is store with htmlentities but $desc no
-			$textwasmodified=false;
-			if (!empty($desc) && dol_textishtml($desc) && !empty($prodser->description) && dol_textishtml($prodser->description)) {
-				$textwasmodified=(strpos(dol_html_entity_decode($desc,ENT_QUOTES | ENT_HTML401),dol_html_entity_decode($prodser->description,ENT_QUOTES | ENT_HTML401))!==false);
-			} else {
-				$textwasmodified=($desc == $prodser->description);
-			}
-			if (! empty($prodser->multilangs[$outputlangs->defaultlang]["description"]) && ($textwasmodified || $translatealsoifmodified))  $desc=$prodser->multilangs[$outputlangs->defaultlang]["description"];
+	// 		// Set desc
+	// 		// Manage HTML entities description test because $prodser->description is store with htmlentities but $desc no
+	// 		$textwasmodified=false;
+	// 		if (!empty($desc) && dol_textishtml($desc) && !empty($prodser->description) && dol_textishtml($prodser->description)) {
+	// 			$textwasmodified=(strpos(dol_html_entity_decode($desc,ENT_QUOTES | ENT_HTML401),dol_html_entity_decode($prodser->description,ENT_QUOTES | ENT_HTML401))!==false);
+	// 		} else {
+	// 			$textwasmodified=($desc == $prodser->description);
+	// 		}
+	// 		if (! empty($prodser->multilangs[$outputlangs->defaultlang]["description"]) && ($textwasmodified || $translatealsoifmodified))  $desc=$prodser->multilangs[$outputlangs->defaultlang]["description"];
 
-			// Set note
-			$textwasmodified=($note == $prodser->note);
-			if (! empty($prodser->multilangs[$outputlangs->defaultlang]["note"]) && ($textwasmodified || $translatealsoifmodified))  $note=$prodser->multilangs[$outputlangs->defaultlang]["note"];
-		}
-	}
+	// 		// Set note
+	// 		$textwasmodified=($note == $prodser->note);
+	// 		if (! empty($prodser->multilangs[$outputlangs->defaultlang]["note"]) && ($textwasmodified || $translatealsoifmodified))  $note=$prodser->multilangs[$outputlangs->defaultlang]["note"];
+	// 	}
+	// }
 
 	// Description short of product line
 	$libelleproduitservice=$label;
@@ -867,27 +867,27 @@ function pdf_cesgm_getlinedesc($object,$i,$outputlangs,$hideref=0,$hidedesc=0,$i
 			$libelleproduitservice.='__N__';
 		}
 
-		if ($desc == '(CREDIT_NOTE)' && $object->lines[$i]->fk_remise_except)
-		{
-			$discount=new DiscountAbsolute($db);
-			$discount->fetch($object->lines[$i]->fk_remise_except);
-			$libelleproduitservice=$outputlangs->transnoentitiesnoconv("DiscountFromCreditNote",$discount->ref_facture_source);
-		}
-		elseif ($desc == '(DEPOSIT)' && $object->lines[$i]->fk_remise_except)
-		{
-			$discount=new DiscountAbsolute($db);
-			$discount->fetch($object->lines[$i]->fk_remise_except);
-			$libelleproduitservice=$outputlangs->transnoentitiesnoconv("DiscountFromDeposit",$discount->ref_facture_source);
-			// Add date of deposit
-			if (! empty($conf->global->INVOICE_ADD_DEPOSIT_DATE)) echo ' ('.dol_print_date($discount->datec,'day','',$outputlangs).')';
-		}
+		// if ($desc == '(CREDIT_NOTE)' && $object->lines[$i]->fk_remise_except)
+		// {
+		// 	$discount=new DiscountAbsolute($db);
+		// 	$discount->fetch($object->lines[$i]->fk_remise_except);
+		// 	$libelleproduitservice=$outputlangs->transnoentitiesnoconv("DiscountFromCreditNote",$discount->ref_facture_source);
+		// }
+		// elseif ($desc == '(DEPOSIT)' && $object->lines[$i]->fk_remise_except)
+		// {
+		// 	$discount=new DiscountAbsolute($db);
+		// 	$discount->fetch($object->lines[$i]->fk_remise_except);
+		// 	$libelleproduitservice=$outputlangs->transnoentitiesnoconv("DiscountFromDeposit",$discount->ref_facture_source);
+		// 	// Add date of deposit
+		// 	if (! empty($conf->global->INVOICE_ADD_DEPOSIT_DATE)) echo ' ('.dol_print_date($discount->datec,'day','',$outputlangs).')';
+		// }
 		else
 		{
-			if ($idprod)
-			{
-				if (empty($hidedesc)) $libelleproduitservice.=$desc;
-			}
-			else
+			// if ($idprod)
+			// {
+			// 	if (empty($hidedesc)) $libelleproduitservice.=$desc;
+			// }
+			// else
 			{
 				$libelleproduitservice.=$desc;
 			}
@@ -895,52 +895,52 @@ function pdf_cesgm_getlinedesc($object,$i,$outputlangs,$hideref=0,$hidedesc=0,$i
 	}
 
 	// If line linked to a product
-	if ($idprod)
-	{
-		// We add ref
-		if ($prodser->ref)
-		{
-			$prefix_prodserv = "";
-			$ref_prodserv = "";
-			if (! empty($conf->global->PRODUCT_ADD_TYPE_IN_DOCUMENTS))   // In standard mode, we do not show this
-			{
-				if ($prodser->isservice())
-				{
-					$prefix_prodserv = $outputlangs->transnoentitiesnoconv("Service")." ";
-				}
-				else
-				{
-					$prefix_prodserv = $outputlangs->transnoentitiesnoconv("Product")." ";
-				}
-			}
+	// if ($idprod)
+	// {
+	// 	// We add ref
+	// 	if ($prodser->ref)
+	// 	{
+	// 		$prefix_prodserv = "";
+	// 		$ref_prodserv = "";
+	// 		if (! empty($conf->global->PRODUCT_ADD_TYPE_IN_DOCUMENTS))   // In standard mode, we do not show this
+	// 		{
+	// 			if ($prodser->isservice())
+	// 			{
+	// 				$prefix_prodserv = $outputlangs->transnoentitiesnoconv("Service")." ";
+	// 			}
+	// 			else
+	// 			{
+	// 				$prefix_prodserv = $outputlangs->transnoentitiesnoconv("Product")." ";
+	// 			}
+	// 		}
 
-			if (empty($hideref))
-			{
-				if ($issupplierline) $ref_prodserv = $prodser->ref.($ref_supplier ? ' ('.$outputlangs->transnoentitiesnoconv("SupplierRef").' '.$ref_supplier.')' : '');   // Show local ref and supplier ref
-				else $ref_prodserv = $prodser->ref; // Show local ref only
+	// 		if (empty($hideref))
+	// 		{
+	// 			if ($issupplierline) $ref_prodserv = $prodser->ref.($ref_supplier ? ' ('.$outputlangs->transnoentitiesnoconv("SupplierRef").' '.$ref_supplier.')' : '');   // Show local ref and supplier ref
+	// 			else $ref_prodserv = $prodser->ref; // Show local ref only
 
-				if (! empty($libelleproduitservice)) $ref_prodserv .= " - ";
-			}
+	// 			if (! empty($libelleproduitservice)) $ref_prodserv .= " - ";
+	// 		}
 
-			$libelleproduitservice=$prefix_prodserv.$ref_prodserv.$libelleproduitservice;
-		}
-	}
+	// 		$libelleproduitservice=$prefix_prodserv.$ref_prodserv.$libelleproduitservice;
+	// 	}
+	// }
 
-	// Add an additional description for the category products
-	if (! empty($conf->global->CATEGORY_ADD_DESC_INTO_DOC) && $idprod && ! empty($conf->categorie->enabled))
-	{
-		include_once DOL_DOCUMENT_ROOT.'/categories/class/categorie.class.php';
-		$categstatic=new Categorie($db);
-		// recovering the list of all the categories linked to product
-		$tblcateg=$categstatic->containing($idprod,0);
-		foreach ($tblcateg as $cate)
-		{
-			// Adding the descriptions if they are filled
-			$desccateg=$cate->add_description;
-			if ($desccateg)
-				$libelleproduitservice.='__N__'.$desccateg;
-		}
-	}
+	// // Add an additional description for the category products
+	// if (! empty($conf->global->CATEGORY_ADD_DESC_INTO_DOC) && $idprod && ! empty($conf->categorie->enabled))
+	// {
+	// 	include_once DOL_DOCUMENT_ROOT.'/categories/class/categorie.class.php';
+	// 	$categstatic=new Categorie($db);
+	// 	// recovering the list of all the categories linked to product
+	// 	$tblcateg=$categstatic->containing($idprod,0);
+	// 	foreach ($tblcateg as $cate)
+	// 	{
+	// 		// Adding the descriptions if they are filled
+	// 		$desccateg=$cate->add_description;
+	// 		if ($desccateg)
+	// 			$libelleproduitservice.='__N__'.$desccateg;
+	// 	}
+	// }
 
 	if (! empty($object->lines[$i]->date_start) || ! empty($object->lines[$i]->date_end))
 	{
@@ -963,19 +963,19 @@ function pdf_cesgm_getlinedesc($object,$i,$outputlangs,$hideref=0,$hidedesc=0,$i
 		//print $libelleproduitservice;
 	}
 
-	if ($dbatch)
-	{
-		$format='day';
-		foreach ($dbatch as $detail)
-		{
-			$dte=array();
-			if ($detail->eatby) $dte[]=$outputlangs->transnoentitiesnoconv('printEatby',dol_print_date($detail->eatby, $format, false, $outputlangs));
-			if ($detail->sellby) $dte[]=$outputlangs->transnoentitiesnoconv('printSellby',dol_print_date($detail->sellby, $format, false, $outputlangs));
-			if ($detail->batch) $dte[]=$outputlangs->transnoentitiesnoconv('printBatch',$detail->batch);
-			$dte[]=$outputlangs->transnoentitiesnoconv('printQty',$detail->dluo_qty);
-			$libelleproduitservice.= "__N__  ".implode($dte,"-");
-		}
-	}
+	// if ($dbatch)
+	// {
+	// 	$format='day';
+	// 	foreach ($dbatch as $detail)
+	// 	{
+	// 		$dte=array();
+	// 		if ($detail->eatby) $dte[]=$outputlangs->transnoentitiesnoconv('printEatby',dol_print_date($detail->eatby, $format, false, $outputlangs));
+	// 		if ($detail->sellby) $dte[]=$outputlangs->transnoentitiesnoconv('printSellby',dol_print_date($detail->sellby, $format, false, $outputlangs));
+	// 		if ($detail->batch) $dte[]=$outputlangs->transnoentitiesnoconv('printBatch',$detail->batch);
+	// 		$dte[]=$outputlangs->transnoentitiesnoconv('printQty',$detail->dluo_qty);
+	// 		$libelleproduitservice.= "__N__  ".implode($dte,"-");
+	// 	}
+	// }
 
 	// Now we convert \n into br
 	if (dol_textishtml($libelleproduitservice)) $libelleproduitservice=preg_replace('/__N__/','<br>',$libelleproduitservice);

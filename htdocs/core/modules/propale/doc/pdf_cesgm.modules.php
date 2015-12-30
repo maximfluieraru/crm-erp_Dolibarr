@@ -280,39 +280,39 @@ class pdf_cesgm extends ModelePDFPropales
 				$tab_height = 130;
 				$tab_height_newpage = 150;
 
-				// Affiche notes
-				$notetoshow=empty($object->note_public)?'':$object->note_public;
-				if (! empty($conf->global->MAIN_ADD_SALE_REP_SIGNATURE_IN_NOTE))
-				{
-					// Get first sale rep
-					if (is_object($object->thirdparty))
-					{
-						$salereparray=$object->thirdparty->getSalesRepresentatives($user);
-						$salerepobj=new User($this->db);
-						$salerepobj->fetch($salereparray[0]['id']);
-						if (! empty($salerepobj->signature)) $notetoshow=dol_concatdesc($notetoshow, $salerepobj->signature);
-					}
-				}
-				if ($notetoshow)
-				{
-					$tab_top = 88;
+				// // Affiche notes
+				// $notetoshow=empty($object->note_public)?'':$object->note_public;
+				// if (! empty($conf->global->MAIN_ADD_SALE_REP_SIGNATURE_IN_NOTE))
+				// {
+				// 	// Get first sale rep
+				// 	if (is_object($object->thirdparty))
+				// 	{
+				// 		$salereparray=$object->thirdparty->getSalesRepresentatives($user);
+				// 		$salerepobj=new User($this->db);
+				// 		$salerepobj->fetch($salereparray[0]['id']);
+				// 		if (! empty($salerepobj->signature)) $notetoshow=dol_concatdesc($notetoshow, $salerepobj->signature);
+				// 	}
+				// }
+				// if ($notetoshow)
+				// {
+				// 	$tab_top = 88;
 
-					$pdf->SetFont('','', $default_font_size - 1);
-					$pdf->writeHTMLCell(190, 3, $this->posxdesc-1, $tab_top, dol_htmlentitiesbr($notetoshow), 0, 1);
-					$nexY = $pdf->GetY();
-					$height_note=$nexY-$tab_top;
+				// 	$pdf->SetFont('','', $default_font_size - 1);
+				// 	$pdf->writeHTMLCell(190, 3, $this->posxdesc-1, $tab_top, dol_htmlentitiesbr($notetoshow), 0, 1);
+				// 	$nexY = $pdf->GetY();
+				// 	$height_note=$nexY-$tab_top;
 
-					// Rect prend une longueur en 3eme param
-					$pdf->SetDrawColor(192,192,192);
-					$pdf->Rect($this->marge_gauche, $tab_top-1, $this->page_largeur-$this->marge_gauche-$this->marge_droite, $height_note+1);
+				// 	// Rect prend une longueur en 3eme param
+				// 	$pdf->SetDrawColor(192,192,192);
+				// 	$pdf->Rect($this->marge_gauche, $tab_top-1, $this->page_largeur-$this->marge_gauche-$this->marge_droite, $height_note+1);
 
-					$tab_height = $tab_height - $height_note;
-					$tab_top = $nexY+6;
-				}
-				else
-				{
-					$height_note=0;
-				}
+				// 	$tab_height = $tab_height - $height_note;
+				// 	$tab_top = $nexY+6;
+				// }
+				// else
+				// {
+				// 	$height_note=0;
+				// }
 ////////////////////////// begin position of main table //////////////
 //----------------------------------------------
 				$tab_top = $pdf->getY();
@@ -331,8 +331,8 @@ class pdf_cesgm extends ModelePDFPropales
 					$pdf->SetTextColor(0,0,0);
 
 					// Define size of image if we need it
-					$imglinesize=array();
-					if (! empty($realpatharray[$i])) $imglinesize=pdf_getSizeForImage($realpatharray[$i]);
+					// $imglinesize=array();
+					// if (! empty($realpatharray[$i])) $imglinesize=pdf_getSizeForImage($realpatharray[$i]);
 
 					$pdf->setTopMargin($tab_top_newpage);
 					$pdf->setPageOrientation('', 1, $heightforfooter+$heightforfreetext+$heightforinfotot);	// The only function to edit the bottom margin of current page to set it.
@@ -343,30 +343,33 @@ class pdf_cesgm extends ModelePDFPropales
 					$posYAfterDescription=0;
 
 					// We start with Photo of product line
-					if (isset($imglinesize['width']) && isset($imglinesize['height']) && ($curY + $imglinesize['height']) > ($this->page_hauteur-($heightforfooter+$heightforfreetext+$heightforinfotot)))	// If photo too high, we moved completely on new page
-					{
-						$pdf->AddPage('','',true);
-						if (! empty($tplidx)) $pdf->useTemplate($tplidx);
-						if (empty($conf->global->MAIN_PDF_DONOTREPEAT_HEAD)) $this->_pagehead($pdf, $object, 0, $outputlangs);
-						$pdf->setPage($pageposbefore+1);
+					// if (isset($imglinesize['width']) && isset($imglinesize['height']) && ($curY + $imglinesize['height']) > ($this->page_hauteur-($heightforfooter+$heightforfreetext+$heightforinfotot)))	// If photo too high, we moved completely on new page
+					// {
+					// 	$pdf->AddPage('','',true);
+					// 	if (! empty($tplidx)) $pdf->useTemplate($tplidx);
+					// 	if (empty($conf->global->MAIN_PDF_DONOTREPEAT_HEAD)) $this->_pagehead($pdf, $object, 0, $outputlangs);
+					// 	$pdf->setPage($pageposbefore+1);
 
-						$curY = $tab_top_newpage;
-						$showpricebeforepagebreak=0;
-					}
+					// 	$curY = $tab_top_newpage;
+					// 	$showpricebeforepagebreak=0;
+					// }
 
-					if (isset($imglinesize['width']) && isset($imglinesize['height']))
-					{
-						$curX = $this->posxpicture-1;
-						$pdf->Image($realpatharray[$i], $curX + (($this->posxtva-$this->posxpicture-$imglinesize['width'])/2), $curY, $imglinesize['width'], $imglinesize['height'], '', '', '', 2, 300);	// Use 300 dpi
-						// $pdf->Image does not increase value return by getY, so we save it manually
-						$posYAfterImage=$curY+$imglinesize['height'];
-					}
+					// if (isset($imglinesize['width']) && isset($imglinesize['height']))
+					// {
+					// 	$curX = $this->posxpicture-1;
+					// 	$pdf->Image($realpatharray[$i], $curX + (($this->posxtva-$this->posxpicture-$imglinesize['width'])/2), $curY, $imglinesize['width'], $imglinesize['height'], '', '', '', 2, 300);	// Use 300 dpi
+					// 	// $pdf->Image does not increase value return by getY, so we save it manually
+					// 	$posYAfterImage=$curY+$imglinesize['height'];
+					// }
 
 					// Description of product line
 					$curX = $this->posxdesc-1;
 
 					$pdf->startTransaction();
-					pdf_cesgm_writelinedesc($pdf,$object,$i,$outputlangs,$this->posxpicture-$curX,3,$curX,$curY,$hideref,$hidedesc);
+
+					$width_of_line = 160;//description line
+
+					pdf_cesgm_writelinedesc($pdf,$object,$i,$outputlangs,$width_of_line/*$this->posxpicture-$curX*/,3,$curX,$curY,$hideref,$hidedesc);
 
 					$pageposafter=$pdf->getPage();
 					if ($pageposafter > $pageposbefore)	// There is a pagebreak
@@ -375,7 +378,7 @@ class pdf_cesgm extends ModelePDFPropales
 						$pageposafter=$pageposbefore;
 						//print $pageposafter.'-'.$pageposbefore;exit;
 						$pdf->setPageOrientation('', 1, $heightforfooter);	// The only function to edit the bottom margin of current page to set it.
-						pdf_cesgm_writelinedesc($pdf,$object,$i,$outputlangs,$this->posxpicture-$curX,3,$curX,$curY,$hideref,$hidedesc);
+						pdf_cesgm_writelinedesc($pdf,$object,$i,$outputlangs,$width_of_line/*$this->posxpicture-$curX*/,3,$curX,$curY,$hideref,$hidedesc);
 
 						$pageposafter=$pdf->getPage();
 						$posyafter=$pdf->GetY();
@@ -392,7 +395,7 @@ class pdf_cesgm extends ModelePDFPropales
 						else
 						{
 							// We found a page break
-							$showpricebeforepagebreak=0;
+							$showpricebeforepagebreak=1;
 						}
 					}
 					else	// No pagebreak
@@ -1741,6 +1744,7 @@ class pdf_cesgm extends ModelePDFPropales
 //----------------------------------------
 			$_client_ = $object->client;
 
+			// prospect private note 
 			$_adresse_trav = (empty($object->note_private)? $_client_->address:$object->note_private);
 
 			$_emetteur_infos = [	"Nom :" => $_client_ ->name,
