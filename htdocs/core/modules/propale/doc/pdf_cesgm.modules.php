@@ -804,6 +804,59 @@ class pdf_cesgm extends ModelePDFPropales
 
 
 ///================================= begin
+		$text_conv = "\n2.\tDébut et fin";
+		$text_conv .= "\n\tLes travaux seront débutés le";
+		
+		$text_conv .= "\t".dol_print_date($object->date,'day','',$outputlangs)."\t";
+
+		$text_conv .= "et seront terminés vers/ou le";
+
+		$text_conv .= "\t".dol_print_date($object->fin_validite,'day','',$outputlangs)."\t";
+
+		$text_conv .= ", sauf si le client provoque un retard par son défaut de respecter ses obligations aux termes des présentes ou pour toute";
+		$text_conv .= " cause de force majeure; seront assimilés à une force majeure le cas d'une grève ou d'un lock-out.";
+
+		$text_conv .= "\n3.\tRéception de l'ouvrage";
+		$text_conv .= "\n\tLe client sera présumé avoir reçu l'ouvrage à la première des éventualités suivantes, et ce, malgré toute réserve qu'il pourrait";
+		$text_conv .= " imposer, soit à la date de la fin des travaux décrits ci-devant, où à la date à la quelle l'immeuble sera prêt à être occupé.";
+
+		$text_conv .= "\n\t4.\tPrix";
+		$text_conv .= "\n\tLe client et l'entrepreneur conviennet que le prix convenu pour l'éxécution de l'ouvrage se détaille comme suit :";
+
+		$text_conv .= "\n\tPrix d'ouvrage";
+
+		$text_conv .= "\t\t".$pdf->getY()."-".price($object->total_ht, 0, $outputlangs)."\t$";
+
+			//$m_tps = $object->total_ht * (($conf->global->TPS));
+
+		$text_conv .="\n\tTaxe sur les produits et services (TPS)";
+
+		$text_conv .= "\t\t".$pdf->getY()."-".price($object->total_tva, 0, $outputlangs)."\t$";
+		
+		$text_conv .= "\n\tSous-total";
+
+	
+
+		$m_tps = $object->total_ht + $object->total_tva;
+
+		
+
+		$text_conv .= "\t\t".price($m_tps, 0, $outputlangs)."\t$";
+
+		$text_conv .="\n\tTaxe de vente du Québec (TVQ)";
+
+		$text_conv .= "\t\t".$pdf->getY()."-".price($object->total_localtax1, 0, $outputlangs)."\t$";
+
+		$text_conv .= "\n\tTOTAL :".$pdf->getY()."-";
+
+		$m_tot = $object->total_ht + $m_tps + $m_tvq;
+
+		$text_conv .= "\t\t".$pdf->getY()."-".price($object->total_ttc, 0, $outputlangs)."\t$";
+
+		$text_conv .= "\n\tet sera payable comme suit:"; 
+		$text_conv .= "\n\tet sera payable comme suit:"; 
+		$text_conv .= "\n\tet sera payable comme suit:".$posy; 
+
 
 		//$posy = $tab2_top+20 + $tab2_hl * $index;
 		$posx = 10;
@@ -816,9 +869,13 @@ class pdf_cesgm extends ModelePDFPropales
 		//$text_conv='PROPALE_FREE_TEXT';
 		//$pdf->MultiCell(200,5, $conf->global->$text_conv, 0, 'L');
 
-		$text_conv = "Toutefois ce prix est soumis aux réserves suivantes: \n\t4.1\tLe client paiera à l'entrepreneur un intérêt mensuel de deux pour cent (2%) sur toute somme due, soit 24% par année, le tout sous réserve à tout autre recours de l'entrepreneur contre le client.";
-		$text_conv .="\n\t4.2\tEn cas de recours judiciaire de l'entrepreneur contre le client pour le recouvrement de sommes dues, les frais judiciaires et extrajuiciares en cours en pareil cas par l'entrepreneur sont à la charge du client mais ne seront en aucun cas supérieur à 30% du prix du contrat.";
-		$pdf->MultiCell(200,5,$text_conv, 0, 'L');
+		$text_conv .= "Toutefois ce prix est soumis aux réserves suivantes: ";
+		$text_conv .= "\n\t4.1\tLe client paiera à l'entrepreneur un intérêt mensuel de deux pour cent (2%) sur toute somme due, soit 24% par année,";
+		$text_conv .= "le tout sous réserve à tout autre recours de l'entrepreneur contre le client.";
+		$text_conv .= "\n\t4.2\tEn cas de recours judiciaire de l'entrepreneur contre le client pour le recouvrement de sommes dues, les frais judiciaires";
+		$text_conv .= " et extrajuiciares en cours en pareil cas par l'entrepreneur sont à la charge du client mais ne seront en aucun cas supérieur à 30% du prix du contrat.";
+		
+		$pdf->MultiCell(191,5,$text_conv, 0, 'L');
 
 ///================================= end
 
@@ -1090,8 +1147,8 @@ class pdf_cesgm extends ModelePDFPropales
 			//$text_conv='PROPALE_FREE_TEXT';
 			//$pdf->MultiCell(200,5, $conf->global->$text_conv, 0, 'L');
 
-			$text_conv = "Toutefois ce prix est soumis aux réserves suivantes: \n\t4.1\tLe client paiera à l'entrepreneur un intérêt mensuel de deux pour cent (2%) sur toute somme due, soit 24% par année, le tout sous réserve à tout autre recours de l'entrepreneur contre le client.";	
-			$text_conv .="\n\t4.2\tEn cas de recours judiciaire de l'entrepreneur contre le client pour le recouvrement de sommes dues, les frais judiciaires et extrajuiciares en cours en pareil cas par l'entrepreneur sont à la charge du client mais ne seront en aucun cas supérieur à 30% du prix du contrat.";
+			// $text_conv = "Toutefois ce prix est soumis aux réserves suivantes: \n\t4.1\tLe client paiera à l'entrepreneur un intérêt mensuel de deux pour cent (2%) sur toute somme due, soit 24% par année, le tout sous réserve à tout autre recours de l'entrepreneur contre le client.";	
+			// $text_conv .="\n\t4.2\tEn cas de recours judiciaire de l'entrepreneur contre le client pour le recouvrement de sommes dues, les frais judiciaires et extrajuiciares en cours en pareil cas par l'entrepreneur sont à la charge du client mais ne seront en aucun cas supérieur à 30% du prix du contrat.";
 			$pdf->MultiCell(200,5,$text_conv, 0, 'L');
 
 			// $pdf->SetTextColor(0,0,0);
@@ -1306,20 +1363,20 @@ class pdf_cesgm extends ModelePDFPropales
 		$pdf->SetFont('','B',$default_font_size + 3);
 		$pdf->SetXY($posx,$posy);
 		$pdf->SetTextColor(0,0,60);
-		$title=$outputlangs->transnoentities("CommercialProposal");
+		//$title=$outputlangs->transnoentities("CommercialProposal");
+		$title="CONTRAT D'ENTREPRISE";
 		$pdf->MultiCell(100, 4, $title, '', 'R');
 
-		$pdf->SetFont('','B',$default_font_size);
+		$pdf->SetFont('','B',$default_font_size+2);
 
-		$posy+=5;
+		$posy+=5.5;
 		$pdf->SetXY($posx,$posy);
-		$pdf->SetTextColor(0,0,60);
-		$pdf->MultiCell(100, 4, $outputlangs->transnoentities("Ref")." : " . $outputlangs->convToOutputCharset($object->ref), '', 'R');
-
-///---------------------end Contrat d'entreprise-------------------------------/////
+		$pdf->SetTextColor(255,0,0);
+		$pdf->MultiCell(100, 4, /*$outputlangs->transnoentities("Ref")." : " .*/ $outputlangs->convToOutputCharset($object->ref), '', 'R');
 
 
-//------------------- to be modified ----------------//	
+
+//------------------- BEGIN----------------//	
 		$posy+=1;
 		$pdf->SetFont('','', $default_font_size - 1);
 
@@ -1332,27 +1389,28 @@ class pdf_cesgm extends ModelePDFPropales
 		}
 
 		$posy+=4;
-		$pdf->SetXY($posx,$posy);
-		$pdf->SetTextColor(0,0,60);
-		$pdf->MultiCell(100, 3, $outputlangs->transnoentities("Date")." : " . dol_print_date($object->date,"day",false,$outputlangs,true), '', 'R');
+		// $pdf->SetXY($posx,$posy);
+		// $pdf->SetTextColor(0,0,60);
+		// $pdf->MultiCell(100, 3, $outputlangs->transnoentities("Date")." : " . dol_print_date($object->date,"day",false,$outputlangs,true), '', 'R');
 
 		$posy+=4;
-		$pdf->SetXY($posx,$posy);
-		$pdf->SetTextColor(0,0,60);
-		$pdf->MultiCell(100, 3, $outputlangs->transnoentities("DateEndPropal")." : " . dol_print_date($object->fin_validite,"day",false,$outputlangs,true), '', 'R');
+		// $pdf->SetXY($posx,$posy);
+		// $pdf->SetTextColor(0,0,60);
+		// $pdf->MultiCell(100, 3, $outputlangs->transnoentities("DateEndPropal")." : " . dol_print_date($object->fin_validite,"day",false,$outputlangs,true), '', 'R');
 
-		if ($object->client->code_client)
-		{
-			$posy+=4;
-			$pdf->SetXY($posx,$posy);
-			$pdf->SetTextColor(0,0,60);
-			$pdf->MultiCell(100, 3, $outputlangs->transnoentities("CustomerCode")." : " . $outputlangs->transnoentities($object->client->code_client), '', 'R');
-		}
+		// if ($object->client->code_client)
+		// {
+		// 	$posy+=4;
+		// 	$pdf->SetXY($posx,$posy);
+		// 	$pdf->SetTextColor(0,0,60);
+		// 	$pdf->MultiCell(100, 3, $outputlangs->transnoentities("CustomerCode")." : " . $outputlangs->transnoentities($object->client->code_client), '', 'R');
+		// }
 
 		$posy+=2;
 
-//------------------- end to be modified ----------------//	
+//------------------- end  ----------------//	
 
+///---------------------end Contrat d'entreprise-------------------------------/////
 
 
 
@@ -1397,7 +1455,7 @@ class pdf_cesgm extends ModelePDFPropales
 
 			$posy=$pdf->getY();
 
-			$posy += 5;
+			$posy += 9;
 			$pdf->SetTextColor(0,0,0);
 			$pdf->SetFont('','B', $default_font_size);
 			$pdf->SetXY($posx,$posy);
@@ -1433,10 +1491,10 @@ class pdf_cesgm extends ModelePDFPropales
 									"Télécopieur :" => $this->emetteur->fax,
 									"# licence RBQ :" => LICENCE_RBQ,
 									"Courriel :" => $this->emetteur->email,
-									"Représentant :" => $user->getFullName($outputlangs),
-									"R_Adresse :" => "à determiner",
-									"R_Ville :" => "à determiner",
-									"R_Code postal :" => "à determiner"
+									"Représentant :" => $user->getFullName($outputlangs)//,
+									// "R_Adresse :" => "à determiner",
+									// "R_Ville :" => "à determiner",
+									// "R_Code postal :" => "à determiner"
 								];
 
 
@@ -1683,13 +1741,15 @@ class pdf_cesgm extends ModelePDFPropales
 //----------------------------------------
 			$_client_ = $object->client;
 
+			$_adresse_trav = (empty($object->note_private)? $_client_->address:$object->note_private);
+
 			$_emetteur_infos = [	"Nom :" => $_client_ ->name,
 									"Adresse :" => $_client_ ->address,
 									"Ville :" => $_client_ ->town,
 									"Code postal :" => $_client_ ->zip,
 									"Téléphone :" => $_client_ ->phone,
 									"Télécopieur :" => $_client_ ->fax,
-									"Adresse des travaux :" => $object->note_private//"à determiner à determiner à determiner à determiner"//"à determiner à determiner à determiner à determiner à determiner à determiner à determiner à determiner à determiner à determinerà determiner à determiner à determinerà determiner à determiner à determiner à determiner à determiner à determiner à determiner à determiner"
+									"Adresse des travaux :" => $_adresse_trav
 								];
 
 
@@ -1834,7 +1894,7 @@ class pdf_cesgm extends ModelePDFPropales
 
 
 
-			///--- CONVIENNENT DE CE QUI SUIT:  + 1 -- //
+			///--- begin CONVIENNENT DE CE QUI SUIT:  + 1. .. -- //
 			$posy += 8;
 
 			$pdf->SetTextColor(0,0,0);
@@ -1856,11 +1916,8 @@ class pdf_cesgm extends ModelePDFPropales
 			$pdf->MultiCell(200,5, $under_text_1, 0, 'L');
 
 
-			/// -- CONVIENNENT DE CE QUI SUIT:  + 1 -- //
+			/// -- end CONVIENNENT DE CE QUI SUIT:  + 1. .. -- //
 		}
-
-
-
 
 
 		$pdf->SetTextColor(0,0,0);
@@ -1877,7 +1934,7 @@ class pdf_cesgm extends ModelePDFPropales
 	 */
 	function _pagefoot(&$pdf,$object,$outputlangs,$hidefreetext=0)
 	{
-		$_text_ = "";//'PROPALE_FREE_TEXT';
+		$_text_ ="";//'PROPALE_FREE_TEXT'; //is a CONST added in Data Base
 		return pdf_cesgm_pagefoot($pdf,$outputlangs,$_text_,$this->emetteur,$this->marge_basse,$this->marge_gauche,$this->page_hauteur,$object,0,$hidefreetext);
 	}
 

@@ -33,9 +33,6 @@ prefix contrat !!???
 
 date début-fin !!???
 
-prix + taxes ????
-
-scaner
 
 [[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 
@@ -60,12 +57,16 @@ PDF  - TCPDF (/Applications/XAMPP/xamppfiles/htdocs/cesgm/htdocs/includes/tcpdf/
 
 # create user ..... (language from browser) !!! (users>user interface>language)
 
+tva - tvq - Configuration/Dictionnaires/Taux de TVA ou de Taxes de Ventes
+ **** CA - Canada	5	Non	Oui (Type 1)	9,975 ... TPS and TVQ ratee ****
 
 code_client (Customer code) - DB 'societe'
 
 1092 - main rectangle pdf (pdf_cesgm)
 
 -!-Class to manage numbering of thirdparties code - core/societe/doc/mod_codeclient_leopard.php
+
+Adresse travaux = note privé prospect (si non l'adresse par default)
 
 ----------------------=========================----------------------------------
 
@@ -90,6 +91,7 @@ Max's chages:
 				- (line 1658 - 1662) info about Dolibarr (put in comments)
 				- (line 1682 - 1693) Dolibarr wiki (put in comments)
 				- (line 1697 - 1718) Link to bugtrack (put in comments)
+				- (line 1441 & 1443) DOL_VERSION(# of version) (put in comments)
 
 	# htdocs/install/ (moved to unused folders)
 			*index.php added (redirection to htdocs/index.php)
@@ -131,6 +133,7 @@ Max's chages:
 	# Documents/mycompany/logos/thumbs/
 			* cesgm.logo.png (added)
 	
+	#
 
 
 

@@ -1438,9 +1438,9 @@ function top_menu($head, $title='', $target='', $disablejs=0, $disablehead=0, $a
 	    	$appli=$conf->global->MAIN_APPLICATION_TITLE;
 	    	if (preg_match('/\d\.\d/', $appli))
 	    	{
-				if (! preg_match('/'.preg_quote(DOL_VERSION).'/', $appli)) $appli.=" (".DOL_VERSION.")";	// If new title contains a version that is different than core
+				if (! preg_match('/'.preg_quote(DOL_VERSION).'/', $appli)); //$appli.=" (".DOL_VERSION.")";	// If new title contains a version that is different than core
 	    	}
-	    	else $appli.=" ".DOL_VERSION;
+	    	//else $appli.=" ".DOL_VERSION;
 	    }
 	    else $appli.=" ".DOL_VERSION;
 

@@ -527,7 +527,7 @@ function pdf_cesgm_pagehead(&$pdf,$outputlangs,$page_height)
  * 	@return	int							Return height of bottom margin including footer text
  */
 function pdf_cesgm_pagefoot(&$pdf,$outputlangs,$paramfreetext,$fromcompany,$marge_basse,$marge_gauche,$page_hauteur,$object,$showdetails=0,$hidefreetext=0)
-{
+{		 
 	global $conf,$user;
 
 	$outputlangs->load("dict");
