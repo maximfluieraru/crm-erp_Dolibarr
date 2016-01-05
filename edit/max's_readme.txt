@@ -37,6 +37,8 @@ date début-fin !!???
 [[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 
 
+ writing job/service/product description // Loop on each lines     pdf_cesgm.modules.php ~ 326
+
 function pdf_build_address
 
 <head> 								main.inc.php  ~952
@@ -142,7 +144,7 @@ Max's chages:
 
 4.3 L'entrepreneur ne fournira pas :
 	|__| les matériaux _____________
-	|__| l'outilage et équipement : __________
+	|__| l'outillage et équipement : __________
 
 			Qui seront aux seuls frais du client.
 
@@ -154,12 +156,12 @@ Max's chages:
 	* Changement dans les conditions d'exécution de l'ouvrage hors du contrôle de l'entrepreneur, tel que, ey sans limitation aucune, pluies diluviennes, froid intense, toute force majeure;
 
 5. Libre exécution
-	Le client laissera à l'entrepreneur libre exécution des travaux mais pourra, à sa guise, mais sans nuire à la bonne exécution des travaux par l'entrepreneur, inspecter l'ouvrage;
+	Le client laissera à l'entrepreneur libre exécution des travaux mais pourra, à sa guise, mais sans nuire à la bonne exécution des travaux par l'entrepreneur, inspecter l'ouvrage.
 
 6. Modifications
 	Le client pourra demander à l'entrepreneur d'exécuter des modifications à l'ouvrage seulement si telles modificcations sont requises du client par écrit et qu'elles soient acceptées par écrit quant à leurs prix, nature et échéance par l'entrepreneur et le client.
 
-7. Non disponibilité de matériaué
+7. Non disponibilité de matériaux
 	Dans l'éventualité où des matériaux nécessités à l'exécution de l'ouvrage ne sont plus disponibles dans les délais permettant de respecter la terminaison de l'ouvrage selon les termes des présentes, l'entrepreneur pourra substituer tout matériaux de qualité équivalente ou supérieure, sauf objection du client qui renoncera alors à tout dédommagement pou retard dans la livraison de l'ouvrage.
 
 8. Résiliation par le client
