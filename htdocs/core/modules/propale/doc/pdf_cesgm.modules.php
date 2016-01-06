@@ -1302,67 +1302,73 @@ class pdf_cesgm extends ModelePDFPropales
 		$text = "Ce prix sera soumis à révision à la hausse par l'entrepreneur et ce confomément à une entente entre les parties das les éventualités suivantes:";
 		$pdf->MultiCell(179, 5, $text, 0, '');
 
-		$posy += 11;
-		$posx += 2;
+		$posy += 7;
 		$pdf->SetXY($posx,$posy);
-		$pdf->SetLineWidth(1);
-		$pdf->Circle($posx, $posy, 0.3, "F"); // a big dot
+		$pdf->SetFont('','B', $default_font_size+4);
+		$pdf->Cell(1, 1, chr(127), 0, 0, 'L');// A BULLET
+		$pdf->SetFont('','', $default_font_size-1);
 
-		$posx += 2;
-		$posy -= 2;
+		$posx += 3;
+		$posy++;
 		$pdf->SetXY($posx,$posy);
 		$text = "Modifications aux plans, devis, cahiers de charges ou aux travaux à exécuter par le client;";
 		$pdf->MultiCell(179, 5, $text, 0, '');
 
-		$posy += 5.5;
-		$posx -= 2;
+		$posy += 3;
+		$posx -= 3;
 		$pdf->SetXY($posx,$posy);
-		$pdf->SetLineWidth(1);
-		$pdf->Circle($posx, $posy, 0.3, "F"); // a big dot
+		$pdf->SetFont('','B', $default_font_size+4);
+		$pdf->Cell(1, 1, chr(127), 0, 0, 'L');// A BULLET
+		$pdf->SetFont('','', $default_font_size-1);
 
-		$posx += 2;
-		$posy -= 2;
+		$posx += 3;
+		$posy ++;
 		$pdf->SetXY($posx,$posy);
 		$text = "Erreur et/ou omission dans les plans, devis, chaiers de chargers, études et/ou expertises soumis par le client;";
 		$pdf->MultiCell(179, 5, $text, 0, '');
+		$pdf->MultiCell(179, 5, chr(0), 0, '');
 
 
-		$posy += 5.5;
-		$posx -= 2;
+		$posy += 3;
+		$posx -= 3;
 		$pdf->SetXY($posx,$posy);
-		$pdf->SetLineWidth(1);
-		$pdf->Circle($posx, $posy, 0.3, "F"); // a big dot
+		$pdf->SetFont('','B', $default_font_size+4);
+		$pdf->Cell(1, 1, chr(127), 0, 0, 'L');// A BULLET
+		$pdf->SetFont('','', $default_font_size-1);
 
-		$posx += 2;
-		$posy -= 2;
+		$posx += 3;
+		$posy ++;
 		$pdf->SetXY($posx,$posy);
 		$text = "Hausse du coût de la main d'ouvre pour cause de modifications aux conventions collectives, à une Loi ou un réglement par tout instance gouvernamentale ou l'application d'une convention collective non connue à la signature des présentes;";
 		$pdf->MultiCell(179, 5, $text, 0, '');
 
-		$posy += 10;
-		$posx -= 2;
+		$posy += 7;
+		$posx -= 3;
 		$pdf->SetXY($posx,$posy);
-		$pdf->SetLineWidth(1);
-		$pdf->Circle($posx, $posy, 0.3, "F"); // a big dot
+		$pdf->SetFont('','B', $default_font_size+4);
+		$pdf->Cell(1, 1, chr(127), 0, 0, 'L');// A BULLET
+		$pdf->SetFont('','', $default_font_size-1);
 
-		$posx += 2;
-		$posy -= 2;
+		$posx += 3;
+		$posy ++;
 		$pdf->SetXY($posx,$posy);
 		$text = "Hausse du coût des matériaux, de l'outillage et/ou équipement pour cause d'entrée en vigueurd, une nouvelle taxe de quelque nature que ce soit;";
 		$pdf->MultiCell(179, 5, $text, 0, '');
 
-		$posy += 10;
-		$posx -= 2;
+		$posy += 7;
+		$posx -= 3;
 		$pdf->SetXY($posx,$posy);
-		$pdf->SetLineWidth(1);
-		$pdf->Circle($posx, $posy, 0.3, "F"); // a big dot
+		$pdf->SetFont('','B', $default_font_size+4);
+		$pdf->Cell(1, 1, chr(127), 0, 0, 'L');// A BULLET
+		$pdf->SetFont('','', $default_font_size-1);
 
-		$posx += 2;
-		$posy -= 2;
+		$posx += 3;
+		$posy ++;
 		$pdf->SetXY($posx,$posy);
-		$text = "Changement dans les conditions d'exécution de l'ouvrage hors du contrôle de l'entrepreneur, tel que, ey sans limitation aucune, pluies diluviennes, froid intense, toute force majeure;";
+		$text = "Changement dans les conditions d'exécution de l'ouvrage hors du contrôle de l'entrepreneur, tel que, et sans limitation aucune, pluies diluviennes, froid intense, toute force majeure;";
 		$pdf->MultiCell(179, 5, $text, 0, '');
 
+		//---5----//
 		$posx = 10;
 		$posy += 10;
 		$pdf->SetFont('','B', $default_font_size-1);
@@ -1382,7 +1388,7 @@ class pdf_cesgm extends ModelePDFPropales
 		$text = "Le client laissera à l'entrepreneur libre exécution des travaux mais pourra, à sa guise, mais sans nuire à la bonne exécution des travaux par l'entrepreneur, inspecter l'ouvrage."; 
 		$pdf->MultiCell(185, 5, $text, 0, 'L');
 
-
+		//---6----//
 		$posx = 10;
 		$posy += 10;
 		$pdf->SetFont('','B', $default_font_size-1);
@@ -1402,8 +1408,9 @@ class pdf_cesgm extends ModelePDFPropales
 		$text = "Le client pourra demander à l'entrepreneur d'exécuter des modifications à l'ouvrage seulement si telles modificcations sont requises du client par écrit et qu'elles soient acceptées par écrit quant à leurs prix, nature et échéance par l'entrepreneur et le client."; 
 		$pdf->MultiCell(185, 5, $text, 0, 'L');
 		
+		//---7----//
 		$posx = 10;
-		$posy += 13;
+		$posy += 14;
 		$pdf->SetFont('','B', $default_font_size-1);
 		$pdf->SetXY($posx,$posy);
 		$text = "7."; 
@@ -1422,7 +1429,185 @@ class pdf_cesgm extends ModelePDFPropales
 		$pdf->MultiCell(185, 5, $text, 0, 'L');
 
 
-		$pdf->SetLineWidth();//to default size used for next lines
+		//---8----//
+		$posx = 10;
+		$posy += 18;
+		$pdf->SetFont('','B', $default_font_size-1);
+		$pdf->SetXY($posx,$posy);
+		$text = "8.";  
+		$pdf->MultiCell(10, 5, $text, 0, 'L');
+
+		$posx += 5;
+		$pdf->SetXY($posx,$posy);
+		$text = "Résiliation par le client";
+		$pdf->MultiCell(60, 5, $text, 0, '');
+
+		$posy += 5;
+		$pdf->SetFont('','', $default_font_size-1);
+		$pdf->SetXY($posx,$posy);
+		$text = "8.1"; 
+		$pdf->MultiCell(10, 5, $text, 0, 'L');
+
+		$posx += 6;
+		$pdf->SetFont('','', $default_font_size-1);
+		$pdf->SetXY($posx,$posy);
+		$text = "Qu'en cas de défaut de l'entrepreneur de respecter ses obligations aux termes sea présentes, sous réserve de tous ses recours;"; 
+		$pdf->MultiCell(180, 5, $text, 0, 'L');
+
+		$posy += 8;
+		$posx -= 6;
+		$pdf->SetFont('','', $default_font_size-1);
+		$pdf->SetXY($posx,$posy);
+		$text = "8.2"; 
+		$pdf->MultiCell(10, 5, $text, 0, 'L');
+
+		$posx += 6;
+		$pdf->SetFont('','', $default_font_size-1);
+		$pdf->SetXY($posx,$posy);
+		$text = "En payant à l'entrepreneur en proportion du prix convenu, les frais et dépenses actuelles, la valeur des travaux exécutés avant la notification de la résiliation, la valeur des biens fournism une indemnité additionnelle équivalente à vingt pour cent (20%) de la valeur totale du contrat à titre de perte de profit, et tout autre préjudice que l'entrepreneur pourra subir;";
+		$pdf->MultiCell(180, 5, $text, 0, 'L');
+
+		//---9----//
+		$posx = 10;
+		$posy += 15;
+		$pdf->SetFont('','B', $default_font_size-1);
+		$pdf->SetXY($posx,$posy);
+		$text = "9.";  
+		$pdf->MultiCell(10, 5, $text, 0, 'L');
+
+		$posx += 5;
+		$pdf->SetXY($posx,$posy);
+		$text = "Résiliation par l'entrepreneur";
+		$pdf->MultiCell(70, 5, $text, 0, '');
+
+		$posy += 5;
+		$pdf->SetFont('','', $default_font_size-1);
+		$pdf->SetXY($posx,$posy);
+		$text = "9.1"; 
+		$pdf->MultiCell(10, 5, $text, 0, 'L');
+
+		$posx += 6;
+		$pdf->SetFont('','', $default_font_size-1);
+		$pdf->SetXY($posx,$posy);
+		$text = "Qu'en cas de défaut par le client de respecter ses obligations aux termes des présentes, sous réserve de tous ses recours;";
+		$pdf->MultiCell(180, 5, $text, 0, 'L');
+
+		$posy += 5;
+		$posx -= 6;
+		$pdf->SetFont('','', $default_font_size-1);
+		$pdf->SetXY($posx,$posy);
+		$text = "9.2"; 
+		$pdf->MultiCell(10, 5, $text, 0, 'L');
+
+		$posx += 6;
+		$pdf->SetFont('','', $default_font_size-1);
+		$pdf->SetXY($posx,$posy);
+		$text = "Pour motif sérieux, mais jamais à contretemps, et en faisant tout ce qui est immédiatement nécessaire pou prévenir une perte et en assurant tout préjudice causé au client par une telle résiliation;";
+		$pdf->MultiCell(180, 5, $text, 0, 'L');
+
+		//---10----//
+		$posx = 10;
+		$posy += 11;
+		$pdf->SetFont('','B', $default_font_size-1);
+		$pdf->SetXY($posx,$posy);
+		$text = "10.";  
+		$pdf->MultiCell(10, 5, $text, 0, 'L');
+		
+		$posx = 17; 
+		$pdf->SetXY($posx,$posy);
+		$pdf->SetFont('','', $default_font_size-1);
+		$text = "Le client reconnait avoir obtenu, préalablement à la negociation et signature du présent contrat, toute information utile relativement à la nature de la tâche ainsi qu'aux biens et au temps nécessaire à cette fin.";  
+		$pdf->MultiCell(185, 5, $text, 0, 'L');
+
+		//---11----//
+		$posx = 10;
+		$posy += 11;
+		$pdf->SetFont('','B', $default_font_size-1);
+		$pdf->SetXY($posx,$posy);
+		$text = "11.";  
+		$pdf->MultiCell(10, 5, $text, 0, 'L');
+
+		$posx = 17; 
+		$pdf->SetXY($posx,$posy);
+		$pdf->SetFont('','', $default_font_size-1);
+		$text = "Les parties conviennent que les Lois de la Provence de Québec en vigueur à la date de la signature des présentes s'appliqueront au présent contrat et déclarent, pour les fins des présentes, élire domicile à la place d'affaire de l'entrepreneur.";
+		$pdf->MultiCell(185, 5, $text, 0, 'L');
+
+		//---12----//
+		$posx = 10;
+		$posy += 11;
+		$pdf->SetFont('','B', $default_font_size-1);
+		$pdf->SetXY($posx,$posy);
+		$text = "12.";  
+		$pdf->MultiCell(10, 5, $text, 0, 'L');
+
+		$posx = 17; 
+		$pdf->SetXY($posx,$posy);
+		$pdf->SetFont('','', $default_font_size-1);
+		$text = "Le client reconnait avoir librement négocié tous les termes du présent contrat, avoir lu chacune de ses clauses, l'avoir compris, et s'en déclare satisfait par sa signature ci-après exposée:";
+		$pdf->MultiCell(185, 5, $text, 0, 'L');
+
+		$posx = 20;
+		$posy += 15;
+		$pdf->SetFont('','', $default_font_size-1);
+		$pdf->SetXY($posx,$posy);
+		$text = "Signé à";  
+		$pdf->MultiCell(25, 5, $text, 0, 'L');
+
+		$pdf->line($posx+15 ,$posy+4, $posx+95,$posy+4);
+
+		$pdf->SetXY($posx+97,$posy);
+		$text = ", le";  
+		$pdf->MultiCell(15, 5, $text, 0, 'L');
+
+		$pdf->line($posx+105 ,$posy+4, $line_end,$posy+4);
+
+		$posy+=15;
+		$pdf->SetXY($posx,$posy);
+
+		$pdf->line($posx ,$posy+4, $posx+90,$posy+4);
+
+		$pdf->SetXY($posx+23,$posy+4.5);
+		$pdf->SetFont('','', $default_font_size-1);
+		$text = "Entrepreneur";
+		$pdf->MultiCell(60, 5, $text, 0, 'L');
+
+		$pdf->line($posx+97 ,$posy+4, $line_end,$posy+4);
+
+		$pdf->SetXY($posx+125,$posy+4.5);
+		$pdf->SetFont('','', $default_font_size-1);
+		$text = "Client";
+		$pdf->MultiCell(60, 5, $text, 0, 'L');
+		
+		$posy+=15;
+		$pdf->SetXY($posx,$posy);
+		$pdf->line($posx+97 ,$posy+4, $line_end,$posy+4);
+
+		$pdf->SetXY($posx+125,$posy+4.5);
+		$pdf->SetFont('','', $default_font_size-1);
+		$text = "Client";
+		$pdf->MultiCell(60, 5, $text, 0, 'L');
+		
+		$posy+=9;
+		$posx +=10;
+		$pdf->line($posx ,$posy+4, $line_end-30,$posy+4);
+
+		$pdf->line($posx ,$posy+4, $posx, $posy+9.5);//begin vertical line
+
+		$pdf->SetXY($posx+13,$posy+4.5);
+		$pdf->SetFont('','', $default_font_size-1);
+		$text = "USAGE EXCLUSIF RÉSERVÉ AUX MEMBRES EN RÈGLE DE LA C.E.S.G.M";
+		$pdf->MultiCell(190, 5, $text, 0, 'L');
+
+		$pdf->line($line_end-30 ,$posy+4, $line_end-30,$posy+9.5);//end vertical line
+
+		$posy+=5.5;
+		$pdf->line($posx ,$posy+4, $line_end-30,$posy+4);
+
+
+
+// Entrepreneur 					Client
+		//$pdf->SetLineWidth();//to default size used for next lines
 
 	}
 

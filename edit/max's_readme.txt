@@ -153,7 +153,7 @@ Max's chages:
 	* Erreur et/ou omission dans les plans, devis, chaiers de chargers, études et/ou expertises soumis par le client;
 	* Hausse du coût de la main d'ouvre pour cause de modifications aux conventions collectives, à une Loi ou un réglement par tout instance gouvernamentale ou l'application d'une convention collective non connue à la signature des présentes;
 	* Hausse du coût des matériaux, de l'outillage et/ou équipement pour cause d'entrée en vigueurd, une nouvelle taxe de quelque nature que ce soit;
-	* Changement dans les conditions d'exécution de l'ouvrage hors du contrôle de l'entrepreneur, tel que, ey sans limitation aucune, pluies diluviennes, froid intense, toute force majeure;
+	* Changement dans les conditions d'exécution de l'ouvrage hors du contrôle de l'entrepreneur, tel que, et sans limitation aucune, pluies diluviennes, froid intense, toute force majeure;
 
 5. Libre exécution
 	Le client laissera à l'entrepreneur libre exécution des travaux mais pourra, à sa guise, mais sans nuire à la bonne exécution des travaux par l'entrepreneur, inspecter l'ouvrage.
