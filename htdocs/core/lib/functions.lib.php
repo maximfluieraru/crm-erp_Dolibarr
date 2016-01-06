@@ -2729,6 +2729,7 @@ function vatrate($rate,$addpercent=false,$info_bits=0,$usestarfornpr=0)
  *
  *		@see	price2num					Revert function of price
  */
+				
 function price($amount, $form=0, $outlangs='', $trunc=1, $rounding=-1, $forcerounding=-1, $currency_code='')
 {
 	global $langs,$conf;

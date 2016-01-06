@@ -66,9 +66,12 @@ code_client (Customer code) - DB 'societe'
 
 1092 - main rectangle pdf (pdf_cesgm)
 
--!-Class to manage numbering of thirdparties code - core/societe/doc/mod_codeclient_leopard.php
+-!-Class to manage numbering of thirdparties code - core/module/societe/doc/mod_codeclient_leopard.php
 
 Adresse travaux = note privé prospect (si non l'adresse par default du client)
+
+configuration/modules/contrats/ Magre/Masque AAAA{yy}{mm}-{000000} IMPORT!!! configuration before validate any contract
+configuration/modules/proposition/ Saphir/Masque AAAA{yy}{mm}-{000000} IMPORT!!! configuration before validate any proposal
 
 ----------------------=========================----------------------------------
 
@@ -139,65 +142,6 @@ Max's chages:
 
 
 ----------------------=========================----------------------------------
-
-#####################################################################################################################################################
-
-4.3 L'entrepreneur ne fournira pas :
-	|__| les matériaux _____________
-	|__| l'outillage et équipement : __________
-
-			Qui seront aux seuls frais du client.
-
-4.4 Ce prix sera soumis à révision à la hausse par l'entrepreneur et ce confomément à une entente entre les parties das les éventualités suivantes:
-	* Modifications aux plans, devis, cahiers de charges ou aux travaux à exécuter par le client;
-	* Erreur et/ou omission dans les plans, devis, chaiers de chargers, études et/ou expertises soumis par le client;
-	* Hausse du coût de la main d'ouvre pour cause de modifications aux conventions collectives, à une Loi ou un réglement par tout instance gouvernamentale ou l'application d'une convention collective non connue à la signature des présentes;
-	* Hausse du coût des matériaux, de l'outillage et/ou équipement pour cause d'entrée en vigueurd, une nouvelle taxe de quelque nature que ce soit;
-	* Changement dans les conditions d'exécution de l'ouvrage hors du contrôle de l'entrepreneur, tel que, et sans limitation aucune, pluies diluviennes, froid intense, toute force majeure;
-
-5. Libre exécution
-	Le client laissera à l'entrepreneur libre exécution des travaux mais pourra, à sa guise, mais sans nuire à la bonne exécution des travaux par l'entrepreneur, inspecter l'ouvrage.
-
-6. Modifications
-	Le client pourra demander à l'entrepreneur d'exécuter des modifications à l'ouvrage seulement si telles modificcations sont requises du client par écrit et qu'elles soient acceptées par écrit quant à leurs prix, nature et échéance par l'entrepreneur et le client.
-
-7. Non disponibilité de matériaux
-	Dans l'éventualité où des matériaux nécessités à l'exécution de l'ouvrage ne sont plus disponibles dans les délais permettant de respecter la terminaison de l'ouvrage selon les termes des présentes, l'entrepreneur pourra substituer tout matériaux de qualité équivalente ou supérieure, sauf objection du client qui renoncera alors à tout dédommagement pou retard dans la livraison de l'ouvrage.
-
-8. Résiliation par le client
-	Le client ne pourra résilier le présent contrat;
-	
-	8.1 Qu'en cas de défaut de l'entrepreneur de respecter ses obligations aux termes sea présentes, sous réserve de tous ses recours;
-	
-	8.2 En payant à l'entrepreneur en proportion du prix convenu, les frais et dépenses actuelles, la valeur des travaux exécutés avant la notification de la résiliation, la valeur des biens fournism une indemnité additionnelle équivalente à vingt pour cent (20%) de la valeur totale du contrat à titre de perte de profit, et tout autre préjudice que l'entrepreneur pourra subir;
-
-9. Résiliation par l'entrepreneur
-	9.1 Qu'en cas de défaut par le client de respecter ses obligations aux termes des présentes, sous réserve de tous ses recours;
-	9.2 Pour motif sérieux, mais jamais à contretemps, et en faisant tout ce qui est immédiatement nécessaire pou prévenir une perte et en assurant tout préjudice causé au client par une telle résiliation;
-
-10. Le client reconnait avoir obtenu, préalablement à la negociation et signature du présent contrat, toute information utile relativement à la nature de la tâche ainsi qu'aux biens et au temps nécessaire à cette fin.
-
-11. Les parties conviennent que les Lois de la Provence de Québec en vigueur à la date de la signature des présentes s'appliqueront au présent contrat et déclarent, pour les fins des présentes, élire domicile à la place d'affaire de l'entrepreneur.
-
-12. Le client reconnait avoir librement négocié tous les termes du présent contrat, avoir lu chacune de ses clauses, l'avoir compris, et s'en déclare satisfait par sa signature ci-après exposée:
-
-	Signé à ________________ , le ________________
-
-	___________________________ 	____________________________  
-			Entrepreneur 					Client
-
-									____________________________  
-											Client
-						_________________________________________________________________					
-						|	USAGE EXCLUSIF RÉSERVÉ AUX MEMBRES EN RÈGLE DE LA C.E.S.G.M  |
-						|________________________________________________________________|
-
-
-#####################################################################################################################################################
-
-
-
-
 
 
 

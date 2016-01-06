@@ -219,10 +219,8 @@ class pdf_cesgm extends ModelePDFPropales
                 $default_font_size = pdf_getPDFFontSize($outputlangs);	// Must be after pdf_getInstance
                
 
-                $heightforinfotot = 80;	// Height reserved to output the info and total part ----  _tableau_tot //$posy = 195;  ~ 828
+                $heightforinfotot = 125;	// Height reserved to output the info and total part ----  _tableau_tot //$posy = 195;  ~ 828
 		       
-
-
 
 		        $heightforfreetext= (isset($conf->global->MAIN_PDF_FREETEXT_HEIGHT)?$conf->global->MAIN_PDF_FREETEXT_HEIGHT:5);	// Height reserved to output the free text on last page
 	            $heightforfooter = $this->marge_basse + 8;	// Height reserved to output the footer (value include bottom margin)
@@ -281,10 +279,10 @@ class pdf_cesgm extends ModelePDFPropales
 				$pdf->MultiCell(0, 3, '');		// Set interline to 3
 				$pdf->SetTextColor(0,0,0);
 
-				$tab_top = 90;
+				//$tab_top = 90;
 				$tab_top_newpage = (empty($conf->global->MAIN_PDF_DONOTREPEAT_HEAD)?32:10);
-				$tab_height = 130;
-				$tab_height_newpage = 150;
+				// $tab_height = 130;
+				// $tab_height_newpage = 150;
 
 				// // Affiche notes
 				// $notetoshow=empty($object->note_public)?'':$object->note_public;
@@ -321,13 +319,13 @@ class pdf_cesgm extends ModelePDFPropales
 				// }
 ////////////////////////// begin position of main table //////////////
 //----------------------------------------------
-				$tab_top = $pdf->getY();
+				$tab_top = $pdf->getY()-5;
 //----------------------------------------------
 
 
-				$iniY = $tab_top + 7;
-				$curY = $tab_top + 7;
-				$nexY = $tab_top + 7;
+				$iniY = $tab_top ;
+				$curY = $tab_top ;
+				$nexY = $tab_top+3 ;
 
 				// Loop on each lines 
 				for ($i = 0 ; $i < $nblignes ; $i++)
@@ -373,7 +371,7 @@ class pdf_cesgm extends ModelePDFPropales
 
 					$pdf->startTransaction();
 
-					$width_of_line = 160;//description line width
+					$width_of_line = 165;//description line width
 
 					pdf_cesgm_writelinedesc($pdf,$object,$i,$outputlangs,$width_of_line/*$this->posxpicture-$curX*/,3,$curX,$curY,$hideref,$hidedesc);
 
@@ -664,168 +662,168 @@ class pdf_cesgm extends ModelePDFPropales
 	function _tableau_info(&$pdf, $object, $posy, $outputlangs)
 	{
 
-		$pdf->line($this->marge_gauche, $posy-2, $this->page_largeur - $this->marge_droite, $posy-2);
-		global $conf;
-		$default_font_size = pdf_getPDFFontSize($outputlangs);
+		// $pdf->line($this->marge_gauche, $posy-2, $this->page_largeur - $this->marge_droite, $posy-2);
+		// global $conf;
+		// $default_font_size = pdf_getPDFFontSize($outputlangs);
 
-		$pdf->SetFont('','', $default_font_size - 1);
+		// $pdf->SetFont('','', $default_font_size - 1);
 
-		// // If France, show VAT mention if not applicable
-		// if ($this->emetteur->country_code == 'FR' && $this->franchise == 1)
+		// // // If France, show VAT mention if not applicable
+		// // if ($this->emetteur->country_code == 'FR' && $this->franchise == 1)
+		// // {
+		// // 	$pdf->SetFont('','B', $default_font_size - 2);
+		// // 	$pdf->SetXY($this->marge_gauche, $posy);
+		// // 	$pdf->MultiCell(100, 3, $outputlangs->transnoentities("VATIsNotUsedForInvoice"), 0, 'L', 0);
+
+		// // 	$posy=$pdf->GetY()+4;
+		// // }
+
+		// $posxval=52;
+
+  //       // Show shipping date
+  //       if (! empty($object->date_livraison))
+		// {
+  //           $outputlangs->load("sendings");
+		// 	$pdf->SetFont('','B', $default_font_size - 2);
+		// 	$pdf->SetXY($this->marge_gauche, $posy);
+		// 	$titre = $outputlangs->transnoentities("DateDeliveryPlanned").':';
+		// 	$pdf->MultiCell(80, 4, $titre, 0, 'L');
+		// 	$pdf->SetFont('','', $default_font_size - 2);
+		// 	$pdf->SetXY($posxval, $posy);
+		// 	$dlp=dol_print_date($object->date_livraison,"daytext",false,$outputlangs,true);
+		// 	$pdf->MultiCell(80, 4, $dlp, 0, 'L');
+
+  //           $posy=$pdf->GetY()+1;
+		// }
+  //       elseif ($object->availability_code || $object->availability)    // Show availability conditions
 		// {
 		// 	$pdf->SetFont('','B', $default_font_size - 2);
 		// 	$pdf->SetXY($this->marge_gauche, $posy);
-		// 	$pdf->MultiCell(100, 3, $outputlangs->transnoentities("VATIsNotUsedForInvoice"), 0, 'L', 0);
+		// 	$titre = $outputlangs->transnoentities("AvailabilityPeriod").':';
+		// 	$pdf->MultiCell(80, 4, $titre, 0, 'L');
+		// 	$pdf->SetTextColor(0,0,0);
+		// 	$pdf->SetFont('','', $default_font_size - 2);
+		// 	$pdf->SetXY($posxval, $posy);
+		// 	$lib_availability=$outputlangs->transnoentities("AvailabilityType".$object->availability_code)!=('AvailabilityType'.$object->availability_code)?$outputlangs->transnoentities("AvailabilityType".$object->availability_code):$outputlangs->convToOutputCharset($object->availability);
+		// 	$lib_availability=str_replace('\n',"\n",$lib_availability);
+		// 	$pdf->MultiCell(80, 4, $lib_availability, 0, 'L');
 
-		// 	$posy=$pdf->GetY()+4;
+		// 	$posy=$pdf->GetY()+1;
 		// }
 
-		$posxval=52;
+		// // Show payments conditions
+		// if (empty($conf->global->PROPALE_PDF_HIDE_PAYMENTTERMCOND) && ($object->cond_reglement_code || $object->cond_reglement))
+		// {
+		// 	$pdf->SetFont('','B', $default_font_size - 2);
+		// 	$pdf->SetXY($this->marge_gauche, $posy);
+		// 	$titre = $outputlangs->transnoentities("PaymentConditions").':';
+		// 	$pdf->MultiCell(80, 4, $titre, 0, 'L');
 
-        // Show shipping date
-        if (! empty($object->date_livraison))
-		{
-            $outputlangs->load("sendings");
-			$pdf->SetFont('','B', $default_font_size - 2);
-			$pdf->SetXY($this->marge_gauche, $posy);
-			$titre = $outputlangs->transnoentities("DateDeliveryPlanned").':';
-			$pdf->MultiCell(80, 4, $titre, 0, 'L');
-			$pdf->SetFont('','', $default_font_size - 2);
-			$pdf->SetXY($posxval, $posy);
-			$dlp=dol_print_date($object->date_livraison,"daytext",false,$outputlangs,true);
-			$pdf->MultiCell(80, 4, $dlp, 0, 'L');
+		// 	$pdf->SetFont('','', $default_font_size - 2);
+		// 	$pdf->SetXY($posxval, $posy);
+		// 	$lib_condition_paiement=$outputlangs->transnoentities("PaymentCondition".$object->cond_reglement_code)!=('PaymentCondition'.$object->cond_reglement_code)?$outputlangs->transnoentities("PaymentCondition".$object->cond_reglement_code):$outputlangs->convToOutputCharset($object->cond_reglement_doc);
+		// 	$lib_condition_paiement=str_replace('\n',"\n",$lib_condition_paiement);
+		// 	$pdf->MultiCell(80, 4, $lib_condition_paiement,0,'L');
 
-            $posy=$pdf->GetY()+1;
-		}
-        elseif ($object->availability_code || $object->availability)    // Show availability conditions
-		{
-			$pdf->SetFont('','B', $default_font_size - 2);
-			$pdf->SetXY($this->marge_gauche, $posy);
-			$titre = $outputlangs->transnoentities("AvailabilityPeriod").':';
-			$pdf->MultiCell(80, 4, $titre, 0, 'L');
-			$pdf->SetTextColor(0,0,0);
-			$pdf->SetFont('','', $default_font_size - 2);
-			$pdf->SetXY($posxval, $posy);
-			$lib_availability=$outputlangs->transnoentities("AvailabilityType".$object->availability_code)!=('AvailabilityType'.$object->availability_code)?$outputlangs->transnoentities("AvailabilityType".$object->availability_code):$outputlangs->convToOutputCharset($object->availability);
-			$lib_availability=str_replace('\n',"\n",$lib_availability);
-			$pdf->MultiCell(80, 4, $lib_availability, 0, 'L');
+		// 	$posy=$pdf->GetY()+3;
+		// }
 
-			$posy=$pdf->GetY()+1;
-		}
+		// if (empty($conf->global->PROPALE_PDF_HIDE_PAYMENTTERMCOND))
+		// {
+		// 	// Check a payment mode is defined
+		// 	 Not required on a proposal
+		// 	if (empty($object->mode_reglement_code)
+		// 	&& ! $conf->global->FACTURE_CHQ_NUMBER
+		// 	&& ! $conf->global->FACTURE_RIB_NUMBER)
+		// 	{
+		// 		$pdf->SetXY($this->marge_gauche, $posy);
+		// 		$pdf->SetTextColor(200,0,0);
+		// 		$pdf->SetFont('','B', $default_font_size - 2);
+		// 		$pdf->MultiCell(90, 3, $outputlangs->transnoentities("ErrorNoPaiementModeConfigured"),0,'L',0);
+		// 		$pdf->SetTextColor(0,0,0);
 
-		// Show payments conditions
-		if (empty($conf->global->PROPALE_PDF_HIDE_PAYMENTTERMCOND) && ($object->cond_reglement_code || $object->cond_reglement))
-		{
-			$pdf->SetFont('','B', $default_font_size - 2);
-			$pdf->SetXY($this->marge_gauche, $posy);
-			$titre = $outputlangs->transnoentities("PaymentConditions").':';
-			$pdf->MultiCell(80, 4, $titre, 0, 'L');
+		// 		$posy=$pdf->GetY()+1;
+		// 	}
+			
 
-			$pdf->SetFont('','', $default_font_size - 2);
-			$pdf->SetXY($posxval, $posy);
-			$lib_condition_paiement=$outputlangs->transnoentities("PaymentCondition".$object->cond_reglement_code)!=('PaymentCondition'.$object->cond_reglement_code)?$outputlangs->transnoentities("PaymentCondition".$object->cond_reglement_code):$outputlangs->convToOutputCharset($object->cond_reglement_doc);
-			$lib_condition_paiement=str_replace('\n',"\n",$lib_condition_paiement);
-			$pdf->MultiCell(80, 4, $lib_condition_paiement,0,'L');
+		// 	// Show payment mode
+		// 	if ($object->mode_reglement_code
+		// 	&& $object->mode_reglement_code != 'CHQ'
+		// 	&& $object->mode_reglement_code != 'VIR')
+		// 	{
+		// 		$pdf->SetFont('','B', $default_font_size - 2);
+		// 		$pdf->SetXY($this->marge_gauche, $posy);
+		// 		$titre = $outputlangs->transnoentities("PaymentMode").':';
+		// 		$pdf->MultiCell(80, 5, $titre, 0, 'L');
+		// 		$pdf->SetFont('','', $default_font_size - 2);
+		// 		$pdf->SetXY($posxval, $posy);
+		// 		$lib_mode_reg=$outputlangs->transnoentities("PaymentType".$object->mode_reglement_code)!=('PaymentType'.$object->mode_reglement_code)?$outputlangs->transnoentities("PaymentType".$object->mode_reglement_code):$outputlangs->convToOutputCharset($object->mode_reglement);
+		// 		$pdf->MultiCell(80, 5, $lib_mode_reg,0,'L');
 
-			$posy=$pdf->GetY()+3;
-		}
+		// 		$posy=$pdf->GetY()+2;
+		// 	}
 
-		if (empty($conf->global->PROPALE_PDF_HIDE_PAYMENTTERMCOND))
-		{
-			// Check a payment mode is defined
-			/* Not required on a proposal
-			if (empty($object->mode_reglement_code)
-			&& ! $conf->global->FACTURE_CHQ_NUMBER
-			&& ! $conf->global->FACTURE_RIB_NUMBER)
-			{
-				$pdf->SetXY($this->marge_gauche, $posy);
-				$pdf->SetTextColor(200,0,0);
-				$pdf->SetFont('','B', $default_font_size - 2);
-				$pdf->MultiCell(90, 3, $outputlangs->transnoentities("ErrorNoPaiementModeConfigured"),0,'L',0);
-				$pdf->SetTextColor(0,0,0);
+		// 	// Show payment mode CHQ
+		// 	if (empty($object->mode_reglement_code) || $object->mode_reglement_code == 'CHQ')
+		// 	{
+		// 		// Si mode reglement non force ou si force a CHQ
+		// 		if (! empty($conf->global->FACTURE_CHQ_NUMBER))
+		// 		{
+		// 			if ($conf->global->FACTURE_CHQ_NUMBER > 0)
+		// 			{
+		// 				$account = new Account($this->db);
+		// 				$account->fetch($conf->global->FACTURE_CHQ_NUMBER);
 
-				$posy=$pdf->GetY()+1;
-			}
-			*/
+		// 				$pdf->SetXY($this->marge_gauche, $posy);
+		// 				$pdf->SetFont('','B', $default_font_size - 3);
+		// 				$pdf->MultiCell(100, 3, $outputlangs->transnoentities('PaymentByChequeOrderedTo',$account->proprio),0,'L',0);
+		// 				$posy=$pdf->GetY()+1;
 
-			// Show payment mode
-			if ($object->mode_reglement_code
-			&& $object->mode_reglement_code != 'CHQ'
-			&& $object->mode_reglement_code != 'VIR')
-			{
-				$pdf->SetFont('','B', $default_font_size - 2);
-				$pdf->SetXY($this->marge_gauche, $posy);
-				$titre = $outputlangs->transnoentities("PaymentMode").':';
-				$pdf->MultiCell(80, 5, $titre, 0, 'L');
-				$pdf->SetFont('','', $default_font_size - 2);
-				$pdf->SetXY($posxval, $posy);
-				$lib_mode_reg=$outputlangs->transnoentities("PaymentType".$object->mode_reglement_code)!=('PaymentType'.$object->mode_reglement_code)?$outputlangs->transnoentities("PaymentType".$object->mode_reglement_code):$outputlangs->convToOutputCharset($object->mode_reglement);
-				$pdf->MultiCell(80, 5, $lib_mode_reg,0,'L');
+		// 	            if (empty($conf->global->MAIN_PDF_HIDE_CHQ_ADDRESS))
+		// 	            {
+		// 					$pdf->SetXY($this->marge_gauche, $posy);
+		// 					$pdf->SetFont('','', $default_font_size - 3);
+		// 					$pdf->MultiCell(100, 3, $outputlangs->convToOutputCharset($account->owner_address), 0, 'L', 0);
+		// 					$posy=$pdf->GetY()+2;
+		// 	            }
+		// 			}
+		// 			if ($conf->global->FACTURE_CHQ_NUMBER == -1)
+		// 			{
+		// 				$pdf->SetXY($this->marge_gauche, $posy);
+		// 				$pdf->SetFont('','B', $default_font_size - 3);
+		// 				$pdf->MultiCell(100, 3, $outputlangs->transnoentities('PaymentByChequeOrderedTo',$this->emetteur->name),0,'L',0);
+		// 				$posy=$pdf->GetY()+1;
 
-				$posy=$pdf->GetY()+2;
-			}
+		// 	            if (empty($conf->global->MAIN_PDF_HIDE_CHQ_ADDRESS))
+		// 	            {
+		// 					$pdf->SetXY($this->marge_gauche, $posy);
+		// 					$pdf->SetFont('','', $default_font_size - 3);
+		// 					$pdf->MultiCell(100, 3, $outputlangs->convToOutputCharset($this->emetteur->getFullAddress()), 0, 'L', 0);
+		// 					$posy=$pdf->GetY()+2;
+		// 	            }
+		// 			}
+		// 		}
+		// 	}
 
-			// Show payment mode CHQ
-			if (empty($object->mode_reglement_code) || $object->mode_reglement_code == 'CHQ')
-			{
-				// Si mode reglement non force ou si force a CHQ
-				if (! empty($conf->global->FACTURE_CHQ_NUMBER))
-				{
-					if ($conf->global->FACTURE_CHQ_NUMBER > 0)
-					{
-						$account = new Account($this->db);
-						$account->fetch($conf->global->FACTURE_CHQ_NUMBER);
+		// 	// If payment mode not forced or forced to VIR, show payment with BAN
+		// 	if (empty($object->mode_reglement_code) || $object->mode_reglement_code == 'VIR')
+		// 	{
+		// 		if (! empty($conf->global->FACTURE_RIB_NUMBER))
+		// 		{
+		// 			$account = new Account($this->db);
+		// 			$account->fetch($conf->global->FACTURE_RIB_NUMBER);
 
-						$pdf->SetXY($this->marge_gauche, $posy);
-						$pdf->SetFont('','B', $default_font_size - 3);
-						$pdf->MultiCell(100, 3, $outputlangs->transnoentities('PaymentByChequeOrderedTo',$account->proprio),0,'L',0);
-						$posy=$pdf->GetY()+1;
+		// 			$curx=$this->marge_gauche;
+		// 			$cury=$posy;
 
-			            if (empty($conf->global->MAIN_PDF_HIDE_CHQ_ADDRESS))
-			            {
-							$pdf->SetXY($this->marge_gauche, $posy);
-							$pdf->SetFont('','', $default_font_size - 3);
-							$pdf->MultiCell(100, 3, $outputlangs->convToOutputCharset($account->owner_address), 0, 'L', 0);
-							$posy=$pdf->GetY()+2;
-			            }
-					}
-					if ($conf->global->FACTURE_CHQ_NUMBER == -1)
-					{
-						$pdf->SetXY($this->marge_gauche, $posy);
-						$pdf->SetFont('','B', $default_font_size - 3);
-						$pdf->MultiCell(100, 3, $outputlangs->transnoentities('PaymentByChequeOrderedTo',$this->emetteur->name),0,'L',0);
-						$posy=$pdf->GetY()+1;
+		// 			$posy=pdf_bank($pdf,$outputlangs,$curx,$cury,$account,0,$default_font_size);
 
-			            if (empty($conf->global->MAIN_PDF_HIDE_CHQ_ADDRESS))
-			            {
-							$pdf->SetXY($this->marge_gauche, $posy);
-							$pdf->SetFont('','', $default_font_size - 3);
-							$pdf->MultiCell(100, 3, $outputlangs->convToOutputCharset($this->emetteur->getFullAddress()), 0, 'L', 0);
-							$posy=$pdf->GetY()+2;
-			            }
-					}
-				}
-			}
+		// 			$posy+=2;
+		// 		}
+		// 	}
+		// }
 
-			// If payment mode not forced or forced to VIR, show payment with BAN
-			if (empty($object->mode_reglement_code) || $object->mode_reglement_code == 'VIR')
-			{
-				if (! empty($conf->global->FACTURE_RIB_NUMBER))
-				{
-					$account = new Account($this->db);
-					$account->fetch($conf->global->FACTURE_RIB_NUMBER);
-
-					$curx=$this->marge_gauche;
-					$cury=$posy;
-
-					$posy=pdf_bank($pdf,$outputlangs,$curx,$cury,$account,0,$default_font_size);
-
-					$posy+=2;
-				}
-			}
-		}
-
-		return $posy;
+		// return $posy;
 	}
 
 
@@ -840,90 +838,256 @@ class pdf_cesgm extends ModelePDFPropales
 	 *	@return int							Position pour suite
 	 */
 	function _tableau_tot(&$pdf, $object, $deja_regle, $posy, $outputlangs)
-	{
+	{	
 
-		//$posy = 195; // look  $heightforinfotot = 80; ~ 222
+		$conf->currency = (isset($conf->currency) ? $conf->currency : " $" );
+
+		 //begin position of below data 
+		 			// the room(heigth) for below data is define in -> $heightforinfotot  ; ~ 222
 
 ///================================= begin
+		$default_font_size = pdf_getPDFFontSize($outputlangs);// important to set font size
 
 		$pdf->line($this->marge_gauche, $posy-2, $this->page_largeur - $this->marge_droite, $posy-2);
 
-		$text_conv = "\n2.\tDébut et fin".$posy;
-		$text_conv .= "\n\tLes travaux seront débutés le";
-		
-		$text_conv .= "\t".dol_print_date($object->date,'day','',$outputlangs)."\t";
+		$pdf->SetDrawColor(0);//black for lines
 
-		$text_conv .= "et seront terminés vers/ou le";
+		//---2----//
+		$posx = $this->marge_gauche;
+		$pdf->SetFont('','B', $default_font_size-1);
+		$pdf->SetXY($posx,$posy);
+		$text = "2."; 
+		$pdf->MultiCell(10, 5, $text, 0, 'L');
 
-		$text_conv .= "\t".dol_print_date($object->fin_validite,'day','',$outputlangs)."\t";
+		$posx += 5;
+		$pdf->SetXY($posx,$posy);
+		$text = "Début et fin";
+		$pdf->MultiCell(50, 5, $text, 0, '');
 
-		$text_conv .= ", sauf si le client provoque un retard par son défaut de respecter ses obligations aux termes des présentes ou pour toute";
-		$text_conv .= " cause de force majeure; seront assimilés à une force majeure le cas d'une grève ou d'un lock-out.";
 
-		$text_conv .= "\n3.\tRéception de l'ouvrage";
-		$text_conv .= "\n\tLe client sera présumé avoir reçu l'ouvrage à la première des éventualités suivantes, et ce, malgré toute réserve qu'il pourrait";
-		$text_conv .= " imposer, soit à la date de la fin des travaux décrits ci-devant, où à la date à la quelle l'immeuble sera prêt à être occupé.";
+		$posy += 5;
+		$pdf->SetFont('','', $default_font_size-1);
+		$pdf->SetXY($posx,$posy);
+		$text = "Les travaux seront débutés le";
+		$pdf->MultiCell(45, 5, $text, 0, 'L');
 
-		$text_conv .= "\n\t4.\tPrix";
-		$text_conv .= "\n\tLe client et l'entrepreneur conviennet que le prix convenu pour l'éxécution de l'ouvrage se détaille comme suit :";
+		$posx += 44;		
+		$pdf->line($posx, $posy+3.5,$posx+37, $posy+3.5);
 
-		$text_conv .= "\n\tPrix d'ouvrage";
+		$posx += 3;
+		$pdf->SetXY($posx,$posy);
+		$pdf->SetFont('','B', $default_font_size-1);
+		$text = dol_print_date($object->date,'daytext','',$outputlangs); // daytext (12 Decembre 2015) day(12.12.2015)
+		$pdf->MultiCell(45, 5, $text, 0, 'L');
 
-		$text_conv .= "\t\t".price($object->total_ht, 0, $outputlangs)."\t$";
+		$posx += 34;
+		$pdf->SetFont('','', $default_font_size-1);
+		$pdf->SetXY($posx,$posy);
+		$text = "et seront terminés vers/ou le";
+		$pdf->MultiCell(45, 5, $text, 0, 'L');
 
-			//$m_tps = $object->total_ht * (($conf->global->TPS));
+		$posx += 42;		
+		$pdf->line($posx, $posy+3.5,$posx+37, $posy+3.5);
 
-		$text_conv .="\n\tTaxe sur les produits et services (TPS)";
+		$posx += 3;
+		$pdf->SetXY($posx,$posy);
+		$pdf->SetFont('','B', $default_font_size-1);
+		$text = dol_print_date($object->fin_validite,'daytext','',$outputlangs); // daytext (12 Decembre 2015) day (12.12.2015)
+		$pdf->MultiCell(45, 5, $text, 0, 'L');
 
-		$text_conv .= "\t\t".price($object->total_tva, 0, $outputlangs)."\t$";
-		
-		$text_conv .= "\n\tSous-total";
+		$posx += 34;
+		$pdf->SetFont('','', $default_font_size-1);
+		$pdf->SetXY($posx,$posy);
+		$text = ", sauf si le client";
+		$pdf->MultiCell(30, 5, $text, 0, 'L');
 
+		$posx = $this->marge_gauche+5;
+		$posy += 4.5;
+		$pdf->SetFont('','', $default_font_size-1);
+		$pdf->SetXY($posx,$posy);
+		$text = "provoque un retard par son défaut de respecter ses obligations aux termes des présentes ou pour toute cause de force majeure; seront assimilés à une force majeure le cas d'une grève ou d'un lock-out.";
+		$pdf->MultiCell($this->page_largeur - $this->marge_droite-$posx, 5, $text, 0, 'L');
 	
 
-		$m_tps = $object->total_ht + $object->total_tva;
+		//---3----//
+		$posx = $this->marge_gauche;
+		$posy += 10.5;
+		$pdf->SetFont('','B', $default_font_size-1);
+		$pdf->SetXY($posx,$posy);
+		$text = "3."; 
+		$pdf->MultiCell(10, 5, $text, 0, 'L');
 
+		$posx += 5;
+		$pdf->SetXY($posx,$posy);
+		$text = "Réception de l'ouvrage";
+		$pdf->MultiCell(50, 5, $text, 0, '');
+
+
+		$posy += 5;
+		$pdf->SetFont('','', $default_font_size-1);
+		$pdf->SetXY($posx,$posy);
+		$text = "Le client sera présumé avoir reçu l'ouvrage à la première des éventualités suivantes, et ce, malgré toute réserve qu'il pourrait imposer, soit à la date de la fin des travaux décrits ci-devant, où à la date à la quelle l'immeuble sera prêt à être occupé.";
+		$pdf->MultiCell($this->page_largeur - $this->marge_droite-$posx, 5, $text, 0, 'L');
+
+		//---4----//
+		$posx = $this->marge_gauche;
+		$posy += 10.5;
+		$pdf->SetFont('','B', $default_font_size-1);
+		$pdf->SetXY($posx,$posy);
+		$text = "4."; 
+		$pdf->MultiCell(10, 5, $text, 0, 'L');
+
+		$posx += 5;
+		$pdf->SetXY($posx,$posy);
+		$text = "Prix";
+		$pdf->MultiCell(50, 5, $text, 0, '');
+
+		$posy += 5;
+		$pdf->SetFont('','', $default_font_size-1);
+		$pdf->SetXY($posx,$posy);
+		$text = "Le client et l'entrepreneur conviennet que le prix convenu pour l'éxécution de l'ouvrage se détaille comme suit :";
+		$pdf->MultiCell($this->page_largeur - $this->marge_droite-$posx, 5, $text, 0, 'L');
+
+		$posy += 7.5;
+		$pdf->SetXY($posx,$posy);
+		$pdf->SetFont('','', $default_font_size);
+		$text = "Prix d'ouvrage"; 
+		$pdf->MultiCell(40, 5, $text, 0, 'L');
+
+		$posx = $this->page_largeur - $this->marge_droite - 50;		
+		$pdf->line($posx, $posy+4,$this->page_largeur - $this->marge_droite-5, $posy+4);
+
+		$posx += 3;
+		$pdf->SetXY($posx,$posy);
+		$text = price($object->total_ht, 0, $outputlangs, 1, - 1, - 1, $conf->currency);
+		$pdf->MultiCell(45, 5, $text, 0, 'L');
 		
+		$posx = 15;
+		$posy += 7.5;
+		$pdf->SetXY($posx,$posy);
+		$pdf->SetFont('','', $default_font_size);
+		$text = "Taxe sur les produits et services (TPS)"; 
+		$pdf->MultiCell(70, 5, $text, 0, 'L');
 
-		$text_conv .= "\t\t".price($m_tps, 0, $outputlangs)."\t$";
+		$posx = $this->page_largeur - $this->marge_droite - 50;		
+		$pdf->line($posx, $posy+4,$this->page_largeur - $this->marge_droite-5, $posy+4);
 
-		$text_conv .="\n\tTaxe de vente du Québec (TVQ)";
-
-		$text_conv .= "\t\t".price($object->total_localtax1, 0, $outputlangs)."\t$";
-
-		$text_conv .= "\n\tTOTAL :";
-
-		$m_tot = $object->total_ht + $m_tps + $m_tvq;
-
-		$text_conv .= "\t\t".price($object->total_ttc, 0, $outputlangs)."\t$";
-
-		$text_conv .= "\n\tet sera payable comme suit:"; 
-		$text_conv .= "\n\tet sera payable comme suit:"; 
-		$text_conv .= "\n\tet sera payable comme suit: _ look _tableau_info"; 
-
-
-		//$posy = $tab2_top+20 + $tab2_hl * $index;
-
-		// when we use CONSTs
-		//$text_conv='PROPALE_FREE_TEXT';
-		//$pdf->MultiCell(200,5, $conf->global->$text_conv, 0, 'L');
-
-		$text_conv .= "Toutefois ce prix est soumis aux réserves suivantes: ";
-		$text_conv .= "\n\t4.1\tLe client paiera à l'entrepreneur un intérêt mensuel de deux pour cent (2%) sur toute somme due, soit 24% par année,";
-		$text_conv .= "le tout sous réserve à tout autre recours de l'entrepreneur contre le client.";
-		$text_conv .= "\n\t4.2\tEn cas de recours judiciaire de l'entrepreneur contre le client pour le recouvrement de sommes dues, les frais judiciaires";
-		$text_conv .= " et extrajuiciares en cours en pareil cas par l'entrepreneur sont à la charge du client mais ne seront en aucun cas supérieur à 30% du prix du contrat.";
+		$posx += 3;
+		$pdf->SetXY($posx,$posy);
+		$text = price($object->total_tva, 0, $outputlangs, 1, - 1, - 1, $conf->currency);
+		$pdf->MultiCell(45, 5, $text, 0, 'L');
 		
+		$posx = 15;
+		$posy += 7.5;
+		$pdf->SetXY($posx,$posy);
+		$pdf->SetFont('','', $default_font_size);
+		$text = "Sous-total"; 
+		$pdf->MultiCell(40, 5, $text, 0, 'L');
 
+		//calculate Sous-total
+		$_sous_total = $object->total_ht + $object->total_tva;
+		
+		$posx = $this->page_largeur - $this->marge_droite - 50;			
+		$pdf->line($posx, $posy+4,$this->page_largeur - $this->marge_droite-5, $posy+4);
+
+		$posx += 3;
+		$pdf->SetXY($posx,$posy);
+		$text = price($_sous_total, 0, $outputlangs, 1, -1, -1, $conf->currency);
+		$pdf->MultiCell(45, 5, $text, 0, 'L');
+
+		$posx = 15;
+		$posy += 7.5;
+		$pdf->SetXY($posx,$posy);
+		$pdf->SetFont('','', $default_font_size);
+		$text = "Taxe de vente du Québec (TVQ)"; 
+		$pdf->MultiCell(70, 5, $text, 0, 'L');
+
+		$posx = $this->page_largeur - $this->marge_droite - 50;		
+		$pdf->line($posx, $posy+4,$this->page_largeur - $this->marge_droite-5, $posy+4);
+
+		$posx += 3;
+		$pdf->SetXY($posx,$posy);
+		$text = price($object->total_localtax1, 0, $outputlangs, 1, - 1, - 1, $conf->currency);
+		$pdf->MultiCell(45, 5, $text, 0, 'L');
+		
+		$posx = 15;
+		$posy += 7.5;
+		$pdf->SetXY($posx,$posy);
+		$pdf->SetFont('','B', $default_font_size);
+		$text = "TOTAL"; 
+		$pdf->MultiCell(70, 5, $text, 0, 'L');
+
+		$posx = $this->page_largeur - $this->marge_droite - 50;			
+		$pdf->line($posx, $posy+4,$this->page_largeur - $this->marge_droite-5, $posy+4);
+
+		$posx += 3;
+		$pdf->SetXY($posx,$posy);
+		$text = price($object->total_ttc, '', $outputlangs, 1, - 1, - 1, $conf->currency); 
+		$pdf->MultiCell(45, 5, $text, 0, 'L');
+		
+		$posx = 15;
+		$posy += 7.5;
+		$pdf->SetXY($posx,$posy);
+		$pdf->SetFont('','', $default_font_size);
+		$text = "et sera payable comme suit:";  
+		$pdf->MultiCell(70, 5, $text, 0, 'L');
+
+				// Show payment mode // _tableau_info function"; 
+		// 	if ($object->mode_reglement_code
+		// 	&& $object->mode_reglement_code != 'CHQ'
+		// 	&& $object->mode_reglement_code != 'VIR')
+		// 	{
+		// 		$pdf->SetFont('','B', $default_font_size - 2);
+		// 		$pdf->SetXY($this->marge_gauche, $posy);
+		// 		$titre = $outputlangs->transnoentities("PaymentMode").':';
+		// 		$pdf->MultiCell(80, 5, $titre, 0, 'L');
+		// 		$pdf->SetFont('','', $default_font_size - 2);
+		// 		$pdf->SetXY($posxval, $posy);
+		// 		$lib_mode_reg=$outputlangs->transnoentities("PaymentType".$object->mode_reglement_code)!=('PaymentType'.$object->mode_reglement_code)?$outputlangs->transnoentities("PaymentType".$object->mode_reglement_code):$outputlangs->convToOutputCharset($object->mode_reglement);
+		// 		$pdf->MultiCell(80, 5, $lib_mode_reg,0,'L');
+
+		// 		$posy=$pdf->GetY()+2;
+		// 	}
+
+		$posx = 10;			
+		$posy += 10.5;	
+		$pdf->line($posx, $posy,$this->page_largeur - $this->marge_droite, $posy);
+		
+		$posy += 7.5;	
+		$pdf->line($posx, $posy,$this->page_largeur - $this->marge_droite, $posy);
 
 		$posx = 10;
-		$default_font_size = pdf_getPDFFontSize($outputlangs);// important to set font size
-		$pdf->SetTextColor(0,0,0);
+		$posy += 5;
+		$pdf->SetXY($posx,$posy);
+		$pdf->SetFont('','', $default_font_size);
+		$text = "Toutefois ce prix est soumis aux réserves suivantes:";  
+		$pdf->MultiCell(100, 5, $text, 0, 'L');
+
+		//---4.1----//
+		$posx += 5;
+		$posy += 6;
 		$pdf->SetFont('','', $default_font_size-1);
-		$pdf->SetXY($posx,$posy-5);
+		$pdf->SetXY($posx,$posy);
+		$text = "4.1"; 
+		$pdf->MultiCell(10, 5, $text, 0, 'L');
 
-		$pdf->MultiCell(191,5,$text_conv, 0, 'L');
+		$posx += 10;
+		$pdf->SetXY($posx,$posy);
+		$text = "Le client paiera à l'entrepreneur un intérêt mensuel de deux pour cent (2%) sur toute somme due, soit 24% par année, le tout sous réserve à tout autre recours de l'entrepreneur contre le client.";
+		$pdf->MultiCell($this->page_largeur - $this->marge_droite-$posx, 5, $text, 0, '');
 
+		//---4.2----//
+		$posx = 15;
+		$posy += 7.5;
+		$pdf->SetFont('','', $default_font_size-1);
+		$pdf->SetXY($posx,$posy);
+		$text = "4.2"; 
+		$pdf->MultiCell(10, 5, $text, 0, 'L');
+
+		$posx += 10;
+		$pdf->SetXY($posx,$posy);
+		$text = "En cas de recours judiciaire de l'entrepreneur contre le client pour le recouvrement de sommes dues, les frais judiciaires et extrajuiciares en cours en pareil cas par l'entrepreneur sont à la charge du client mais ne seront en aucun cas supérieur à 30% du prix du contrat.";
+		$pdf->MultiCell($this->page_largeur - $this->marge_droite-$posx, 5, $text, 0, '');
 
 
 ///================================= end
@@ -1216,9 +1380,6 @@ class pdf_cesgm extends ModelePDFPropales
 // 			// $pdf->MultiCell(200,5, $under_text_1, 0, 'L');
 
 
-
-
-
 // ----- end -----
  
 	
@@ -1226,33 +1387,25 @@ class pdf_cesgm extends ModelePDFPropales
 	}
 
 
-	
-
-
-
-
-
-
-
-
 	/**
-	 *	Show total to pay
+	 *	Show contract constraints
 	 *
 	 *	@param	PDF			$pdf            Object PDF
 	 *	@param  Facture		$object         Object invoice
-	 *	@param	int			$pagenb			page number
 	 *	@param	Translate	$outputlangs	Objet langs
 	 */
 	function _tableau_general_info(&$pdf, $object, $outputlangs)
 	{
 
-		$posx = 10;
-		$line_end = $posx + 190;
-		$posy = $pdf->getY();
+		$posx = 15;
+		$line_end = $this->page_largeur - $this->marge_droites;
+		$posy = $pdf->getY() - 2;
 
 		$default_font_size = pdf_getPDFFontSize($outputlangs);// important to set font size
 		$pdf->SetTextColor(0,0,0);
-		$pdf->SetFont('','B', $default_font_size-1);
+
+		//---4.3---//
+		$pdf->SetFont('','', $default_font_size-1);
 		$pdf->SetXY($posx,$posy);
 		$text = "4.3"; 
 		$pdf->MultiCell(10, 5, $text, 0, 'L');
@@ -1261,7 +1414,7 @@ class pdf_cesgm extends ModelePDFPropales
 		$pdf->SetXY($posx,$posy);
 		$pdf->SetFont('','', $default_font_size-1);
 		$text = "L'entrepreneur ne fournira pas :";
-		$pdf->MultiCell(170, 5, $text, 0, 'L');
+		$pdf->MultiCell($line_end-$posx, 5, $text, 0, 'L');
 
 		//add rectangle
 		$posy += 5;
@@ -1272,7 +1425,9 @@ class pdf_cesgm extends ModelePDFPropales
 		$text = "les matériaux : ";
 		$pdf->SetXY($posx+7, $posy);
 		$pdf->MultiCell(23, 5, $text, 0, 'L');		
-		$pdf->line($posx+30 ,$posy+4, $line_end,$posy+4);
+		
+	
+		$pdf->line($posx+30 ,$posy+4, $line_end-$this->marge_gauche,$posy+4);
 
 		//add rectangle
 		$posy += 6;
@@ -1281,17 +1436,19 @@ class pdf_cesgm extends ModelePDFPropales
 		$text = "l'outillage et équipement :";
 		$pdf->SetXY($posx+7, $posy);
 		$pdf->MultiCell(38, 5, $text, 0, 'L'); 
-		$pdf->line($posx+45 ,$posy+4, $line_end,$posy+4);
+		
+		$pdf->line($posx+45 ,$posy+4, $line_end - $this->marge_gauche,$posy+4);
 
 		$posy += 5;
 		$pdf->SetXY($posx+7, $posy);
 		$pdf->SetFont('','B', $default_font_size-1);
 		$text = "Qui seront aux seuls frais du client.";
-		$pdf->MultiCell(179,5,$text, 0, 'L');
+		$pdf->MultiCell($line_end-$posx,5,$text, 0, 'L');
 
-		$posx = 10;
+		//---4.4---//
+		$posx = 15;
 		$posy += 5;
-		$pdf->SetFont('','B', $default_font_size-1);
+		$pdf->SetFont('','', $default_font_size-1);
 		$pdf->SetXY($posx,$posy);
 		$text = "4.4"; 
 		$pdf->MultiCell(10, 5, $text, 0, 'L');
@@ -1300,7 +1457,7 @@ class pdf_cesgm extends ModelePDFPropales
 		$pdf->SetXY($posx,$posy);
 		$pdf->SetFont('','', $default_font_size-1);
 		$text = "Ce prix sera soumis à révision à la hausse par l'entrepreneur et ce confomément à une entente entre les parties das les éventualités suivantes:";
-		$pdf->MultiCell(179, 5, $text, 0, '');
+		$pdf->MultiCell($line_end-$posx-$this->marge_gauche, 5, $text, 0, '');
 
 		$posy += 7;
 		$pdf->SetXY($posx,$posy);
@@ -1312,7 +1469,7 @@ class pdf_cesgm extends ModelePDFPropales
 		$posy++;
 		$pdf->SetXY($posx,$posy);
 		$text = "Modifications aux plans, devis, cahiers de charges ou aux travaux à exécuter par le client;";
-		$pdf->MultiCell(179, 5, $text, 0, '');
+		$pdf->MultiCell($line_end-$posx - $this->marge_gauche, 5, $text, 0, '');
 
 		$posy += 3;
 		$posx -= 3;
@@ -1325,8 +1482,8 @@ class pdf_cesgm extends ModelePDFPropales
 		$posy ++;
 		$pdf->SetXY($posx,$posy);
 		$text = "Erreur et/ou omission dans les plans, devis, chaiers de chargers, études et/ou expertises soumis par le client;";
-		$pdf->MultiCell(179, 5, $text, 0, '');
-		$pdf->MultiCell(179, 5, chr(0), 0, '');
+		$pdf->MultiCell($line_end-$posx - $this->marge_gauche, 5, $text, 0, '');
+		$pdf->MultiCell(4, 5, chr(0), 0, '');
 
 
 		$posy += 3;
@@ -1340,7 +1497,7 @@ class pdf_cesgm extends ModelePDFPropales
 		$posy ++;
 		$pdf->SetXY($posx,$posy);
 		$text = "Hausse du coût de la main d'ouvre pour cause de modifications aux conventions collectives, à une Loi ou un réglement par tout instance gouvernamentale ou l'application d'une convention collective non connue à la signature des présentes;";
-		$pdf->MultiCell(179, 5, $text, 0, '');
+		$pdf->MultiCell($line_end-$posx-$this->marge_gauche, 5, $text, 0, '');
 
 		$posy += 7;
 		$posx -= 3;
@@ -1353,7 +1510,7 @@ class pdf_cesgm extends ModelePDFPropales
 		$posy ++;
 		$pdf->SetXY($posx,$posy);
 		$text = "Hausse du coût des matériaux, de l'outillage et/ou équipement pour cause d'entrée en vigueurd, une nouvelle taxe de quelque nature que ce soit;";
-		$pdf->MultiCell(179, 5, $text, 0, '');
+		$pdf->MultiCell($line_end-$posx -$this->marge_gauche, 5, $text, 0, '');
 
 		$posy += 7;
 		$posx -= 3;
@@ -1366,7 +1523,7 @@ class pdf_cesgm extends ModelePDFPropales
 		$posy ++;
 		$pdf->SetXY($posx,$posy);
 		$text = "Changement dans les conditions d'exécution de l'ouvrage hors du contrôle de l'entrepreneur, tel que, et sans limitation aucune, pluies diluviennes, froid intense, toute force majeure;";
-		$pdf->MultiCell(179, 5, $text, 0, '');
+		$pdf->MultiCell($line_end-$posx -$this->marge_gauche, 5, $text, 0, '');
 
 		//---5----//
 		$posx = 10;
@@ -1386,7 +1543,7 @@ class pdf_cesgm extends ModelePDFPropales
 		$pdf->SetFont('','', $default_font_size-1);
 		$pdf->SetXY($posx,$posy);
 		$text = "Le client laissera à l'entrepreneur libre exécution des travaux mais pourra, à sa guise, mais sans nuire à la bonne exécution des travaux par l'entrepreneur, inspecter l'ouvrage."; 
-		$pdf->MultiCell(185, 5, $text, 0, 'L');
+		$pdf->MultiCell($line_end-$posx - $this->marge_gauche, 5, $text, 0, 'L');
 
 		//---6----//
 		$posx = 10;
@@ -1406,11 +1563,11 @@ class pdf_cesgm extends ModelePDFPropales
 		$pdf->SetFont('','', $default_font_size-1);
 		$pdf->SetXY($posx,$posy);
 		$text = "Le client pourra demander à l'entrepreneur d'exécuter des modifications à l'ouvrage seulement si telles modificcations sont requises du client par écrit et qu'elles soient acceptées par écrit quant à leurs prix, nature et échéance par l'entrepreneur et le client."; 
-		$pdf->MultiCell(185, 5, $text, 0, 'L');
+		$pdf->MultiCell($line_end-$posx -$this->marge_gauche, 5, $text, 0, 'L');
 		
 		//---7----//
 		$posx = 10;
-		$posy += 14;
+		$posy += 10;
 		$pdf->SetFont('','B', $default_font_size-1);
 		$pdf->SetXY($posx,$posy);
 		$text = "7."; 
@@ -1426,7 +1583,7 @@ class pdf_cesgm extends ModelePDFPropales
 		$pdf->SetFont('','', $default_font_size-1);
 		$pdf->SetXY($posx,$posy);
 		$text = "Dans l'éventualité où des matériaux nécessités à l'exécution de l'ouvrage ne sont plus disponibles dans les délais permettant de respecter la terminaison de l'ouvrage selon les termes des présentes, l'entrepreneur pourra substituer tout matériaux de qualité équivalente ou supérieure, sauf objection du client qui renoncera alors à tout dédommagement pou retard dans la livraison de l'ouvrage."; 
-		$pdf->MultiCell(185, 5, $text, 0, 'L');
+		$pdf->MultiCell($line_end-$posx -$this->marge_gauche, 5, $text, 0, 'L');
 
 
 		//---8----//
@@ -1452,9 +1609,9 @@ class pdf_cesgm extends ModelePDFPropales
 		$pdf->SetFont('','', $default_font_size-1);
 		$pdf->SetXY($posx,$posy);
 		$text = "Qu'en cas de défaut de l'entrepreneur de respecter ses obligations aux termes sea présentes, sous réserve de tous ses recours;"; 
-		$pdf->MultiCell(180, 5, $text, 0, 'L');
+		$pdf->MultiCell($line_end-$posx-$this->marge_gauche, 5, $text, 0, 'L');
 
-		$posy += 8;
+		$posy += 5;
 		$posx -= 6;
 		$pdf->SetFont('','', $default_font_size-1);
 		$pdf->SetXY($posx,$posy);
@@ -1465,11 +1622,11 @@ class pdf_cesgm extends ModelePDFPropales
 		$pdf->SetFont('','', $default_font_size-1);
 		$pdf->SetXY($posx,$posy);
 		$text = "En payant à l'entrepreneur en proportion du prix convenu, les frais et dépenses actuelles, la valeur des travaux exécutés avant la notification de la résiliation, la valeur des biens fournism une indemnité additionnelle équivalente à vingt pour cent (20%) de la valeur totale du contrat à titre de perte de profit, et tout autre préjudice que l'entrepreneur pourra subir;";
-		$pdf->MultiCell(180, 5, $text, 0, 'L');
+		$pdf->MultiCell($line_end-$posx-$this->marge_gauche, 5, $text, 0, 'L');
 
 		//---9----//
 		$posx = 10;
-		$posy += 15;
+		$posy += 14;
 		$pdf->SetFont('','B', $default_font_size-1);
 		$pdf->SetXY($posx,$posy);
 		$text = "9.";  
@@ -1490,7 +1647,7 @@ class pdf_cesgm extends ModelePDFPropales
 		$pdf->SetFont('','', $default_font_size-1);
 		$pdf->SetXY($posx,$posy);
 		$text = "Qu'en cas de défaut par le client de respecter ses obligations aux termes des présentes, sous réserve de tous ses recours;";
-		$pdf->MultiCell(180, 5, $text, 0, 'L');
+		$pdf->MultiCell($line_end-$posx-$this->marge_gauche, 5, $text, 0, 'L');
 
 		$posy += 5;
 		$posx -= 6;
@@ -1503,11 +1660,11 @@ class pdf_cesgm extends ModelePDFPropales
 		$pdf->SetFont('','', $default_font_size-1);
 		$pdf->SetXY($posx,$posy);
 		$text = "Pour motif sérieux, mais jamais à contretemps, et en faisant tout ce qui est immédiatement nécessaire pou prévenir une perte et en assurant tout préjudice causé au client par une telle résiliation;";
-		$pdf->MultiCell(180, 5, $text, 0, 'L');
+		$pdf->MultiCell($line_end-$posx-$this->marge_gauche, 5, $text, 0, 'L');
 
 		//---10----//
 		$posx = 10;
-		$posy += 11;
+		$posy += 10;
 		$pdf->SetFont('','B', $default_font_size-1);
 		$pdf->SetXY($posx,$posy);
 		$text = "10.";  
@@ -1517,11 +1674,11 @@ class pdf_cesgm extends ModelePDFPropales
 		$pdf->SetXY($posx,$posy);
 		$pdf->SetFont('','', $default_font_size-1);
 		$text = "Le client reconnait avoir obtenu, préalablement à la negociation et signature du présent contrat, toute information utile relativement à la nature de la tâche ainsi qu'aux biens et au temps nécessaire à cette fin.";  
-		$pdf->MultiCell(185, 5, $text, 0, 'L');
+		$pdf->MultiCell($line_end-$posx-$this->marge_gauche, 5, $text, 0, 'L');
 
 		//---11----//
 		$posx = 10;
-		$posy += 11;
+		$posy += 10;
 		$pdf->SetFont('','B', $default_font_size-1);
 		$pdf->SetXY($posx,$posy);
 		$text = "11.";  
@@ -1531,11 +1688,11 @@ class pdf_cesgm extends ModelePDFPropales
 		$pdf->SetXY($posx,$posy);
 		$pdf->SetFont('','', $default_font_size-1);
 		$text = "Les parties conviennent que les Lois de la Provence de Québec en vigueur à la date de la signature des présentes s'appliqueront au présent contrat et déclarent, pour les fins des présentes, élire domicile à la place d'affaire de l'entrepreneur.";
-		$pdf->MultiCell(185, 5, $text, 0, 'L');
+		$pdf->MultiCell($line_end-$posx-$this->marge_gauche, 5, $text, 0, 'L');
 
 		//---12----//
 		$posx = 10;
-		$posy += 11;
+		$posy += 10;
 		$pdf->SetFont('','B', $default_font_size-1);
 		$pdf->SetXY($posx,$posy);
 		$text = "12.";  
@@ -1545,9 +1702,9 @@ class pdf_cesgm extends ModelePDFPropales
 		$pdf->SetXY($posx,$posy);
 		$pdf->SetFont('','', $default_font_size-1);
 		$text = "Le client reconnait avoir librement négocié tous les termes du présent contrat, avoir lu chacune de ses clauses, l'avoir compris, et s'en déclare satisfait par sa signature ci-après exposée:";
-		$pdf->MultiCell(185, 5, $text, 0, 'L');
+		$pdf->MultiCell($line_end-$posx-$this->marge_gauche, 5, $text, 0, 'L');
 
-		$posx = 20;
+		$posx = $this->marge_gauche;
 		$posy += 15;
 		$pdf->SetFont('','', $default_font_size-1);
 		$pdf->SetXY($posx,$posy);
@@ -1560,9 +1717,9 @@ class pdf_cesgm extends ModelePDFPropales
 		$text = ", le";  
 		$pdf->MultiCell(15, 5, $text, 0, 'L');
 
-		$pdf->line($posx+105 ,$posy+4, $line_end,$posy+4);
+		$pdf->line($posx+105 ,$posy+4, $line_end - $this->marge_gauche,$posy+4);
 
-		$posy+=15;
+		$posy+=12;
 		$pdf->SetXY($posx,$posy);
 
 		$pdf->line($posx ,$posy+4, $posx+90,$posy+4);
@@ -1572,16 +1729,16 @@ class pdf_cesgm extends ModelePDFPropales
 		$text = "Entrepreneur";
 		$pdf->MultiCell(60, 5, $text, 0, 'L');
 
-		$pdf->line($posx+97 ,$posy+4, $line_end,$posy+4);
+		$pdf->line($posx+97 ,$posy+4, $line_end - $this->marge_gauche,$posy+4);
 
 		$pdf->SetXY($posx+125,$posy+4.5);
 		$pdf->SetFont('','', $default_font_size-1);
 		$text = "Client";
 		$pdf->MultiCell(60, 5, $text, 0, 'L');
 		
-		$posy+=15;
+		$posy+=12;
 		$pdf->SetXY($posx,$posy);
-		$pdf->line($posx+97 ,$posy+4, $line_end,$posy+4);
+		$pdf->line($posx+97 ,$posy+4, $line_end - $this->marge_gauche,$posy+4);
 
 		$pdf->SetXY($posx+125,$posy+4.5);
 		$pdf->SetFont('','', $default_font_size-1);
@@ -1589,40 +1746,24 @@ class pdf_cesgm extends ModelePDFPropales
 		$pdf->MultiCell(60, 5, $text, 0, 'L');
 		
 		$posy+=9;
-		$posx +=10;
-		$pdf->line($posx ,$posy+4, $line_end-30,$posy+4);
+		$posx = $this->marge_gauche;
+		$pdf->line($posx ,$posy+4, $line_end - $posx,$posy+4);
 
 		$pdf->line($posx ,$posy+4, $posx, $posy+9.5);//begin vertical line
 
 		$pdf->SetXY($posx+13,$posy+4.5);
-		$pdf->SetFont('','', $default_font_size-1);
+		$pdf->SetFont('','B', $default_font_size-1);
 		$text = "USAGE EXCLUSIF RÉSERVÉ AUX MEMBRES EN RÈGLE DE LA C.E.S.G.M";
-		$pdf->MultiCell(190, 5, $text, 0, 'L');
+		$pdf->MultiCell($line_end - 55, 5, $text, 0, 'C');
 
-		$pdf->line($line_end-30 ,$posy+4, $line_end-30,$posy+9.5);//end vertical line
+		$pdf->line($line_end - $posx ,$posy+4, $line_end-$posx ,$posy+9.5);//end vertical line
 
 		$posy+=5.5;
-		$pdf->line($posx ,$posy+4, $line_end-30,$posy+4);
-
-
-
-// Entrepreneur 					Client
+		$pdf->line($posx ,$posy+4, $line_end -$posx,$posy+4);
+				
 		//$pdf->SetLineWidth();//to default size used for next lines
 
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 	/**
@@ -1955,7 +2096,7 @@ class pdf_cesgm extends ModelePDFPropales
 								];
 
 
-			$line_end = $posx+191;
+			$line_end = $posx+197;
 		
 			foreach ($_emetteur_infos as $key => $value) {
 				

@@ -1741,7 +1741,7 @@ if ($action == 'create') {
 
 	// Amount HT
 	print '<tr><td height="10" width="25%">' . $langs->trans('AmountHT') . '</td>';
-	print '<td align="right" class="nowrap"><b>' . price($object->total_ht, '', $langs, 0, - 1, - 1, $conf->currency) . '</b></td>';
+	print '<td align="right" class="nowrap"><b>' . price($object->total_ht, '', $langs, 1, - 1, - 1, $conf->currency) . '</b></td>';
 	print '<td></td>';
 
 	// Margin Infos
@@ -1754,26 +1754,26 @@ if ($action == 'create') {
 
 	// Amount VAT
 	print '<tr><td height="10">' . $langs->trans('AmountVAT') . '</td>';
-	print '<td align="right" class="nowrap">' . price($object->total_tva, '', $langs, 0, - 1, - 1, $conf->currency) . '</td>';
+	print '<td align="right" class="nowrap">' . price($object->total_tva, '', $langs, 1, - 1, - 1, $conf->currency) . '</td>';
 	print '<td></td></tr>';
 
 	// Amount Local Taxes
 	if ($mysoc->localtax1_assuj == "1") 	// Localtax1
 	{
 		print '<tr><td height="10">' . $langs->transcountry("AmountLT1", $mysoc->country_code) . '</td>';
-		print '<td align="right" class="nowrap">' . price($object->total_localtax1, '', $langs, 0, - 1, - 1, $conf->currency) . '</td>';
+		print '<td align="right" class="nowrap">' . price($object->total_localtax1, '', $langs, 1, - 1, - 1, $conf->currency) . '</td>';
 		print '<td></td></tr>';
 	}
 	if ($mysoc->localtax2_assuj == "1") 	// Localtax2
 	{
 		print '<tr><td height="10">' . $langs->transcountry("AmountLT2", $mysoc->country_code) . '</td>';
-		print '<td align="right" class="nowrap">' . price($object->total_localtax2, '', $langs, 0, - 1, - 1, $conf->currency) . '</td>';
+		print '<td align="right" class="nowrap">' . price($object->total_localtax2, '', $langs, 1, - 1, - 1, $conf->currency) . '</td>';
 		print '<td></td></tr>';
 	}
 
 	// Amount TTC
 	print '<tr><td height="10">' . $langs->trans('AmountTTC') . '</td>';
-	print '<td align="right" class="nowrap">' . price($object->total_ttc, '', $langs, 0, - 1, - 1, $conf->currency) . '</td>';
+	print '<td align="right" class="nowrap">' . price($object->total_ttc, '', $langs, 1, - 1, - 1, $conf->currency) . '</td>';
 	print '<td></td></tr>';
 
 	// Statut
