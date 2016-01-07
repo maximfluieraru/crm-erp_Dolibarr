@@ -366,12 +366,14 @@ class pdf_cesgm extends ModelePDFPropales
 					// 	$posYAfterImage=$curY+$imglinesize['height'];
 					// }
 
+					
+
 					// Description of product line
 					$curX = $this->posxdesc-1;
 
 					$pdf->startTransaction();
 
-					$width_of_line = 165;//description line width
+					$width_of_line = $this->page_largeur - $this->marge_gauche - $this->marge_droite; //165;// width for description line
 
 					pdf_cesgm_writelinedesc($pdf,$object,$i,$outputlangs,$width_of_line/*$this->posxpicture-$curX*/,3,$curX,$curY,$hideref,$hidedesc);
 
@@ -382,6 +384,7 @@ class pdf_cesgm extends ModelePDFPropales
 						$pageposafter=$pageposbefore;
 						//print $pageposafter.'-'.$pageposbefore;exit;
 						$pdf->setPageOrientation('', 1, $heightforfooter);	// The only function to edit the bottom margin of current page to set it.
+						
 						pdf_cesgm_writelinedesc($pdf,$object,$i,$outputlangs,$width_of_line/*$this->posxpicture-$curX*/,3,$curX,$curY,$hideref,$hidedesc);
 
 						$pageposafter=$pdf->getPage();
@@ -452,7 +455,18 @@ class pdf_cesgm extends ModelePDFPropales
 					// Total HT line Total Price By Service
 					$total_excl_tax = pdf_getlinetotalexcltax($object, $i, $outputlangs, $hidedetails);
 					$pdf->SetXY($this->postotalht, $curY);
-					$pdf->MultiCell($this->page_largeur-$this->marge_droite-$this->postotalht, 3, $total_excl_tax, 0, 'R', 0);
+					
+
+
+
+
+					//$pdf->MultiCell($this->page_largeur-$this->marge_droite-$this->postotalht, 3, $total_excl_tax, 0, 'R', 0);
+
+					
+
+
+
+
 
 					// Collecte des totaux par valeur de tva dans $this->tva["taux"]=total_tva
 					$tvaligne=$object->lines[$i]->total_tva;
@@ -494,10 +508,14 @@ class pdf_cesgm extends ModelePDFPropales
 					if (! empty($conf->global->MAIN_PDF_DASH_BETWEEN_LINES) && $i < ($nblignes - 1))
 					{
 						$pdf->setPage($pageposafter);
-						$pdf->SetLineStyle(array('dash'=>'1,1','color'=>array(210,210,210)));
+						//$pdf->SetLineStyle(array('dash'=>'1,1','color'=>array(210,210,210)));
 						//$pdf->SetDrawColor(190,190,200);
+
+
+						$pdf->SetDrawColor(0);//black for lines -  added
+
 						$pdf->line($this->marge_gauche, $nexY+1, $this->page_largeur - $this->marge_droite, $nexY+1);
-						$pdf->SetLineStyle(array('dash'=>0));
+						//$pdf->SetLineStyle(array('dash'=>0));
 					}
 
 					$nexY+=2;    // Passe espace entre les lignes
@@ -539,7 +557,9 @@ class pdf_cesgm extends ModelePDFPropales
 						$pagenb++;
 						if (empty($conf->global->MAIN_PDF_DONOTREPEAT_HEAD)) $this->_pagehead($pdf, $object, 0, $outputlangs);
 					}
-				}
+				} // ----- end for 
+
+
 
 				$pdf->SetXY(10,$pdf->getY());
 				
@@ -659,8 +679,8 @@ class pdf_cesgm extends ModelePDFPropales
 	 *   @return	void
 	 */
 	// unused !!!!
-	function _tableau_info(&$pdf, $object, $posy, $outputlangs)
-	{
+	// function _tableau_info(&$pdf, $object, $posy, $outputlangs)
+	// {
 
 		// $pdf->line($this->marge_gauche, $posy-2, $this->page_largeur - $this->marge_droite, $posy-2);
 		// global $conf;
@@ -824,7 +844,7 @@ class pdf_cesgm extends ModelePDFPropales
 		// }
 
 		// return $posy;
-	}
+	// }
 
 
 	/**
@@ -2458,9 +2478,10 @@ class pdf_cesgm extends ModelePDFPropales
 						$pdf->SetXY($posx+49,$posy);
 						$pdf->SetFont('','', $default_font_size - 1);
 						$pdf->MultiCell(141, 4, $outputlangs->convToOutputCharset($value), 0, 'L');
-						$posy += 8;	
-						$pdf->line($posx+47,$posy+=1,$line_end,$posy);
-						$posy+=1;	
+						// $posy += 8;	
+						// //$pdf->line($posx+47,$posy+=1,$line_end,$posy);
+						// $posy+=1;	
+						$posy+=9;
 
 						break;
 

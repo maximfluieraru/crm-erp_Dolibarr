@@ -73,6 +73,10 @@ Adresse travaux = note privé prospect (si non l'adresse par default du client)
 configuration/modules/contrats/ Magre/Masque AAAA{yy}{mm}-{000000} IMPORT!!! configuration before validate any contract
 configuration/modules/proposition/ Saphir/Masque AAAA{yy}{mm}-{000000} IMPORT!!! configuration before validate any proposal
 
+configuration/affichage cahcher les boutons non autorisés
+
+configuration/modules/modules complemntaires  editeur WYSIWYG - options pour "text area" changer la police etc. 
+
 ----------------------=========================----------------------------------
 
 Max's chages: 
@@ -124,7 +128,7 @@ Max's chages:
 
 	# DATABASE 
 			* document_model table 
-				- cesgm added (important value of label must be null)
+				- "cesgm" added (important! value of label must be null)
 
 
 	# htdocs/core/modules/propale
@@ -138,8 +142,12 @@ Max's chages:
 	# Documents/mycompany/logos/thumbs/
 			* cesgm.logo.png (added)
 	
-	#
+	#htdocs/comm/
+			* (modified) propal.php
+				- (line 1742 - 1777)   price(..... langs, 0, ......) 0 was chaged to 1  (this change will "trunc" prices ex. 123.3421 = 123.34)
 
+	#htdocs/theme/bureau2crea
+			* style.css.php (clone of original_style.css)
 
 ----------------------=========================----------------------------------
 

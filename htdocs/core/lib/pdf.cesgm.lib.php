@@ -118,7 +118,7 @@ function pdf_cesgm_build_address($outputlangs,$sourcecompany,$targetcompany='',$
 
 		if (empty($conf->global->MAIN_PDF_DISABLESOURCEDETAILS))
 		{
-			// Phone
+			// Phone  
 			if ($sourcecompany->phone) $stringaddress .= ($stringaddress ? "\n" : '' )./*$outputlangs->transnoentities("Phone").": ".*/$outputlangs->convToOutputCharset($sourcecompany->phone);
 			// Fax
 			if ($sourcecompany->fax) $stringaddress .= ($stringaddress ? "\n" : '' )./*$outputlangs->transnoentities("Fax").": ".*/$outputlangs->convToOutputCharset($sourcecompany->fax);
@@ -779,6 +779,8 @@ function pdf_cesgm_writeLinkedObjects(&$pdf,$object,$outputlangs,$posx,$posy,$w,
 function pdf_cesgm_writelinedesc(&$pdf,$object,$i,$outputlangs,$w,$h,$posx,$posy,$hideref=0,$hidedesc=0,$issupplierline=0)
 {
 	global $db, $conf, $langs, $hookmanager;
+
+	
 
 	$reshook=0;
 	if (is_object($hookmanager) && ( (isset($object->lines[$i]->product_type) && $object->lines[$i]->product_type == 9 && ! empty($object->lines[$i]->special_code)) || ! empty($object->lines[$i]->fk_parent_line) ) )

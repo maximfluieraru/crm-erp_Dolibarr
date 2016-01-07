@@ -249,6 +249,7 @@ function pdf_getPDFFont($outputlangs)
 function pdf_getPDFFontSize($outputlangs)
 {
 	$size=10;                   // By default, for FPDI or ISO language on TCPDF
+
 	if (class_exists('TCPDF'))  // If TCPDF on, we can use an UTF8 one like DejaVuSans if required (slower)
 	{
 		if ($outputlangs->trans('FONTSIZEFORPDF')!='FONTSIZEFORPDF')
