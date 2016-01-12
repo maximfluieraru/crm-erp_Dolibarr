@@ -86,7 +86,7 @@ if (! empty($conf->dol_optimize_smallscreen)) $fontsize=11;
 /* Styles par defaut                                                              */
 /* ============================================================================== */
 
-body {
+html,body {
 /*	background-color: #FFFFFF; */
 	color: #101010;
 	font-size: <?php print $fontsize ?>px;
@@ -96,6 +96,17 @@ body {
     margin-right: 0;
     margin-left: 0;
     <?php print 'direction: '.$langs->trans("DIRECTION").";\n"; ?>
+    height: 100%;
+   
+    background: url("<?php echo dol_buildpath($path.'/theme/'.$theme.'/img/bg_work.jpg',1); ?>")  no-repeat center center fixed;
+    -webkit-background-size: cover;
+          -moz-background-size: cover;
+          -o-background-size: cover;
+          background-size: cover;
+
+    /*background-image: linear-gradient(35deg, rgba(3,123,60,0.6) 15%, rgba(58,190,232,1) 37%, rgba(70,53,24,0.2) 100%, rgba(72,56,24,1) 100%); */
+   
+
 }
 
 #mainbody .main_box {

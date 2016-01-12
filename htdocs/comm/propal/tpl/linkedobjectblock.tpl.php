@@ -39,7 +39,7 @@ print_titre($langs->trans('RelatedCommercialProposals'));
 <table class="noborder allwidth">
 <tr class="liste_titre">
 	<td><?php echo $langs->trans("Ref"); ?></td>
-	<td><?php echo $langs->trans('RefCustomer'); ?></td>
+	<td style="display: none;"><?php echo $langs->trans('RefCustomer'); ?></td>
 	<td align="center"><?php echo $langs->trans("Date"); ?></td>
 	<td align="right"><?php echo $langs->trans("AmountHTShort"); ?></td>
 	<td align="right"><?php echo $langs->trans("Status"); ?></td>

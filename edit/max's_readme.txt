@@ -77,6 +77,8 @@ configuration/affichage cahcher les boutons non autorisés
 
 configuration/modules/modules complemntaires  editeur WYSIWYG - options pour "text area" changer la police etc. 
 
+configuration/modules/modules proposal delai  = 30
+
 ----------------------=========================----------------------------------
 
 Max's chages: 
@@ -94,13 +96,16 @@ Max's chages:
 
 	
 	# htdocs/
-			* added bootstrap.js (script js to import boostrap from web server)
+			* added bootstrap.js (script js to import boostrap from web server) not used for now
+			* added bootstrap folder
 			* modified main.inc.php 
-				- (line 1268 ) added <script type="text/javascript"> to import bootsrap.js .. in <head>
-				- (line 1658 - 1662) info about Dolibarr (put in comments)
-				- (line 1682 - 1693) Dolibarr wiki (put in comments)
-				- (line 1697 - 1718) Link to bugtrack (put in comments)
-				- (line 1441 & 1443) DOL_VERSION(# of version) (put in comments)
+				- (line 1270 ) added <script type="text/javascript"> to import bootsrap.js .. in <head> // is now in comments
+				 - (line 1274 ) added <script type="text/javascript"> to import bootsrap from local folders .. in <head>
+
+				- (line 1692 - 1696) info about Dolibarr (put in comments)
+				- (line 1716 - 1727) Dolibarr wiki (put in comments)
+				- (line  1731 - 1752) Link to bugtrack (put in comments)
+				- (line 1469 & 1479) $appli='CESGM'; DOL_VERSION(# of version) (put in comments)
 
 	# htdocs/install/ (moved to unused folders)
 			*index.php added (redirection to htdocs/index.php)
@@ -109,9 +114,17 @@ Max's chages:
 	# htdocs/core/tpl/
 			* added login_style.css
 			* modified login.tpl.php : 
-				- added new login and a <script> for style(login_style.css + bootstrap)
+				- (in comments)added new login and a <script> for style(login_style.css + bootstrap)
 				- old login is hidden <center style="visibility:hidden;">
+			* modified objectline_create.tpl.php 
+				- line - 93  <span display: none 
+				- line - 97 <input checked="true"
+				- line - 120 $form->select_type_of_lines parametres values was modified (check original line on line 118)
+				- line - 128  <span display: none  & <br> put in comments
 
+	# htdocs/core/class/
+			* modified html.form.class.php
+				- line 567 - 569 put in comments
 
 	# htdocs/core/menus/stadard/
 			* modified eldy.lib.php  
@@ -131,7 +144,7 @@ Max's chages:
 				- "cesgm" added (important! value of label must be null)
 
 
-	# htdocs/core/modules/propale
+	# htdocs/core/modules/propale/doc
 			* pdf_cesgm_modules.php(added)
 
 
@@ -148,6 +161,25 @@ Max's chages:
 
 	#htdocs/theme/bureau2crea
 			* style.css.php (clone of original_style.css)
+			* new image for dollibar.jpg (prunus's logo)
+			- img
+				* bg_work.jpg (added)
+
+	#htdocs
+			* added bootstrap folders (the script was added in main.inc.php )
+
+	#htdocs/comm
+			* propal.php 
+				-(style="display: none"); 1147 & 1450 ( * search in all files / $langs->trans('RefCustomer') / to see all changes)
+				-(style="display: none"); 1213 & 1597 ( * search in all files / $langs->trans('AvailabilityPeriod') / to see all changes)
+
+	
+
+
+
+
+
+
 
 ----------------------=========================----------------------------------
 

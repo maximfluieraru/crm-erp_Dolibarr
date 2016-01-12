@@ -462,9 +462,6 @@ class pdf_cesgm extends ModelePDFPropales
 
 					//$pdf->MultiCell($this->page_largeur-$this->marge_droite-$this->postotalht, 3, $total_excl_tax, 0, 'R', 0);
 
-					
-
-
 
 
 
@@ -912,7 +909,7 @@ class pdf_cesgm extends ModelePDFPropales
 		$posx += 3;
 		$pdf->SetXY($posx,$posy);
 		$pdf->SetFont('','B', $default_font_size-1);
-		$text = dol_print_date($object->fin_validite,'daytext','',$outputlangs); // daytext (12 Decembre 2015) day (12.12.2015)
+		$text = dol_print_date($object->date_livraison,'daytext','',$outputlangs); // daytext (12 Decembre 2015) day (12.12.2015)
 		$pdf->MultiCell(45, 5, $text, 0, 'L');
 
 		$posx += 34;

@@ -1144,8 +1144,8 @@ if ($action == 'create') {
 	// Reference
 	print '<tr><td class="fieldrequired">' . $langs->trans('Ref') . '</td><td colspan="2">' . $langs->trans("Draft") . '</td></tr>';
 
-	// Ref customer
-	print '<tr><td>' . $langs->trans('RefCustomer') . '</td><td colspan="2">';
+	// Ref customer //Commercial/Nouvelle propsiton
+	print '<tr style="display: none;""><td>' . $langs->trans('RefCustomer') . '</td><td colspan="2">';
 	print '<input type="text" name="ref_client" value=""></td>';
 	print '</tr>';
 
@@ -1210,7 +1210,7 @@ if ($action == 'create') {
 	print '</td></tr>';
 
 	// Delivery delay
-	print '<tr><td>' . $langs->trans('AvailabilityPeriod') . '</td><td colspan="2">';
+	print '<tr style="display: none;"><td>' . $langs->trans('AvailabilityPeriod') . '</td><td colspan="2">';
 	$form->selectAvailabilityDelay('', 'availability_id', '', 1);
 	print '</td></tr>';
 
@@ -1326,7 +1326,7 @@ if ($action == 'create') {
 			$lib = $langs->trans("ProductsAndServices");
 
 			print '<table class="border" width="100%">';
-			print '<tr>';
+			print '<tr">';
 			print '<td>' . $lib . '</td>';
 			print '<td>' . $langs->trans("Qty") . '</td>';
 			print '<td>' . $langs->trans("ReductionShort") . '</td>';
@@ -1445,7 +1445,7 @@ if ($action == 'create') {
 	print '</td></tr>';
 
 	// Ref customer
-	print '<tr><td>';
+	print '<tr style="display: none;"><td>';
 	print '<table class="nobordernopadding" width="100%"><tr><td class="nowrap">';
 	print $langs->trans('RefCustomer') . '</td>';
 	if ($action != 'refclient' && ! empty($object->brouillon))
@@ -1594,7 +1594,7 @@ if ($action == 'create') {
 	print '</tr>';
 
 	// Delivery delay
-	print '<tr><td>';
+	print '<tr style="display: none;"><td>';
 	print '<table class="nobordernopadding" width="100%"><tr><td>';
 	print $langs->trans('AvailabilityPeriod');
 	if (! empty($conf->commande->enabled))

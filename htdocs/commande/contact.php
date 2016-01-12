@@ -161,11 +161,11 @@ if ($id > 0 || ! empty($ref))
 		print "</td></tr>";
 
 		// Ref commande client
-		print '<tr><td>';
+		print '<tr style="display: none;"><td>';
         print '<table class="nobordernopadding" width="100%"><tr><td class="nowrap">';
 		print $langs->trans('RefCustomer').'</td><td align="left">';
         print '</td>';
-        print '</tr></table>';
+        print '</tr style="display: none;"></table>';
         print '</td><td colspan="3">';
 		print $object->ref_client;
 		print '</td>';

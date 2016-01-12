@@ -637,7 +637,7 @@ if ($action == 'create')
             print "</tr>\n";
 
             // Ref client
-            print '<tr><td>';
+            print '<tr style="display: none;"><td>';
             if ($origin == 'commande') print $langs->trans('RefCustomerOrder');
             else if ($origin == 'propal') print $langs->trans('RefCustomerOrder');
             else print $langs->trans('RefCustomer');

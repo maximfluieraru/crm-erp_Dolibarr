@@ -89,7 +89,7 @@ if ($id > 0 || ! empty($ref))
         print "</td></tr>";
 
         // Ref cde client
-		print '<tr><td>';
+		print '<tr style="display: none;"><td>';
         print '<table class="nobordernopadding" width="100%"><tr><td class="nowrap">';
 		print $langs->trans('RefCustomer').'</td><td align="left">';
         print '</td>';

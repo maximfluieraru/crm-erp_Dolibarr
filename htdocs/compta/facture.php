@@ -2732,7 +2732,7 @@ if ($action == 'create')
 	print '</td></tr>';
 
 	// Ref customer
-	print '<tr><td width="20%">';
+	print '<tr style="display: none;"><td width="20%">';
 	print '<table class="nobordernopadding" width="100%"><tr><td>';
 	print $langs->trans('RefCustomer');
 	print '</td>';

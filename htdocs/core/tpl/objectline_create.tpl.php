@@ -90,11 +90,11 @@ else {
 	<?php
 
 	// Free line
-	echo '<span>';
+	echo '<span style="display: none;">';
 	// Show radio free line
 	if (! empty($conf->product->enabled) || ! empty($conf->service->enabled))
 	{
-		echo '<input type="radio" name="prod_entry_mode" id="prod_entry_mode_free" value="free"';
+		echo '<input checked="true" type="radio" name="prod_entry_mode" id="prod_entry_mode_free" value="free"';
 		//echo (GETPOST('prod_entry_mode')=='free' ? ' checked="true"' : ((empty($forceall) && (empty($conf->product->enabled) || empty($conf->service->enabled)))?' checked="true"':'') );
 		echo (GETPOST('prod_entry_mode')=='free' ? ' checked="true"' : '');
 		echo '> ';
@@ -114,14 +114,18 @@ else {
 		else if (empty($conf->product->enabled) && ! empty($conf->service->enabled)) echo $langs->trans("FreeLineOfType").' '.$langs->trans("Service");
 		else if (! empty($conf->product->enabled) && empty($conf->service->enabled)) echo $langs->trans("FreeLineOfType").' '.$langs->trans("Product");*/
 		echo ' ';
-		echo $form->select_type_of_lines(isset($_POST["type"])?$_POST["type"]:-1,'type',1,1,1);
-//	}
+		
+		// -- original line --  echo $form->select_type_of_lines(isset($_POST["type"])?$_POST["type"]:-1,'type',1,1,1);
+		//function in htdocs/core/ html.for.class select_type_of_lines($selected='',$htmlname='type',$showempty=0,$hidetext=0,$forceall=0)
+		echo $form->select_type_of_lines(isset($_POST["type"])?$_POST["type"]:1,'type',0,1,1); 
+
+		//	}
 	echo '</span>';
 
 	// Predefined product/service
 	if (! empty($conf->product->enabled) || ! empty($conf->service->enabled))
 	{
-		echo '<br><span>';
+		echo /*<br>*/'<span style="display: none;">';
 		echo '<input type="radio" name="prod_entry_mode" id="prod_entry_mode_predef" value="predef"'.(GETPOST('prod_entry_mode')=='predef'?' checked="true"':'').'> ';
 
 		if (empty($senderissupplier))

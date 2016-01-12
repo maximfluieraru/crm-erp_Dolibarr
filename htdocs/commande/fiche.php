@@ -1464,7 +1464,7 @@ if ($action == 'create' && $user->rights->commande->creer) {
 	print '<tr><td class="fieldrequired">' . $langs->trans('Ref') . '</td><td colspan="2">' . $langs->trans("Draft") . '</td></tr>';
 
 	// Reference client
-	print '<tr><td>' . $langs->trans('RefCustomer') . '</td><td colspan="2">';
+	print '<tr style="display: none;"><td>' . $langs->trans('RefCustomer') . '</td><td colspan="2">';
 	if (!empty($conf->global->MAIN_USE_PROPAL_REFCLIENT_FOR_ORDER))
 		print '<input type="text" name="ref_client" value="'.$ref_client.'"></td>';
 	else
@@ -1535,7 +1535,7 @@ if ($action == 'create' && $user->rights->commande->creer) {
 	print '</td></tr>';
 
 	// Delivery delay
-	print '<tr><td>' . $langs->trans('AvailabilityPeriod') . '</td><td colspan="2">';
+	print '<tr style="display: none;"><td>' . $langs->trans('AvailabilityPeriod') . '</td><td colspan="2">';
 	$form->selectAvailabilityDelay($availability_id, 'availability_id', '', 1);
 	print '</td></tr>';
 
@@ -1899,7 +1899,7 @@ if ($action == 'create' && $user->rights->commande->creer) {
 		print '</tr>';
 
 		// Ref commande client
-		print '<tr><td>';
+		print '<tr style="display: none;"><td>';
 		print '<table class="nobordernopadding" width="100%"><tr><td class="nowrap">';
 		print $langs->trans('RefCustomer') . '</td><td align="left">';
 		print '</td>';
@@ -2045,7 +2045,7 @@ if ($action == 'create' && $user->rights->commande->creer) {
 		print '</td></tr>';
 
 		// Availability
-		print '<tr><td height="10">';
+		print '<tr style="display: none;"><td height="10">';
 		print '<table class="nobordernopadding" width="100%"><tr><td>';
 		print $langs->trans('AvailabilityPeriod');
 		print '</td>';

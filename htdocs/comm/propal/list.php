@@ -281,7 +281,7 @@ if ($result)
 
 	print '<tr class="liste_titre">';
 	print_liste_field_titre($langs->trans('Ref'),$_SERVER["PHP_SELF"],'p.ref','',$param,'',$sortfield,$sortorder);
-	print_liste_field_titre($langs->trans('RefCustomer'),$_SERVER["PHP_SELF"],'p.ref_client','',$param,'',$sortfield,$sortorder);
+	//print_liste_field_titre($langs->trans('RefCustomer'),$_SERVER["PHP_SELF"],'p.ref_client','',$param,'',$sortfield,$sortorder);
 	print_liste_field_titre($langs->trans('Company'),$_SERVER["PHP_SELF"],'s.nom','',$param,'',$sortfield,$sortorder);
 	print_liste_field_titre($langs->trans('Town'),$_SERVER["PHP_SELF"],'s.town','',$param,'',$sortfield,$sortorder);
 	print_liste_field_titre($langs->trans('Date'),$_SERVER["PHP_SELF"],'p.datep','',$param, 'align="center"',$sortfield,$sortorder);

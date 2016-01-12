@@ -564,9 +564,9 @@ class Form
                 print '>&nbsp;</option>';
             }
 
-            print '<option value="0"';
-            if (0 == $selected) print ' selected="selected"';
-            print '>'.$langs->trans("Product");
+            // print '<option value="0"';
+            // if (0 == $selected) print ' selected="selected"';
+            // print '>'.$langs->trans("Product");
 
             print '<option value="1"';
             if (1 == $selected) print ' selected="selected"';

@@ -1269,8 +1269,42 @@ function top_htmlhead($head, $title='', $disablejs=0, $disablehead=0, $arrayofjs
         
         //------------- add bootstrap --------------
 
-        print '<script type="text/javascript" src="'.DOL_URL_ROOT.'/bootstrap.js"></script>';
+       // print '<script type="text/javascript" src="'.DOL_URL_ROOT.'/bootstrap.js"></script>';
 
+        print '<script type="text/javascript">
+
+                    function add_bootstrap () {
+        
+                    var head = document.getElementsByTagName(\'head\')[0];
+
+                    var link=document.createElement("link");
+
+                    //link.href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css";
+                    link.href="'.DOL_URL_ROOT.'/bootstrap/css/bootstrap.min.css";
+                    link.media="screen";
+                    link.rel="stylesheet";
+
+                    head.appendChild(link);
+
+                    link=document.createElement("link");
+
+                    link.href="'.DOL_URL_ROOT.'/bootstrap/css/bootstrap-theme.min.css";
+                    link.media="screen";
+                    link.rel="stylesheet";
+
+                    head.appendChild(link);
+
+                    var script=document.createElement("script");
+
+                    script.type="text/javascript";
+                    script.src="'.DOL_URL_ROOT.'/bootstrap/js/bootstrap.min.js";
+
+                    head.appendChild(script);
+
+                   
+        }    add_bootstrap();
+
+        </script>';
          //-------------------------
         
         if (! empty($head)) print $head."\n";
@@ -1432,7 +1466,7 @@ function top_menu($head, $title='', $target='', $disablejs=0, $disablehead=0, $a
 	    if (! empty($conf->browser->phone)) $loginhtmltext.='<br><b>'.$langs->trans("Phone").'</b>: '.$conf->browser->phone;
 	    if (! empty($_SESSION["disablemodules"])) $loginhtmltext.='<br><b>'.$langs->trans("DisabledModules").'</b>: <br>'.join(', ',explode(',',$_SESSION["disablemodules"]));
 
-	    $appli='Dolibarr';
+	    $appli='CESGM';
 	    if (! empty($conf->global->MAIN_APPLICATION_TITLE))
 	    {
 	    	$appli=$conf->global->MAIN_APPLICATION_TITLE;
@@ -1442,7 +1476,7 @@ function top_menu($head, $title='', $target='', $disablejs=0, $disablehead=0, $a
 	    	}
 	    	//else $appli.=" ".DOL_VERSION;
 	    }
-	    else $appli.=" ".DOL_VERSION;
+	    //else $appli.=" ".DOL_VERSION;
 
 	    // Link info
 	    $logouttext='';

@@ -79,7 +79,7 @@ if ($id > 0 || ! empty($ref))
 		print '<tr><td width="25%">'.$langs->trans('Ref').'</td><td colspan="5">'.$object->ref.'</td></tr>';
 
 		// Ref client
-		print '<tr><td>';
+		print '<tr style="display: none;"><td>';
 		print '<table class="nobordernopadding" width="100%"><tr><td class="nowrap">';
 		print $langs->trans('RefCustomer').'</td><td align="left">';
 		print '</td>';
