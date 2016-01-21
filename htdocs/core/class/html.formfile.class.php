@@ -73,7 +73,7 @@ class FormFile
         global $conf,$langs, $hookmanager;
         $hookmanager->initHooks(array('formfile'));
 
-        if (! empty($conf->browser->phone)) return 0;
+       // if (! empty($conf->browser->phone)) return 0;
 
 		if ((! empty($conf->global->MAIN_USE_JQUERY_FILEUPLOAD) && $useajax) || ($useajax==2))
         {
@@ -804,15 +804,41 @@ class FormFile
 					{
 						$fileinfo = pathinfo($file['name']);
 						print '<td align="center">';
-						$minifile=$fileinfo['filename'].'_mini.'.strtolower($fileinfo['extension']);	// Thumbs are created with filename in lower case
-						if (image_format_supported($file['name']) > 0) print '<img border="0" height="'.$maxheightmini.'" src="'.DOL_URL_ROOT.'/viewimage.php?modulepart='.$modulepart.'&file='.urlencode($relativepath.'thumbs/'.$minifile).'" title="">';
-						else print '&nbsp;';
-						print '</td>';
+						// $minifile=$fileinfo['filename'].'_mini.'.strtolower($fileinfo['extension']);  // Thumbs are created with filename in lower case
+      //                   if (image_format_supported($file['name']) > 0) print '<img border="0" height="'.$maxheightmini.'" src="'.DOL_URL_ROOT.'/viewimage.php?modulepart='.$modulepart.'&file='.urlencode($relativepath.'thumbs/'.$minifile).'" title="'.$minifile.'">';
+      //                   else print '&nbsp;';
+      //                   print '</td>';
+
+                        $minifile=$fileinfo['filename'].'_mini.'.strtolower($fileinfo['extension']);	// Thumbs are created with filename in lower case
+						
+                        //src for small img  
+                        $src=DOL_URL_ROOT.'/viewimage.php?modulepart='.$modulepart.'&file='.urlencode($relativepath.'thumbs/'.$minifile);
+                            
+                        if (image_format_supported($file['name']) < 0){
+                            
+                            if (!file_exists($relativepath.'thumbs/'.$minifile)){
+                                 $src = DOL_URL_ROOT."/theme/common/doc.jpg";
+                             } 
+                        }
+                            
+                        print '<img class="trigger" border="0" height="'.$maxheightmini.'" src="'.$src.'" title="'.$fileinfo['filename'].'">';
+                        //print '<img class="trigger" border="0" height="'.$maxheightmini.'" src="'.DOL_URL_ROOT.'/viewimage.php?modulepart='.$modulepart.'&file='.urlencode($relativepath.'thumbs/'.$minifile).'" title="'.$fileinfo['filename'].'">';
+                        
+                        print '<div class = "imgPreview" style="display:none">                                        
+                                                                                   
+                                    <iframe class="col-lg-12 col-md-12 col-sm-12" src="'.DOL_URL_ROOT.'/viewimage.php?modulepart='.$modulepart.'&file='.$filepath.'"></iframe>
+                                       
+                                </div>';
+
+                        print '</td>';
+
+                        
 					}
-					// Delete or view link
+					// Delete and view link
 					// ($param must start with &)
 					print '<td align="right">';
-					if ($useinecm)     print '<a href="'.DOL_URL_ROOT.'/ecm/docfile.php?urlfile='.urlencode($file['name']).$param.'" class="editfilelink" rel="'.urlencode($file['name']).'">'.img_view().'</a> &nbsp; ';
+                    // view link should be fix before use
+					//if ($useinecm)     print '<a href="'.DOL_URL_ROOT.'/ecm/docfile.php?urlfile='.urlencode($file['name']).$param.'" class="editfilelink" rel="'.urlencode($file['name']).'">'.img_view().'</a> &nbsp; ';
 					if ($permtodelete)
 					{
 						/*
@@ -842,6 +868,89 @@ class FormFile
 			}
 			print "</table>";
 
+            print '<script language="javascript" type="text/javascript">
+                   
+                    $(function() {
+                        
+                        $(".trigger").on("click",function(){
+
+                            $div = $(this).next();
+
+                            var isVisible = true;
+
+                            if (!$div.is(":visible")){
+                                isVisible = false;
+                            }
+
+                            var styleDiv = {
+                                "position": "fixed",
+                                "top": "5%",
+                                "bottom": "5%",
+                                "left": "0%",
+                                "right": "25%",
+                                "min-width": "75%",
+                                "max-height": "85%",
+                                "min-height": "85%",
+                                "-webkit-overflow-scrolling":"touch",
+                                "max-width": "75%" ,
+                                "border" : "none"                             
+                            }   
+                        var styleDiv1 = {
+                            "-moz-transform": "scale(0.25, 0.25)",
+                            "-webkit-transform": "scale(0.25, 0.25)",
+                            "-o-transform": "scale(0.25, 0.25)",
+                            "-ms-transform": "scale(0.25, 0.25)",
+                            "transform": "scale(0.25, 0.25)",
+                            "-moz-transform-origin":  "top left",
+                            "-webkit-transform-origin":  "top left",
+                            "-o-transform-origin":  "top left",
+                            "-ms-transform-origin": "top left",
+                            "transform-origin": "top left"
+                        }
+
+                            var styleIframe = { 
+                                "top" : "0",
+                                "left" : "0",                          
+                                "width": "100%", 
+                                 "overflow": "auto",                           
+                                "height": "100%",
+                                "border" : "none"                                                        
+                            }   
+
+                            $("div.imgPreview").hide();
+
+                            $thisIframe =  $div.find("iframe");
+                            
+                                if(!isVisible){
+                                    $div.toggle();
+                                }
+
+                            var imgStyle = {
+                                "width": "100%",
+                                "height": "100%"
+                            }
+
+                           var imgZ = $thisIframe.contents().find("img");
+                           imgZ.css(imgStyle);
+
+                           $div.hover(
+                                function() {
+                                 $(this).animate({ "zoom": 1 }, 100);
+                                },
+                                function() {
+                                    $(this).animate({ "zoom": 5 }, 400);
+                                }
+                            );
+
+                           $div.css(styleDiv);
+                            $thisIframe.css(styleIframe);    
+
+                            $(this).preventDefault;
+
+                        });      
+                    });                              
+                </script>';
+                
 			return $nboffiles;
 		}
 	}

@@ -1440,7 +1440,7 @@ function top_menu($head, $title='', $target='', $disablejs=0, $disablehead=0, $a
 	        $companylink=' ('.$thirdpartystatic->getNomUrl('','').')';
 	        $company=' ('.$langs->trans("Company").': '.$thirdpartystatic->name.')';
 	    }
-	    $logintext='<div class="login"><a href="'.DOL_URL_ROOT.'/user/fiche.php?id='.$user->id.'"';
+	    $logintext='<div class="login"><a href="#"'; //original line $logintext='<div class="login"><a href="'.DOL_URL_ROOT.'/user/fiche.php?id='.$user->id.'"';
 	    $logintext.=$target?(' target="'.$target.'"'):'';
 	    $logintext.='>'.$user->login.'</a>';
 	    if ($user->societe_id) $logintext.=$companylink;
@@ -1448,21 +1448,21 @@ function top_menu($head, $title='', $target='', $disablejs=0, $disablehead=0, $a
 	    $loginhtmltext.='<u>'.$langs->trans("User").'</u>';
 	    $loginhtmltext.='<br><b>'.$langs->trans("Name").'</b>: '.$user->getFullName($langs);
 	    $loginhtmltext.='<br><b>'.$langs->trans("Login").'</b>: '.$user->login;
-	    $loginhtmltext.='<br><b>'.$langs->trans("Administrator").'</b>: '.yn($user->admin);
-	    $type=($user->societe_id?$langs->trans("External").$company:$langs->trans("Internal"));
-	    $loginhtmltext.='<br><b>'.$langs->trans("Type").'</b>: '.$type;
-	    $loginhtmltext.='<br><b>'.$langs->trans("IPAddress").'</b>: '.$_SERVER["REMOTE_ADDR"];
-	    $loginhtmltext.='<br>';
-	    $loginhtmltext.='<br><u>'.$langs->trans("Connection").'</u>';
-	    if (! empty($conf->global->MAIN_MODULE_MULTICOMPANY)) $loginhtmltext.='<br><b>'.$langs->trans("ConnectedOnMultiCompany").'</b>: '.$conf->entity.' (user entity '.$user->entity.')';
-	    $loginhtmltext.='<br><b>'.$langs->trans("ConnectedSince").'</b>: '.dol_print_date($user->datelastlogin,"dayhour");
-	    $loginhtmltext.='<br><b>'.$langs->trans("PreviousConnexion").'</b>: '.dol_print_date($user->datepreviouslogin,"dayhour");
-	    $loginhtmltext.='<br><b>'.$langs->trans("AuthenticationMode").'</b>: '.$_SESSION["dol_authmode"];
-	    $loginhtmltext.='<br><b>'.$langs->trans("CurrentTheme").'</b>: '.$conf->theme;
-	    $loginhtmltext.='<br><b>'.$langs->trans("CurrentMenuManager").'</b>: '.$menumanager->name;
-	    $s=picto_from_langcode($langs->getDefaultLang());
-	    $loginhtmltext.='<br><b>'.$langs->trans("CurrentUserLanguage").'</b>: '.($s?$s.' ':'').$langs->getDefaultLang();
-	    $loginhtmltext.='<br><b>'.$langs->trans("Browser").'</b>: '.$conf->browser->name.($conf->browser->version?' '.$conf->browser->version:'').' ('.$_SERVER['HTTP_USER_AGENT'].')';
+	    // $loginhtmltext.='<br><b>'.$langs->trans("Administrator").'</b>: '.yn($user->admin);
+	    // $type=($user->societe_id?$langs->trans("External").$company:$langs->trans("Internal"));
+	    // $loginhtmltext.='<br><b>'.$langs->trans("Type").'</b>: '.$type;
+	    // $loginhtmltext.='<br><b>'.$langs->trans("IPAddress").'</b>: '.$_SERVER["REMOTE_ADDR"];
+	    // $loginhtmltext.='<br>';
+	    // $loginhtmltext.='<br><u>'.$langs->trans("Connection").'</u>';
+	    // if (! empty($conf->global->MAIN_MODULE_MULTICOMPANY)) $loginhtmltext.='<br><b>'.$langs->trans("ConnectedOnMultiCompany").'</b>: '.$conf->entity.' (user entity '.$user->entity.')';
+	    // $loginhtmltext.='<br><b>'.$langs->trans("ConnectedSince").'</b>: '.dol_print_date($user->datelastlogin,"dayhour");
+	    // $loginhtmltext.='<br><b>'.$langs->trans("PreviousConnexion").'</b>: '.dol_print_date($user->datepreviouslogin,"dayhour");
+	    // $loginhtmltext.='<br><b>'.$langs->trans("AuthenticationMode").'</b>: '.$_SESSION["dol_authmode"];
+	    // $loginhtmltext.='<br><b>'.$langs->trans("CurrentTheme").'</b>: '.$conf->theme;
+	    // $loginhtmltext.='<br><b>'.$langs->trans("CurrentMenuManager").'</b>: '.$menumanager->name;
+	    // $s=picto_from_langcode($langs->getDefaultLang());
+	    // $loginhtmltext.='<br><b>'.$langs->trans("CurrentUserLanguage").'</b>: '.($s?$s.' ':'').$langs->getDefaultLang();
+	    // $loginhtmltext.='<br><b>'.$langs->trans("Browser").'</b>: '.$conf->browser->name.($conf->browser->version?' '.$conf->browser->version:'').' ('.$_SERVER['HTTP_USER_AGENT'].')';
 	    if (! empty($conf->browser->phone)) $loginhtmltext.='<br><b>'.$langs->trans("Phone").'</b>: '.$conf->browser->phone;
 	    if (! empty($_SESSION["disablemodules"])) $loginhtmltext.='<br><b>'.$langs->trans("DisabledModules").'</b>: <br>'.join(', ',explode(',',$_SESSION["disablemodules"]));
 
@@ -1524,9 +1524,9 @@ function top_menu($head, $title='', $target='', $disablejs=0, $disablehead=0, $a
 	    {
 	        $qs=$_SERVER["QUERY_STRING"];
 	        $qs.=(($qs && $morequerystring)?'&':'').$morequerystring;
-	        $text ='<a href="'.$_SERVER["PHP_SELF"].'?'.$qs.($qs?'&':'').'optioncss=print" target="_blank">';
-	        $text.= img_picto('', 'printer.png', 'class="printer"');
-	        $text.='</a>';
+	        // $text ='<a href="'.$_SERVER["PHP_SELF"].'?'.$qs.($qs?'&':'').'optioncss=print" target="_blank">';
+	        // $text.= img_picto('', 'printer.png', 'class="printer"');
+	        // $text.='</a>';
 	        $toprightmenu.=$form->textwithtooltip('',$langs->trans("PrintContentArea"),2,1,$text,'login_block_elem',2);
 	    }
 		$toprightmenu.='</div>';

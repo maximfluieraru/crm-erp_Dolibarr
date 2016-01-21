@@ -233,24 +233,24 @@ if ($id > 0)
 	   print '</td></tr>';
     }
 
-	if ($object->client)
-	{
-        $langs->load("compta");
+	// if ($object->client)
+	// {
+ //        $langs->load("compta");
 
-		print '<tr><td>';
-		print $langs->trans('CustomerCode').'</td><td colspan="3">';
-		print $object->code_client;
-		if ($object->check_codeclient() <> 0) print ' <font class="error">('.$langs->trans("WrongCustomerCode").')</font>';
-		print '</td></tr>';
+	// 	print '<tr><td>';
+	// 	print $langs->trans('CustomerCode').'</td><td colspan="3">';
+	// 	print $object->code_client;
+	// 	if ($object->check_codeclient() <> 0) print ' <font class="error">('.$langs->trans("WrongCustomerCode").')</font>';
+	// 	print '</td></tr>';
 
-		print '<tr>';
-		print '<td>';
-		print $form->editfieldkey("CustomerAccountancyCode",'customeraccountancycode',$object->code_compta,$object,$user->rights->societe->creer);
-		print '</td><td colspan="3">';
-		print $form->editfieldval("CustomerAccountancyCode",'customeraccountancycode',$object->code_compta,$object,$user->rights->societe->creer);
-		print '</td>';
-		print '</tr>';
-	}
+	// 	print '<tr>';
+	// 	print '<td>';
+	// 	print $form->editfieldkey("CustomerAccountancyCode",'customeraccountancycode',$object->code_compta,$object,$user->rights->societe->creer);
+	// 	print '</td><td colspan="3">';
+	// 	print $form->editfieldval("CustomerAccountancyCode",'customeraccountancycode',$object->code_compta,$object,$user->rights->societe->creer);
+	// 	print '</td>';
+	// 	print '</tr>';
+	// }
 
 	// Address
 	print '<tr><td valign="top">'.$langs->trans('Address').'</td><td colspan="3">';
@@ -279,10 +279,10 @@ if ($id > 0)
 	print '<tr><td>'.$langs->trans("Web").'</td><td colspan="3">'.dol_print_url($object->url,'_blank').'</td></tr>';
 
 	// Phone
-	print '<tr><td>'.$langs->trans('Phone').'</td><td style="min-width: 25%;">'.dol_print_phone($object->phone,$object->country_code,0,$object->id,'AC_TEL').'</td>';
+	print '<tr><td>'.$langs->trans('Phone').'</td><td style="min-width: 25%;">'.dol_print_phone($object->phone,$object->country_code,0,$object->id,'AC_TEL').'</td></tr>';
 
 	// Fax
-	print '<td>'.$langs->trans('Fax').'</td><td style="min-width: 25%;">'.dol_print_phone($object->fax,$object->country_code,0,$object->id,'AC_FAX').'</td></tr>';
+	print '<tr><td>'.$langs->trans('Fax').'</td><td style="min-width: 25%;">'.dol_print_phone($object->fax,$object->country_code,0,$object->id,'AC_FAX').'</td></tr>';
 
 	// Skype
   	if (! empty($conf->skype->enabled))
@@ -324,9 +324,9 @@ if ($id > 0)
 	}
 
 	// TVA Intra
-	print '<tr><td class="nowrap">'.$langs->trans('VATIntra').'</td><td colspan="3">';
-	print $object->tva_intra;
-	print '</td></tr>';
+	// print '<tr><td class="nowrap">'.$langs->trans('VATIntra').'</td><td colspan="3">';
+	// print $object->tva_intra;
+	// print '</td></tr>';
 
 	// Conditions de reglement par defaut
 	$langs->load('bills');
@@ -367,69 +367,69 @@ if ($id > 0)
 	print "</td>";
 	print '</tr>';
 
-	// Relative discounts (Discounts-Drawbacks-Rebates)
-	print '<tr><td class="nowrap">';
-	print '<table width="100%" class="nobordernopadding"><tr><td class="nowrap">';
-	print $langs->trans("CustomerRelativeDiscountShort");
-	print '<td><td align="right">';
-	if ($user->rights->societe->creer && !$user->societe_id > 0)
-	{
-		print '<a href="'.DOL_URL_ROOT.'/comm/remise.php?id='.$object->id.'">'.img_edit($langs->trans("Modify")).'</a>';
-	}
-	print '</td></tr></table>';
-	print '</td><td colspan="3">'.($object->remise_percent?'<a href="'.DOL_URL_ROOT.'/comm/remise.php?id='.$object->id.'">'.$object->remise_percent.'%</a>':$langs->trans("DiscountNone")).'</td>';
-	print '</tr>';
+	// // Relative discounts (Discounts-Drawbacks-Rebates)
+	// print '<tr><td class="nowrap">';
+	// print '<table width="100%" class="nobordernopadding"><tr><td class="nowrap">';
+	// print $langs->trans("CustomerRelativeDiscountShort");
+	// print '<td><td align="right">';
+	// if ($user->rights->societe->creer && !$user->societe_id > 0)
+	// {
+	// 	print '<a href="'.DOL_URL_ROOT.'/comm/remise.php?id='.$object->id.'">'.img_edit($langs->trans("Modify")).'</a>';
+	// }
+	// print '</td></tr></table>';
+	// print '</td><td colspan="3">'.($object->remise_percent?'<a href="'.DOL_URL_ROOT.'/comm/remise.php?id='.$object->id.'">'.$object->remise_percent.'%</a>':$langs->trans("DiscountNone")).'</td>';
+	// print '</tr>';
 
-	// Absolute discounts (Discounts-Drawbacks-Rebates)
-	print '<tr><td class="nowrap">';
-	print '<table width="100%" class="nobordernopadding">';
-	print '<tr><td class="nowrap">';
-	print $langs->trans("CustomerAbsoluteDiscountShort");
-	print '<td><td align="right">';
-	if ($user->rights->societe->creer && !$user->societe_id > 0)
-	{
-		print '<a href="'.DOL_URL_ROOT.'/comm/remx.php?id='.$object->id.'&backtopage='.urlencode($_SERVER["PHP_SELF"].'?socid='.$object->id).'">'.img_edit($langs->trans("Modify")).'</a>';
-	}
-	print '</td></tr></table>';
-	print '</td>';
-	print '<td colspan="3">';
-	$amount_discount=$object->getAvailableDiscounts();
-	if ($amount_discount < 0) dol_print_error($db,$object->error);
-	if ($amount_discount > 0) print '<a href="'.DOL_URL_ROOT.'/comm/remx.php?id='.$object->id.'&backtopage='.urlencode($_SERVER["PHP_SELF"].'?socid='.$object->id).'">'.price($amount_discount,1,$langs,1,-1,-1,$conf->currency).'</a>';
-	else print $langs->trans("DiscountNone");
-	print '</td>';
-	print '</tr>';
+	// // Absolute discounts (Discounts-Drawbacks-Rebates)
+	// print '<tr><td class="nowrap">';
+	// print '<table width="100%" class="nobordernopadding">';
+	// print '<tr><td class="nowrap">';
+	// print $langs->trans("CustomerAbsoluteDiscountShort");
+	// print '<td><td align="right">';
+	// if ($user->rights->societe->creer && !$user->societe_id > 0)
+	// {
+	// 	print '<a href="'.DOL_URL_ROOT.'/comm/remx.php?id='.$object->id.'&backtopage='.urlencode($_SERVER["PHP_SELF"].'?socid='.$object->id).'">'.img_edit($langs->trans("Modify")).'</a>';
+	// }
+	// print '</td></tr></table>';
+	// print '</td>';
+	// print '<td colspan="3">';
+	// $amount_discount=$object->getAvailableDiscounts();
+	// if ($amount_discount < 0) dol_print_error($db,$object->error);
+	// if ($amount_discount > 0) print '<a href="'.DOL_URL_ROOT.'/comm/remx.php?id='.$object->id.'&backtopage='.urlencode($_SERVER["PHP_SELF"].'?socid='.$object->id).'">'.price($amount_discount,1,$langs,1,-1,-1,$conf->currency).'</a>';
+	// else print $langs->trans("DiscountNone");
+	// print '</td>';
+	// print '</tr>';
 
-	if ($object->client)
-	{
-		print '<tr>';
-		print '<td>';
-		print $form->editfieldkey("OutstandingBill",'OutstandingBill',$object->outstanding_limit,$object,$user->rights->societe->creer);
-		print '</td><td colspan="3">';
-		print $form->editfieldval("OutstandingBill",'OutstandingBill',$object->outstanding_limit,$object,$user->rights->societe->creer,'amount',($object->outstanding_limit != '' ? price($object->outstanding_limit) : ''));
-		print '</td>';
-		print '</tr>';
-	}
+	// if ($object->client)
+	// {
+	// 	print '<tr>';
+	// 	print '<td>';
+	// 	print $form->editfieldkey("OutstandingBill",'OutstandingBill',$object->outstanding_limit,$object,$user->rights->societe->creer);
+	// 	print '</td><td colspan="3">';
+	// 	print $form->editfieldval("OutstandingBill",'OutstandingBill',$object->outstanding_limit,$object,$user->rights->societe->creer,'amount',($object->outstanding_limit != '' ? price($object->outstanding_limit) : ''));
+	// 	print '</td>';
+	// 	print '</tr>';
+	// }
 
 	// Multiprice level
-	if (! empty($conf->global->PRODUIT_MULTIPRICES))
-	{
-		print '<tr><td class="nowrap">';
-		print '<table width="100%" class="nobordernopadding"><tr><td class="nowrap">';
-		print $langs->trans("PriceLevel");
-		print '<td><td align="right">';
-		if ($user->rights->societe->creer)
-		{
-			print '<a href="'.DOL_URL_ROOT.'/comm/multiprix.php?id='.$object->id.'">'.img_edit($langs->trans("Modify")).'</a>';
-		}
-		print '</td></tr></table>';
-		print '</td><td colspan="3">';
-		print $object->price_level;
-		$keyforlabel='PRODUIT_MULTIPRICES_LABEL'.$object->price_level;
-		if (! empty($conf->global->$keyforlabel)) print ' - '.$langs->trans($conf->global->$keyforlabel);
-		print "</td>";
-		print '</tr>';
-	}
+	// if (! empty($conf->global->PRODUIT_MULTIPRICES))
+	// {
+	// 	print '<tr><td class="nowrap">';
+	// 	print '<table width="100%" class="nobordernopadding"><tr><td class="nowrap">';
+	// 	print $langs->trans("PriceLevel");
+	// 	print '<td><td align="right">';
+	// 	if ($user->rights->societe->creer)
+	// 	{
+	// 		print '<a href="'.DOL_URL_ROOT.'/comm/multiprix.php?id='.$object->id.'">'.img_edit($langs->trans("Modify")).'</a>';
+	// 	}
+	// 	print '</td></tr></table>';
+	// 	print '</td><td colspan="3">';
+	// 	print $object->price_level;
+	// 	$keyforlabel='PRODUIT_MULTIPRICES_LABEL'.$object->price_level;
+	// 	if (! empty($conf->global->$keyforlabel)) print ' - '.$langs->trans($conf->global->$keyforlabel);
+	// 	print "</td>";
+	// 	print '</tr>';
+	// }
 
 	// Level of prospect
 	if ($object->client == 2 || $object->client == 3)

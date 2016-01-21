@@ -1139,7 +1139,7 @@ if ($action == 'create') {
 		print '<input type="hidden" name="originid" value="' . $originid . '">';
 	}
 
-	print '<table class="border" width="100%">';
+	print '<table class="border" max-width="100%">';
 
 	// Reference
 	print '<tr><td class="fieldrequired">' . $langs->trans('Ref') . '</td><td colspan="2">' . $langs->trans("Draft") . '</td></tr>';
@@ -1435,7 +1435,7 @@ if ($action == 'create') {
 	// Print form confirm
 	print $formconfirm;
 
-	print '<table class="border" width="100%">';
+	print '<table class="border" max-width="75%">';
 
 	$linkback = '<a href="' . DOL_URL_ROOT . '/comm/propal/list.php' . (! empty($socid) ? '?socid=' . $socid : '') . '">' . $langs->trans("BackToList") . '</a>';
 

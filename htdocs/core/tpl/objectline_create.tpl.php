@@ -45,18 +45,22 @@ if (in_array($object->element,array('propal','facture','invoice','commande','ord
 ?>
 
 <!-- BEGIN PHP TEMPLATE objectline_create.tpl.php -->
-
+<!-- next 3 tr was added to creat somme room betwen exists lines add form to add a new line -->
+<tr ><td><br><td></tr>
+<tr ><td><br><td></tr>
+<tr ><td><br><td></tr>
+<!-- end of tr for room -->
 <tr class="liste_titre nodrag nodrop">
 	<td<?php echo (! empty($conf->global->MAIN_VIEW_LINE_NUMBER) ? ' colspan="2"' : ''); ?>>
 	<div id="add"></div><span class="hideonsmartphone"><?php echo $langs->trans('AddNewLine'); ?></span><?php // echo $langs->trans("FreeZone"); ?>
 	</td>
-	<td align="right"><span id="title_vat"><?php echo $langs->trans('VAT'); ?></span></td>
+	<td style="display: none;" align="right"><span id="title_vat"><?php echo $langs->trans('VAT'); ?></span></td>
 	<td align="right"><span id="title_up_ht"><?php echo $langs->trans('PriceUHT'); ?></span></td>
 	<?php if (! empty($inputalsopricewithtax)) { ?>
-	<td align="right"><span id="title_up_ttc"><?php echo $langs->trans('PriceUTTC'); ?></span></td>
+	<td style="display: none;" align="right"><span id="title_up_ttc"><?php echo $langs->trans('PriceUTTC'); ?></span></td>
 	<?php } ?>
-	<td align="right"><?php echo $langs->trans('Qty'); ?></td>
-	<td align="right"><?php echo $langs->trans('ReductionShort'); ?></td>
+	<td style="display: none;" align="right"><?php echo $langs->trans('Qty'); ?></td>
+	<td style="display: none;" align="right"><?php echo $langs->trans('ReductionShort'); ?></td>
 	<?php
 	if (! empty($usemargins))
 	{
@@ -74,7 +78,7 @@ if (in_array($object->element,array('propal','facture','invoice','commande','ord
 		if ($user->rights->margins->creer && ! empty($conf->global->DISPLAY_MARK_RATES)) 	echo '<td align="right"><span class="np_markRate">'.$langs->trans('MarkRate').'</span></td>';
 	}
 	?>
-	<td colspan="<?php echo $colspan; ?>">&nbsp;</td>
+	<td style="display: none;" colspan="<?php echo $colspan; ?>">&nbsp;</td>
 </tr>
 
 <tr <?php echo $bcnd[$var]; ?>>
@@ -177,7 +181,8 @@ else {
 
 	// Editor wysiwyg
 	require_once DOL_DOCUMENT_ROOT.'/core/class/doleditor.class.php';
-	$nbrows=ROWS_2;
+	//$nbrows=ROWS_2;
+	$nbrows=15;
 	$enabled=(! empty($conf->global->FCKEDITOR_ENABLE_DETAILS)?$conf->global->FCKEDITOR_ENABLE_DETAILS:0);
 	if (! empty($conf->global->MAIN_INPUT_DESC_HEIGHT)) $nbrows=$conf->global->MAIN_INPUT_DESC_HEIGHT;
 	$doleditor=new DolEditor('dp_desc',GETPOST('dp_desc'),'',100,'dolibarr_details','',false,true,$enabled,$nbrows,'98%');
@@ -185,7 +190,7 @@ else {
 	?>
 	</td>
 
-	<td align="right"><?php
+	<td style="display: none;" align="right"><?php
 	if (GETPOST('prod_entry_mode') != 'predef')
 	{
 		if ($seller->tva_assuj == "0") echo '<input type="hidden" name="tva_tx" value="0"> '.vatrate(0, true);
@@ -195,19 +200,19 @@ else {
 	</td>
 	<td align="right">
 	<?php if (GETPOST('prod_entry_mode') != 'predef') { ?>
-	<input type="text" size="5" name="price_ht" id="price_ht" class="flat" value="<?php echo (isset($_POST["price_ht"])?$_POST["price_ht"]:''); ?>">
+	<input style="min-width: 9em; min-height: 3em; text-align:right; font-size:1em;"  type="text" size="5" name="price_ht" id="price_ht" class="flat" value="<?php echo (isset($_POST["price_ht"])?$_POST["price_ht"]:"0,00"); ?>">
 	<?php } ?>
 	</td>
 	<?php if (! empty($inputalsopricewithtax)) { ?>
-	<td align="right">
+	<td style="display: none;" align="right">
 	<?php if (GETPOST('prod_entry_mode') != 'predef') { ?>
 	<input type="text" size="5" name="price_ttc" id="price_ttc" class="flat" value="<?php echo (isset($_POST["price_ttc"])?$_POST["price_ttc"]:''); ?>">
 	<?php } ?>
 	</td>
 	<?php } ?>
-	<td align="right"><input type="text" size="2" id="qty" name="qty" class="flat" value="<?php echo (isset($_POST["qty"])?$_POST["qty"]:1); ?>">
+	<td style="display: none;" align="right"><input type="text" size="2" id="qty" name="qty" class="flat" value="<?php echo (isset($_POST["qty"])?$_POST["qty"]:1); ?>">
 	</td>
-	<td align="right" class="nowrap"><input type="text" size="1" id="remise_percent" name="remise_percent" class="flat" value="<?php echo (isset($_POST["remise_percent"])?$_POST["remise_percent"]:$buyer->remise_percent); ?>"><span class="hideonsmartphone">%</span></td>
+	<td style="display: none;" align="right" class="nowrap"><input type="text" size="1" id="remise_percent" name="remise_percent" class="flat" value="<?php echo (isset($_POST["remise_percent"])?$_POST["remise_percent"]:$buyer->remise_percent); ?>"><span class="hideonsmartphone">%</span></td>
 
 	<?php
 	if (! empty($usemargins))

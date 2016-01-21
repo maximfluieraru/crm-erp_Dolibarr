@@ -96,15 +96,18 @@
 	?>
 	</td>
 
-	<td align="right" class="nowrap"><?php $coldisplay++; ?><?php echo vatrate($line->tva_tx,'%',$line->info_bits); ?></td>
+	<!-- <td align="right" class="nowrap"><?php $coldisplay++; ?><?php echo vatrate($line->tva_tx,'%',$line->info_bits); ?></td> -->
 
-	<td align="right" class="nowrap"><?php $coldisplay++; ?><?php echo price($line->subprice); ?></td>
+	<!-- <td align="right" class="nowrap"><?php $coldisplay++; ?><?php echo price($line->subprice); ?></td> -->
 
 	<?php if ($conf->global->MAIN_FEATURES_LEVEL > 1) { ?>
-	<td align="right" class="nowrap"><?php $coldisplay++; ?>&nbsp;</td>
+	<td style="display: none;" align="right" class="nowrap"><?php $coldisplay++; ?>&nbsp;</td> 
 	<?php } ?>
 
-	<td align="right" class="nowrap"><?php $coldisplay++; ?>
+	<td style="display: none;"  align="right" class="nowrap">
+
+	<?php $coldisplay++; ?>
+
 	<?php if ((($line->info_bits & 2) != 2) && $line->special_code != 3) {
 			// I comment this because it shows info even when not required
 			// for example always visible on invoice but must be visible only if stock module on and stock decrease option is on invoice validation and status is not validated
@@ -115,9 +118,9 @@
 	</td>
 
 	<?php if (!empty($line->remise_percent) && $line->special_code != 3) { ?>
-	<td align="right"><?php $coldisplay++; ?><?php echo dol_print_reduction($line->remise_percent,$langs); ?></td>
+	<td style="display: none;"  align="right"><?php $coldisplay++; ?><?php echo dol_print_reduction($line->remise_percent,$langs); ?></td>
 	<?php } else { ?>
-	<td><?php $coldisplay++; ?>&nbsp;</td>
+	<td style="display: none;" ><?php $coldisplay++; ?>&nbsp;</td>
 	<?php }
 
   if (! empty($conf->margin->enabled) && empty($user->societe_id)) {

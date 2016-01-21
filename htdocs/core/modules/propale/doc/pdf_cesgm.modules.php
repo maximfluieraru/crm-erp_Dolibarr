@@ -675,9 +675,8 @@ class pdf_cesgm extends ModelePDFPropales
 	 *   @param		Translate	$outputlangs	Langs object
 	 *   @return	void
 	 */
-	// unused !!!!
-	// function _tableau_info(&$pdf, $object, $posy, $outputlangs)
-	// {
+	 function _tableau_info(&$pdf, $object, $posy, $outputlangs)
+	 {
 
 		// $pdf->line($this->marge_gauche, $posy-2, $this->page_largeur - $this->marge_droite, $posy-2);
 		// global $conf;
@@ -841,7 +840,7 @@ class pdf_cesgm extends ModelePDFPropales
 		// }
 
 		// return $posy;
-	// }
+	 }
 
 
 	/**
@@ -857,7 +856,7 @@ class pdf_cesgm extends ModelePDFPropales
 	function _tableau_tot(&$pdf, $object, $deja_regle, $posy, $outputlangs)
 	{	
 
-		$conf->currency = (isset($conf->currency) ? $conf->currency : " $" );
+		$currency = (isset($conf->currency) ? $conf->currency : " $" );
 
 		 //begin position of below data 
 		 			// the room(heigth) for below data is define in -> $heightforinfotot  ; ~ 222
@@ -976,7 +975,7 @@ class pdf_cesgm extends ModelePDFPropales
 
 		$posx += 3;
 		$pdf->SetXY($posx,$posy);
-		$text = price($object->total_ht, 0, $outputlangs, 1, - 1, - 1, $conf->currency);
+		$text = price($object->total_ht, 0, $outputlangs, 1, - 1, - 1, $currency);
 		$pdf->MultiCell(45, 5, $text, 0, 'L');
 		
 		$posx = 15;
@@ -991,7 +990,7 @@ class pdf_cesgm extends ModelePDFPropales
 
 		$posx += 3;
 		$pdf->SetXY($posx,$posy);
-		$text = price($object->total_tva, 0, $outputlangs, 1, - 1, - 1, $conf->currency);
+		$text = price($object->total_tva, 0, $outputlangs, 1, - 1, - 1, $currency);
 		$pdf->MultiCell(45, 5, $text, 0, 'L');
 		
 		$posx = 15;
@@ -1009,7 +1008,7 @@ class pdf_cesgm extends ModelePDFPropales
 
 		$posx += 3;
 		$pdf->SetXY($posx,$posy);
-		$text = price($_sous_total, 0, $outputlangs, 1, -1, -1, $conf->currency);
+		$text = price($_sous_total, 0, $outputlangs, 1, -1, -1, $currency);
 		$pdf->MultiCell(45, 5, $text, 0, 'L');
 
 		$posx = 15;
@@ -1024,7 +1023,7 @@ class pdf_cesgm extends ModelePDFPropales
 
 		$posx += 3;
 		$pdf->SetXY($posx,$posy);
-		$text = price($object->total_localtax1, 0, $outputlangs, 1, - 1, - 1, $conf->currency);
+		$text = price($object->total_localtax1, 0, $outputlangs, 1, - 1, - 1, $currency);
 		$pdf->MultiCell(45, 5, $text, 0, 'L');
 		
 		$posx = 15;
@@ -1039,7 +1038,7 @@ class pdf_cesgm extends ModelePDFPropales
 
 		$posx += 3;
 		$pdf->SetXY($posx,$posy);
-		$text = price($object->total_ttc, '', $outputlangs, 1, - 1, - 1, $conf->currency); 
+		$text = price($object->total_ttc, '', $outputlangs, 1, - 1, - 1, $currency); 
 		$pdf->MultiCell(45, 5, $text, 0, 'L');
 		
 		$posx = 15;

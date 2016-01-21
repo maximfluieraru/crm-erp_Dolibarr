@@ -347,14 +347,14 @@ function vignette($file, $maxWidth = 160, $maxHeight = 120, $extName='_small', $
 	$dir = dirname($file); 			// Chemin du dossier contenant l'image
 
 	$infoImg = getimagesize($fichier); // Recuperation des infos de l'image
-	$imgWidth = $infoImg[0]; // Largeur de l'image
-	$imgHeight = $infoImg[1]; // Hauteur de l'image
+	$imgWidth = $infoImg['0']; // Largeur de l'image
+	$imgHeight = $infoImg['1']; // Hauteur de l'image
 
-	if ($maxWidth  == -1) $maxWidth=$infoImg[0];	// If size is -1, we keep unchanged
-	if ($maxHeight == -1) $maxHeight=$infoImg[1];	// If size is -1, we keep unchanged
+	if ($maxWidth  == -1) $maxWidth=$infoImg['0'];	// If size is -1, we keep unchanged
+	if ($maxHeight == -1) $maxHeight=$infoImg['1'];	// If size is -1, we keep unchanged
 
 	// Si l'image est plus petite que la largeur et la hauteur max, on ne cree pas de vignette
-	if ($infoImg[0] < $maxWidth && $infoImg[1] < $maxHeight)
+	if ($infoImg['0'] < $maxWidth && $infoImg['1'] < $maxHeight)
 	{
 		// On cree toujours les vignettes
 		dol_syslog("File size is smaller than thumb size",LOG_DEBUG);
@@ -362,7 +362,7 @@ function vignette($file, $maxWidth = 160, $maxHeight = 120, $extName='_small', $
 	}
 
 	$imgfonction='';
-	switch($infoImg[2])
+	switch($infoImg['2'])
 	{
 		case IMAGETYPE_GIF:	    // 1
 			$imgfonction = 'imagecreatefromgif';
@@ -394,7 +394,7 @@ function vignette($file, $maxWidth = 160, $maxHeight = 120, $extName='_small', $
 	dol_mkdir($dirthumb);
 
 	// Initialisation des variables selon l'extension de l'image
-	switch($infoImg[2])
+	switch($infoImg['2'])
 	{
 		case IMAGETYPE_GIF:	    // 1
 			$img = imagecreatefromgif($fichier);

@@ -1408,6 +1408,7 @@ table.border, table.dataTable, .table-border, .table-border-col, .table-key-bord
 table.border, table.dataTable, .table-border {
 	-webkit-box-shadow: #CCCCCC 2px 4px 2px;
 	border: 2px solid #BBBBBB;
+	min-width: 65%;
 }
 table.border.formdoc {
 	padding: 0px;
@@ -1585,13 +1586,13 @@ tr.liste_total td, form.liste_total div {
 }
 
 .impair {
-	background: #eaeaea;
+	background: rgba(0, 0, 0, 0.18);
 	font-family: <?php print $fontlist ?>;
 	border: 0px;
 }
 
-.impair:hover {
-	background: #c0c4c7;
+.impair:hover , .pair:hover{
+	background: rgba(53, 214, 121, 0.8);
 	border: 0px;
 }
 
@@ -1605,10 +1606,6 @@ tr.impair td.nohover, form.impair div.nohover {
 	border: 0px;
 }
 
-.pair:hover {
-	background: #c0c4c7;
-	border: 0px;
-}
 
 tr.pair td.nohover {
 	background: #FFFFFF;
@@ -1616,7 +1613,8 @@ tr.pair td.nohover {
 
 .pair td, .impair td, .pair div, .impair div
 {
-	padding: 2px 3px !important;
+	padding:5px 4px 12px 0px !important;
+	font-size: 15px;
 }
 
 .noshadow {

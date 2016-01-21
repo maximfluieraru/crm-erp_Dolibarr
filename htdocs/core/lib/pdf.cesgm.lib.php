@@ -795,7 +795,9 @@ function pdf_cesgm_writelinedesc(&$pdf,$object,$i,$outputlangs,$w,$h,$posx,$posy
 	{
 		$labelproductservice=pdf_cesgm_getlinedesc($object,$i,$outputlangs,$hideref,$hidedesc,$issupplierline);
 		// Description
+		$pdf->SetFont('','B',12);// line's description will be in bold 12
 		$pdf->writeHTMLCell($w, $h, $posx, $posy, $outputlangs->convToOutputCharset($labelproductservice), 0, 1, false, true, 'J',true);
+		$pdf->SetFont('');// back to default size
 		return $labelproductservice;
 	}
 }
