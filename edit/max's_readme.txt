@@ -81,6 +81,8 @@ configuration/modules/modules complemntaires  editeur WYSIWYG - options pour "te
 
 configuration/modules/modules proposal delai  = 30'
 
+configuration/security/default permissions - !
+
 
 !Important for good e-mail functionalite you should add a valid e-mail for users
 !Important when we delete/change a img ,(like logo, attached files, etc) using application's options, the thumbs img are not deleted
@@ -195,6 +197,8 @@ Max's chages:
 			* new image for dollibar.jpg (prunus's logo)
 			- img
 				* bg_work.jpg (added)
+				* edit.png (added)
+				* delete.png (added)
 
 	#htdocs
 			* added bootstrap folders (the script was added in main.inc.php )
@@ -209,7 +213,9 @@ Max's chages:
 			
 	#htdocs/theme/common
 			- added new img for nophoto.jpg (old img _nophoto.jpg) 		
-			- added new img doc.jpg (used in attached files) 		
+			- added new img doc.jpg (used in attached files) 
+		 
+
 
 	#htdocs/societe/soc.php
 			- modified line 700->.. (nouveau tiers formulaire)  
