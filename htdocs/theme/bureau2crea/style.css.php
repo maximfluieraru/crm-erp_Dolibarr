@@ -505,8 +505,9 @@ li.tmenu, li.tmenusel {
 
 li.tmenu span, li.tmenusel span {
 	margin: 0px 6px 0px 10px;
-	font-size: 16px;
-    }
+	font-size: 1.5em;
+	font-weight: bold;
+}
 
 .tmenuimage {
 	margin: 0 !important;
@@ -641,8 +642,7 @@ div.login {
 div.login a {
 	color: #FFFFFF;
 	position:relative;
-	border-style: inset;
-    border-radius: 25%;
+	font-size: 1em;
     padding: 0px 5px 1px 6px;
 }
 div.login a:hover {
@@ -1662,6 +1662,10 @@ tr.pair td.nohover {
     border: 1px solid #AAA;
     text-align: center;
     border-radius: 5px;
+    border-style: ridge;
+    border-left-width: 11px;
+    border-color: #058005;
+    background-color: yellow;
 }
 
 .box {

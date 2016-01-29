@@ -1,0 +1,22 @@
+div{
+	margin: 1px;
+	display: inline-block;
+	//border-style: dashed;
+}
+
+input, .plus, .minus{
+	position: relative;
+	max-width: 10px;
+	display: block;
+	min-width: 5em;
+}
+
+.container{
+   border-style: dotted;
+}
+
+.area{
+	border-style: inset;
+}
+
+
