@@ -90,8 +90,6 @@ $(function()
 		alert(input.length);
 
 	});
-
-	
 	
 });
 
