@@ -61,6 +61,22 @@ function print_eldy_menu($db,$atarget,$type_user,&$tabMenu,&$menu,$noout=0)
 	if (empty($noout)) print_end_menu_entry($showmode);
 	$menu->add('/index.php?mainmenu=home&amp;leftmenu=', $langs->trans("Home"), 0, $showmode, $atarget, "home", '');
 
+	// ___ begin ESTIMATE ____ //
+
+		$showmode=(isset($conf->global->MAIN_MODULE_ESTIMATE) ? $conf->global->MAIN_MODULE_ESTIMATE : 0 );
+		$classname="";
+		if ($_SESSION["mainmenu"] && $_SESSION["mainmenu"] == "estimate") { $classname='class="tmenusel"'; $_SESSION['idmenu']=''; }
+		else $classname = 'class="tmenu"';
+		$idsel='estimate';
+
+		if (empty($noout)) print_start_menu_entry($idsel,$classname,$showmode);
+		if (empty($noout)) print_text_menu_entry($langs->trans("estimate"), $showmode, DOL_URL_ROOT.'/estimate/index.php?mainmenu=estimate&amp;leftmenu=', $id, $idsel, $classname, $atarget);
+		if (empty($noout)) print_end_menu_entry($showmode);
+		$menu->add('/estimate/index.php?mainmenu=estimate&amp;leftmenu=', $langs->trans("estimate"), 0, $showmode, $atarget, "estimate", '');
+
+
+	// ___ end ESTIMATE ____ //
+
 	// Third parties
 	$tmpentry=array('enabled'=>(( ! empty($conf->societe->enabled) && (empty($conf->global->SOCIETE_DISABLE_PROSPECTS) || empty($conf->global->SOCIETE_DISABLE_CUSTOMERS))) || ! empty($conf->fournisseur->enabled)), 'perms'=>(! empty($user->rights->societe->lire) || ! empty($user->rights->fournisseur->lire)), 'module'=>'societe|fournisseur');
 	$showmode=dol_eldy_showmenu($type_user, $tmpentry, $listofmodulesforexternal);

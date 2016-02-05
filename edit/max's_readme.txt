@@ -18,24 +18,7 @@
 	!!!!! IMPORTANT if application was addapted on local machine after that was deployed on the server a error can be genereted and application will ask to run istall module. Solution: htdocs/conf/conf.php - check/modify  "... _url"
 	*******************************************************
 ---------------------------------------===============----------------------------
-
-[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
-
-cesgm - will be owner  of application. all user should be added to groups (if cesgm want to see all clients (DB unique numbers)
-		* core/societe/doc/mod_codeclient 
-
-
-user address ?!!!??
-
-addresse des travaux : ????
-
-prefix contrat !!???
-
-date début-fin !!??? 
-
-
-[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
-
+!!!!-----  http://doxygen.dolibarr.org/index.html --- !!! Dolibar tree structure
 
  writing job/service/product description // Loop on each lines     pdf_cesgm.modules.php ~ 326
 
@@ -68,8 +51,6 @@ code_client (Customer code) - DB 'societe'
 
 1092 - main rectangle pdf (pdf_cesgm)
 
--!-Class to manage numbering of thirdparties code - core/module/societe/doc/mod_codeclient_leopard.php
-
 Adresse travaux = note privé prospect (si non l'adresse par default du client)
 
 configuration/modules/contrats/ Magre/Masque AAAA{yy}{mm}-{000000} IMPORT!!! configuration before validate any contract
@@ -84,11 +65,11 @@ configuration/modules/modules proposal delai  = 30'
 configuration/security/default permissions - !
 
 
-!Important for good e-mail functionalite you should add a valid e-mail for users
+!Important for good e-mail functionality you should add a valid e-mail for users
 !Important when we delete/change a img ,(like logo, attached files, etc) using application's options, the thumbs img are not deleted
 
 
-
+ 
 
 ----------------------=========================----------------------------------
 
@@ -159,6 +140,7 @@ Max's chages:
 	# htdocs/core/menus/stadard/
 			* modified eldy.lib.php  
 				- (line 521 - 543) Left menu System Tools was commented(//) (it's a submenu to see infos about dolybarr -not for client use) 
+				- (line 65 - 75) Added Estimate option for main top menu
 
 	# htdocs/admin/
 			* index.php
@@ -221,7 +203,8 @@ Max's chages:
 			- modified line 700->.. (nouveau tiers formulaire)  
 			- view - line 1489 / modifie client line - 1062
 
-
+	#htdocs
+		* estimate(new module)
 
 
 ----------------------=========================----------------------------------
