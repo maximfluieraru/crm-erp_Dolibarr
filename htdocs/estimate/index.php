@@ -103,7 +103,82 @@ $form=new Form($db);
 
 
 
+print '<!-- Begin convertor form -->';
+
+print '<div style="border-style: groove; border-width: 5px; max-width: 20em; border-radius: 9%">
+            <span><p><strong>Convertor</strong></p></span>
+        <form action="#" method="post" id="myForm">
+          <div>
+            <label for="amount">Asmount:</label>
+            <input type="text" id="amount" name="amount" />
+          </div>   
+          <div>
+            <label for="from">From:</label>
+            <select name="from" id="from">
+              <option value="0" selected="selected">Select unit</option>
+              <option value="1">sq. m</option>
+              <option value="2">sq. ft</option>
+             <!--  <option value="3">gigabytes</option>
+              <option value="4">terabytes</option>
+              <option value="5">petabytes</option>
+              <option value="6">exabytes</option> -->
+            </select>      
+            <label for="into">Into:</label>
+            <select name="into" id="into">
+              <option value="0" selected="selected">Select unit</option>
+              <option value="1">sq. m</option>
+              <option value="2">sq. ft</option>
+              <!-- <option value="3">gigabytes</option>
+              <option value="4">terabytes</option>
+              <option value="5">petabytes</option>
+              <option value="6">exabytes</option> -->
+            </select>
+          </div>
+          <div>&nbsp;</div>
+          <button class="btn" id="btn_conv">Convert</button>
+          <div>&nbsp;</div>
+        </form>
+        
+        <p id="result" style = "border:solid 1px green; background: #6F9; margin-top:25px; padding:7px; display:none;";></p>
+       </div> 
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $("#btn_conv").click(function(e) {
+                  e.preventDefault();
+                  var amount = $("#amount").val();
+                  var from = $("#from").val();
+                  var into = $("#into").val();
+                  
+                  if (amount == "" || from == "0" || into == "0"){
+                     $("#result").html("Please fill out all of the fields!").css("display", "inline-block");
+                    return false;
+                  }
+                  
+                  var tab_m  = [0,1,10.7939];
+                  var tab_ft  = [0,0.0929,1];
+
+                  var res = 0;
+
+                  if (from == 1 && into == 2){
+                    res = amount * tab_m[into];
+                  }else if (from == 2 && into == 1){
+                    res = amount * tab_ft[into];
+                  }else{
+                    res = amount;
+                  }
+
+
+
+                  $("#result").html(amount + " " + $("#from option:selected").text() + " = " + res + " " + $("#into option:selected").text()).css("display", "inline-block");
+
+                });
+            });
+        </script>';
+
+print '<!-- end convertor form -->';
+
 print '<!-- Begin estimate form -->';
+
 print '<form action="" method="get">';
 
 $fileName = "json_estimate_job_constr.json";

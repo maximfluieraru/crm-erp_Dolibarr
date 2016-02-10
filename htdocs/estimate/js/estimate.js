@@ -1,3 +1,10 @@
+/**
+* Copyright (C) 2016     Maxim Fluieraru       <maxim@prunus.ca>
+*
+* 
+*/
+
+
 $(function()
 {
 

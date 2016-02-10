@@ -32,20 +32,21 @@ require_once(DOL_DOCUMENT_ROOT."/core/class/commonobject.class.php");
 /**
  *	Put here description of your class
  */
-class Estimate extends CommonObject
+class JobZone extends CommonObject
 {
 	var $db;							//!< To store db handler
 	var $error;							//!< To return error code (or message)
 	var $errors=array();				//!< To return several error codes (or messages)
-	var $element='estimate';			//!< Id that identify managed objects
-	var $table_element='estimate';		//!< Name of table without prefix where object is stored
+	var $element='job_zone';			//!< Id that identify managed objects
+	var $table_element='job_zone';		//!< Name of table without prefix where object is stored
 
     // var $id;
     // var $prop1;
     // var $prop2;
 
     var $id;
-    var $job_zone = array();
+    var $job_zone_desc;
+    var $job_type = array();
     
 	
 
